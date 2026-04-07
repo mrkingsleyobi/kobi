@@ -339,20 +339,16 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-.VPDoc .container {
-  max-width: 1200px !important;
-  padding: 60px 20px 60px 10.5rem;
+/* Wrapper for page title and VPDoc */
+.page-wrapper {
+  position: relative;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 60px 20px;
 }
 
-/* Hide default title - we'll show it in gutter */
-.VPDoc h1 {
-  display: none;
-}
-
-/* Page Title and Aside in Left Gutter */
-.page-title,
-aside {
+/* Page Title in Left Gutter (OUTSIDE VPDoc) */
+.page-title {
   display: block;
   float: left;
   position: absolute;
@@ -362,11 +358,6 @@ aside {
   text-align: right;
   list-style-type: none;
   clear: both;
-  margin-bottom: 1rem;
-  font-variant-numeric: normal;
-}
-
-.page-title {
   margin-bottom: 2em;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
@@ -395,42 +386,47 @@ aside {
   line-height: 1.4;
 }
 
-/* Aside content */
-.page-gutter aside {
-  margin-bottom: 1rem;
-}
-
-.page-gutter .meta-info {
+/* Metadata elements within page-title */
+.page-title .meta-info {
   font-size: 0.75rem;
   color: var(--vp-c-text-3);
   margin-bottom: 0.5rem;
 }
 
-.page-gutter .tags {
-  display: block;
+.page-title .meta-info time,
+.page-title .meta-info span {
+  display: inline;
 }
 
-.page-gutter .tag {
+.page-title .tags {
+  display: block;
+  margin-top: 0.5rem;
+}
+
+.page-title .tag {
   display: block;
   font-size: 0.6875rem;
   color: var(--vp-c-brand-1);
   margin-bottom: 0.25rem;
 }
 
-/* Content area */
-.VPDoc .content {
-  max-width: 680px;
-  margin-left: 12rem;
+/* VPDoc container adjusts for left gutter */
+.page-wrapper .VPDoc .container {
+  padding-left: 12rem;
+}
+
+/* Hide default h1 */
+.VPDoc h1 {
+  display: none;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .VPDoc .container {
+  .page-wrapper {
     padding: 40px 20px;
   }
 
-  .page-title,
-  aside {
+  .page-title {
     position: static;
     float: none;
     width: auto;
@@ -445,6 +441,10 @@ aside {
 
   .page-title .subtitle {
     font-size: 1rem;
+  }
+
+  .page-wrapper .VPDoc .container {
+    padding-left: 20px;
   }
 }
 

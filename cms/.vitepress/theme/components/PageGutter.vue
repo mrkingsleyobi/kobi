@@ -20,10 +20,10 @@ const injectGutter = () => {
   // Skip on homepage
   if (page.value.relativePath === 'index.md') return
 
-  // Find the content container
-  const content = document.querySelector('.VPDoc .content')
-  if (!content) {
-    console.log('PageGutter: .VPDoc .content not found')
+  // Find the VPDoc container
+  const vpDoc = document.querySelector('.VPDoc')
+  if (!vpDoc) {
+    console.log('PageGutter: .VPDoc not found')
     return
   }
 
@@ -35,11 +35,15 @@ const injectGutter = () => {
 
   console.log('PageGutter: Injecting gutter for', page.value.relativePath)
 
-  // Get the container
-  const container = content.closest('.VPDoc')
-  if (!container) return
+  // Get the parent of VPDoc
+  const parent = vpDoc.parentElement
+  if (!parent) return
 
-  // Create page title wrapper (div, not aside)
+  // Create a wrapper div to hold both gutter and VPDoc
+  const wrapper = document.createElement('div')
+  wrapper.className = 'page-wrapper'
+
+  // Create page-title div (contains all metadata)
   const pageTitle = document.createElement('div')
   pageTitle.className = 'page-title'
 
@@ -68,14 +72,8 @@ const injectGutter = () => {
     pageTitle.appendChild(description)
   }
 
-  // Insert page title at the beginning of container
-  container.insertBefore(pageTitle, container.firstChild)
-
-  // For blog posts, add metadata aside
+  // Created Date and Tags (for blog posts)
   if (createdDate.value || tags.value.length) {
-    const aside = document.createElement('aside')
-    aside.className = 'page-gutter'
-
     // Date metadata
     if (createdDate.value) {
       const metaInfo = document.createElement('div')
@@ -83,37 +81,49 @@ const injectGutter = () => {
 
       const time = document.createElement('time')
       time.textContent = createdDate.value
-      aside.appendChild(time)
+      pageTitle.appendChild(time)
 
       if (updatedDate.value) {
         const updated = document.createElement('span')
         updated.textContent = ` · Updated ${updatedDate.value}`
-        aside.appendChild(updated)
+        pageTitle.appendChild(updated)
       }
       console.log('PageGutter: Added date', createdDate.value)
     }
 
     // Tags
     if (tags.value && tags.value.length) {
+      const tagsContainer = document.createElement('div')
+      tagsContainer.className = 'tags'
+
       tags.value.forEach(tag => {
         const tagEl = document.createElement('span')
         tagEl.className = 'tag'
         tagEl.textContent = tag
-        aside.appendChild(tagEl)
+        tagsContainer.appendChild(tagEl)
       })
-      console.log('PageGutter: Added tags', tags.value)
-    }
 
-    // Insert after page title
-    if (pageTitle.nextSibling) {
-      container.insertBefore(aside, pageTitle.nextSibling)
-    } else {
-      container.appendChild(aside)
+      pageTitle.appendChild(tagsContainer)
+      console.log('PageGutter: Added tags', tags.value)
     }
   }
 
-  // Hide default h1
-  const defaultH1 = container.querySelector('.content h1')
+  // Build the new structure:
+  // wrapper
+  //   .page-title (gutter with metadata)
+  //   .VPDoc (original content)
+
+  // Insert wrapper before VPDoc in parent
+  parent.insertBefore(wrapper, vpDoc)
+
+  // Move VPDoc into wrapper
+  wrapper.appendChild(vpDoc)
+
+  // Insert page-title at the beginning of wrapper (before VPDoc)
+  wrapper.insertBefore(pageTitle, vpDoc)
+
+  // Hide default h1 inside VPDoc
+  const defaultH1 = vpDoc.querySelector('.content h1')
   if (defaultH1) {
     (defaultH1 as HTMLElement).style.display = 'none'
     console.log('PageGutter: Hid default h1')
