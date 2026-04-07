@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, onUpdated, computed, watch } from 'vue'
 import { useData } from 'vitepress'
 import type { Frontmatter } from '../types'
 import { formatDate, parseTags } from '../utils/format'
@@ -16,15 +16,28 @@ const updatedDate = computed(() =>
     : null
 )
 
-onMounted(() => {
+const injectGutter = () => {
   // Skip on homepage
   if (page.value.relativePath === 'index.md') return
 
-  const doc = document.querySelector('.VPDoc')
-  if (!doc) return
+  // Find the content container
+  const content = document.querySelector('.VPDoc .content')
+  if (!content) {
+    console.log('PageGutter: .VPDoc .content not found')
+    return
+  }
 
   // Check if gutter already exists
-  if (doc.querySelector('.page-gutter')) return
+  if (document.querySelector('.page-title')) {
+    console.log('PageGutter: Already injected')
+    return
+  }
+
+  console.log('PageGutter: Injecting gutter for', page.value.relativePath)
+
+  // Get the container
+  const container = content.closest('.VPDoc')
+  if (!container) return
 
   // Create page title wrapper (div, not aside)
   const pageTitle = document.createElement('div')
@@ -35,6 +48,7 @@ onMounted(() => {
     const h1 = document.createElement('h1')
     h1.textContent = frontmatter.value.title
     pageTitle.appendChild(h1)
+    console.log('PageGutter: Added title', frontmatter.value.title)
   }
 
   // Subtitle
@@ -43,6 +57,7 @@ onMounted(() => {
     subtitle.className = 'subtitle'
     subtitle.textContent = frontmatter.value.subtitle
     pageTitle.appendChild(subtitle)
+    console.log('PageGutter: Added subtitle', frontmatter.value.subtitle)
   }
 
   // Description (for non-blog pages)
@@ -53,8 +68,8 @@ onMounted(() => {
     pageTitle.appendChild(description)
   }
 
-  // Insert page title at the beginning
-  doc.insertBefore(pageTitle, doc.firstChild)
+  // Insert page title at the beginning of container
+  container.insertBefore(pageTitle, container.firstChild)
 
   // For blog posts, add metadata aside
   if (createdDate.value || tags.value.length) {
@@ -75,36 +90,49 @@ onMounted(() => {
         updated.textContent = ` · Updated ${updatedDate.value}`
         aside.appendChild(updated)
       }
+      console.log('PageGutter: Added date', createdDate.value)
     }
 
     // Tags
     if (tags.value && tags.value.length) {
-      const tagsContainer = document.createElement('div')
-      tagsContainer.className = 'tags'
-
       tags.value.forEach(tag => {
         const tagEl = document.createElement('span')
         tagEl.className = 'tag'
         tagEl.textContent = tag
-        tagsContainer.appendChild(tagEl)
+        aside.appendChild(tagEl)
       })
-
-      aside.appendChild(tagsContainer)
+      console.log('PageGutter: Added tags', tags.value)
     }
 
     // Insert after page title
     if (pageTitle.nextSibling) {
-      doc.insertBefore(aside, pageTitle.nextSibling)
+      container.insertBefore(aside, pageTitle.nextSibling)
     } else {
-      doc.appendChild(aside)
+      container.appendChild(aside)
     }
   }
 
   // Hide default h1
-  const defaultH1 = doc.querySelector('.VPDoc h1')
+  const defaultH1 = container.querySelector('.content h1')
   if (defaultH1) {
     (defaultH1 as HTMLElement).style.display = 'none'
+    console.log('PageGutter: Hid default h1')
   }
+}
+
+onMounted(() => {
+  // Wait a bit for DOM to be ready
+  setTimeout(injectGutter, 100)
+})
+
+onUpdated(() => {
+  // Re-inject on route changes
+  setTimeout(injectGutter, 100)
+})
+
+// Watch for page changes
+watch(() => page.value.relativePath, () => {
+  setTimeout(injectGutter, 100)
 })
 </script>
 
