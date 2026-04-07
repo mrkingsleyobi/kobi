@@ -247,30 +247,35 @@ const formatDate = (dateStr: string) => {
 }
 
 .posts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .post-card {
-  display: block;
+  display: flex;
   text-decoration: none;
   color: inherit;
-  border-radius: 12px;
+  border-radius: 8px;
   overflow: hidden;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   background: var(--vp-c-bg-soft);
+  align-items: center;
+  gap: 20px;
+  padding: 16px;
 }
 
 .post-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .post-image {
-  width: 100%;
-  height: 200px;
+  width: 100px;
+  height: 100px;
+  flex-shrink: 0;
   overflow: hidden;
+  border-radius: 6px;
 }
 
 .post-image img {
@@ -280,7 +285,9 @@ const formatDate = (dateStr: string) => {
 }
 
 .post-content {
-  padding: 24px;
+  flex: 1;
+  padding: 0;
+  min-width: 0;
 }
 
 .post-title {
@@ -336,9 +343,14 @@ const formatDate = (dateStr: string) => {
     font-size: 1.5rem;
   }
 
-  .posts-grid {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .post-card {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-image {
+    width: 100%;
+    height: 150px;
   }
 }
 </style>
