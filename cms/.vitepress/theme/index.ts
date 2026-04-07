@@ -21,8 +21,6 @@ export default {
     app.component('term', Term)
     app.component('description', DescriptionText)
     app.component('usage', Usage)
-    // Don't register as 'cite' - it's a reserved HTML element
-    // Users should use <definition-cite> instead
     app.component('definition-cite', DefinitionCite)
   },
   Layout: Layout
