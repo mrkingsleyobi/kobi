@@ -18,6 +18,17 @@ export interface BlogPost {
   tags?: string[] | string
 }
 
+export interface BlogPostData {
+  slug: string
+  title: string
+  subtitle?: string
+  created_at: string
+  tags: string[]
+  image?: string | null
+  excerpt?: string
+  description?: string
+}
+
 export interface Frontmatter {
   title?: string
   description?: string

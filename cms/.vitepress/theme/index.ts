@@ -9,6 +9,7 @@ import Term from './components/Term.vue'
 import DescriptionText from './components/DescriptionText.vue'
 import Usage from './components/Usage.vue'
 import DefinitionCite from './components/DefinitionCite.vue'
+import BlogHome from './components/BlogHome.vue'
 
 export default {
   ...DefaultTheme,
@@ -22,6 +23,7 @@ export default {
     app.component('description', DescriptionText)
     app.component('usage', Usage)
     app.component('definition-cite', DefinitionCite)
+    app.component('BlogHome', BlogHome)
   },
   Layout: Layout
 }
