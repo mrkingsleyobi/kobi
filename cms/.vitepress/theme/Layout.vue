@@ -29,6 +29,18 @@ const injectGutter = () => {
     return
   }
 
+  // First, clean up ALL existing gutters from previous pages
+  const allWrappers = document.querySelectorAll('.page-wrapper')
+  allWrappers.forEach(wrapper => {
+    const vpDoc = wrapper.querySelector('.VPDoc')
+    if (vpDoc && wrapper.parentElement) {
+      wrapper.parentElement.insertBefore(vpDoc, wrapper)
+    }
+    wrapper.remove()
+  })
+  console.log('Layout: Cleaned up', allWrappers.length, 'existing gutters')
+
+  // Find the current VPDoc
   const doc = document.querySelector('.VPDoc')
   if (!doc) {
     console.log('Layout: VPDoc not found, retrying...')
@@ -39,13 +51,6 @@ const injectGutter = () => {
   if (!parent) {
     console.log('Layout: VPDoc parent not found')
     return
-  }
-
-  // Always remove existing wrapper to ensure fresh content
-  const existingWrapper = parent.querySelector('.page-wrapper')
-  if (existingWrapper) {
-    parent.replaceChild(doc, existingWrapper)
-    console.log('Layout: Removed existing wrapper')
   }
 
   // Create wrapper
@@ -102,7 +107,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Injected gutter for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Injected gutter for', page.value.relativePath, 'with title:', frontmatter.value.title, 'Total gutters in DOM:', document.querySelectorAll('.page-wrapper').length)
 }
 
 onMounted(() => {
