@@ -26,58 +26,85 @@ onMounted(() => {
   // Check if gutter already exists
   if (doc.querySelector('.page-gutter')) return
 
-  // Create gutter element
-  const gutter = document.createElement('aside')
-  gutter.className = 'page-gutter'
-
-  let html = '<div class="page-title-wrapper">'
+  // Create page title wrapper (div, not aside)
+  const pageTitle = document.createElement('div')
+  pageTitle.className = 'page-title'
 
   // Title
   if (frontmatter.value.title) {
-    html += `<h1>${frontmatter.value.title}</h1>`
+    const h1 = document.createElement('h1')
+    h1.textContent = frontmatter.value.title
+    pageTitle.appendChild(h1)
   }
 
   // Subtitle
   if (frontmatter.value.subtitle) {
-    html += `<p class="subtitle">${frontmatter.value.subtitle}</p>`
+    const subtitle = document.createElement('div')
+    subtitle.className = 'subtitle'
+    subtitle.textContent = frontmatter.value.subtitle
+    pageTitle.appendChild(subtitle)
   }
 
   // Description (for non-blog pages)
   if (frontmatter.value.description && !frontmatter.value.created_at) {
-    html += `<p class="description">${frontmatter.value.description}</p>`
+    const description = document.createElement('div')
+    description.className = 'description'
+    description.textContent = frontmatter.value.description
+    pageTitle.appendChild(description)
   }
 
-  // Date metadata (for blog posts)
-  if (createdDate.value) {
-    html += '<div class="meta-info">'
-    html += `<time>${createdDate.value}</time>`
-    if (updatedDate.value) {
-      html += `<span> · Updated ${updatedDate.value}</span>`
+  // Insert page title at the beginning
+  doc.insertBefore(pageTitle, doc.firstChild)
+
+  // For blog posts, add metadata aside
+  if (createdDate.value || tags.value.length) {
+    const aside = document.createElement('aside')
+    aside.className = 'page-gutter'
+
+    // Date metadata
+    if (createdDate.value) {
+      const metaInfo = document.createElement('div')
+      metaInfo.className = 'meta-info'
+
+      const time = document.createElement('time')
+      time.textContent = createdDate.value
+      aside.appendChild(time)
+
+      if (updatedDate.value) {
+        const updated = document.createElement('span')
+        updated.textContent = ` · Updated ${updatedDate.value}`
+        aside.appendChild(updated)
+      }
     }
-    html += '</div>'
+
+    // Tags
+    if (tags.value && tags.value.length) {
+      const tagsContainer = document.createElement('div')
+      tagsContainer.className = 'tags'
+
+      tags.value.forEach(tag => {
+        const tagEl = document.createElement('span')
+        tagEl.className = 'tag'
+        tagEl.textContent = tag
+        tagsContainer.appendChild(tagEl)
+      })
+
+      aside.appendChild(tagsContainer)
+    }
+
+    // Insert after page title
+    if (pageTitle.nextSibling) {
+      doc.insertBefore(aside, pageTitle.nextSibling)
+    } else {
+      doc.appendChild(aside)
+    }
   }
-
-  // Tags
-  if (tags.value && tags.value.length) {
-    html += '<div class="tags">'
-    tags.value.forEach(tag => {
-      html += `<span class="tag">${tag}</span>`
-    })
-    html += '</div>'
-  }
-
-  html += '</div>'
-
-  gutter.innerHTML = html
 
   // Hide default h1
   const defaultH1 = doc.querySelector('.VPDoc h1')
   if (defaultH1) {
     (defaultH1 as HTMLElement).style.display = 'none'
   }
-
-  // Insert gutter at the beginning of VPDoc
-  doc.insertBefore(gutter, doc.firstChild)
 })
 </script>
 

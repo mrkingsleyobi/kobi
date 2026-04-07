@@ -341,10 +341,7 @@ div[class*='language-'] {
 
 .VPDoc .container {
   max-width: 1200px !important;
-  display: grid;
-  grid-template-columns: 280px 1fr;
-  gap: 60px;
-  padding: 60px 20px;
+  padding: 60px 20px 60px 10.5rem;
   margin: 0 auto;
 }
 
@@ -353,83 +350,100 @@ div[class*='language-'] {
   display: none;
 }
 
-/* Left Gutter with Page Metadata */
-.page-gutter {
-  position: sticky;
-  top: 80px;
-  height: fit-content;
+/* Page Title and Aside in Left Gutter */
+.page-title,
+aside {
+  display: block;
+  float: left;
+  position: absolute;
+  margin-left: 0;
+  left: 2.5rem;
+  width: 7.5rem;
+  text-align: right;
+  list-style-type: none;
+  clear: both;
+  margin-bottom: 1rem;
+  font-variant-numeric: normal;
 }
 
-.page-gutter .page-title-wrapper {
-  position: relative;
+.page-title {
+  margin-bottom: 2em;
+  font-weight: 400;
+  border-top: solid 3px var(--vp-c-brand-1);
+  padding-top: 5px;
 }
 
-.page-gutter h1 {
+.page-title h1 {
   display: block !important;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.3;
-  margin-bottom: 0.75rem;
-  color: var(--vp-c-text-1);
-}
-
-.page-gutter .subtitle,
-.page-gutter .description {
   font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.5;
-  margin-bottom: 0.75rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--vp-c-text-1);
+  margin-bottom: 0.5rem;
 }
 
-.page-gutter .meta-info {
-  font-size: 0.875rem;
+.page-title .subtitle {
+  font-size: 0.8125rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.4;
+  margin-bottom: 0.5rem;
+}
+
+.page-title .description {
+  font-size: 0.75rem;
   color: var(--vp-c-text-3);
+  line-height: 1.4;
+}
+
+/* Aside content */
+.page-gutter aside {
   margin-bottom: 1rem;
 }
 
+.page-gutter .meta-info {
+  font-size: 0.75rem;
+  color: var(--vp-c-text-3);
+  margin-bottom: 0.5rem;
+}
+
 .page-gutter .tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
+  display: block;
 }
 
 .page-gutter .tag {
-  font-size: 0.75rem;
+  display: block;
+  font-size: 0.6875rem;
   color: var(--vp-c-brand-1);
-  background: rgba(74, 163, 138, 0.1);
-  padding: 0.25rem 0.5rem;
-  border-radius: 3px;
+  margin-bottom: 0.25rem;
 }
 
-/* Content area takes right column */
+/* Content area */
 .VPDoc .content {
-  grid-column: 2;
-  min-width: 0;
+  max-width: 680px;
+  margin-left: 12rem;
 }
 
 /* Mobile responsive */
 @media (max-width: 768px) {
   .VPDoc .container {
-    grid-template-columns: 1fr;
-    gap: 2rem;
     padding: 40px 20px;
   }
 
-  .page-gutter {
+  .page-title,
+  aside {
     position: static;
-    grid-column: 1;
+    float: none;
+    width: auto;
+    text-align: left;
+    left: 0;
+    margin-bottom: 1.5rem;
   }
 
-  .VPDoc .content {
-    grid-column: 1;
+  .page-title h1 {
+    font-size: 1.375rem;
   }
 
-  .page-gutter h1 {
-    font-size: 1.75rem;
-  }
-
-  .page-gutter .subtitle,
-  .page-gutter .description {
+  .page-title .subtitle {
     font-size: 1rem;
   }
 }
@@ -439,4 +453,5 @@ div[class*='language-'] {
   display: block;
   max-width: var(--content-max-width) !important;
 }
+
 
