@@ -339,12 +339,12 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Wrapper for page title and VPDoc */
+/* Wrapper for page title and VPDoc - Daniel's 1000px width */
 .page-wrapper {
   position: relative;
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
-  padding: 60px 20px;
+  padding: 60px 40px 60px 2.5rem;
 }
 
 /* Page Title in Left Gutter (OUTSIDE VPDoc) */
@@ -366,31 +366,32 @@ div[class*='language-'] {
 
 .page-title h1 {
   display: block !important;
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.4;
   color: var(--vp-c-text-1);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .page-title .subtitle {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--vp-c-text-2);
   line-height: 1.4;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .page-title .description {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vp-c-text-3);
   line-height: 1.4;
 }
 
 /* Metadata elements within page-title */
 .page-title .meta-info {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   color: var(--vp-c-text-3);
   margin-bottom: 0.5rem;
+  line-height: 1.3;
 }
 
 .page-title .meta-info time,
@@ -400,14 +401,15 @@ div[class*='language-'] {
 
 .page-title .tags {
   display: block;
-  margin-top: 0.5rem;
+  margin-top: 0.75rem;
 }
 
 .page-title .tag {
   display: block;
-  font-size: 0.6875rem;
+  font-size: 0.625rem;
   color: var(--vp-c-brand-1);
   margin-bottom: 0.25rem;
+  line-height: 1.3;
 }
 
 /* VPDoc container adjusts for left gutter */
@@ -418,6 +420,11 @@ div[class*='language-'] {
 /* Hide default h1 */
 .VPDoc h1 {
   display: none;
+}
+
+/* Content area - right padding */
+.page-wrapper .VPDoc .container {
+  padding-right: 2rem;
 }
 
 /* Mobile responsive */
@@ -436,15 +443,16 @@ div[class*='language-'] {
   }
 
   .page-title h1 {
-    font-size: 1.375rem;
+    font-size: 1.125rem;
   }
 
   .page-title .subtitle {
-    font-size: 1rem;
+    font-size: 0.9375rem;
   }
 
   .page-wrapper .VPDoc .container {
     padding-left: 20px;
+    padding-right: 20px;
   }
 }
 
