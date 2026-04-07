@@ -8,7 +8,7 @@ import Definition from './components/Definition.vue'
 import Term from './components/Term.vue'
 import DescriptionText from './components/DescriptionText.vue'
 import Usage from './components/Usage.vue'
-import Cite from './components/Cite.vue'
+import DefinitionCite from './components/DefinitionCite.vue'
 
 export default {
   ...DefaultTheme,
@@ -21,7 +21,9 @@ export default {
     app.component('term', Term)
     app.component('description', DescriptionText)
     app.component('usage', Usage)
-    app.component('cite', Cite)
+    // Don't register as 'cite' - it's a reserved HTML element
+    // Users should use <definition-cite> instead
+    app.component('definition-cite', DefinitionCite)
   },
   Layout: Layout
 }

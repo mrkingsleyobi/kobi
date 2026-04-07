@@ -46,7 +46,7 @@ By 2028, we'll see the economic unbundling of knowledge work that the internet d
   <term>Cognitive CRUD</term>
   <description>The routine cognitive work — Create, Read, Update, Delete of information — that makes up most knowledge jobs. This is what AI is about to commoditize.</description>
   <usage>"Most of our job is just cognitive CRUD. That's what AI will automate first."</usage>
-  <cite>Coined in response to watching AI systems replicate entry-level work</cite>
+  <definition-cite>Coined in response to watching AI systems replicate entry-level work</definition-cite>
 </definition>
 
 The jobs that survive will be:

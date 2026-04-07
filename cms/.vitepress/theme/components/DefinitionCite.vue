@@ -5,16 +5,17 @@ defineProps<{
 </script>
 
 <template>
-  <div class="cite">
+  <div class="definition-cite">
     <slot />
   </div>
 </template>
 
 <style scoped>
-.cite {
+.definition-cite {
   display: block;
   font-size: 0.875rem;
   color: var(--vp-c-text-3);
   text-align: right;
+  font-style: italic;
 }
 </style>
