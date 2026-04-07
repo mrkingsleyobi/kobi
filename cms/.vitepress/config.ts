@@ -30,38 +30,7 @@ export default defineConfig({
       { text: 'About', link: '/about/' }
     ],
 
-    sidebar: {
-      '/blog/': [
-        {
-          text: 'Recent Posts',
-          items: []
-        }
-      ],
-      '/telos/': [
-        {
-          text: 'Telos',
-          items: [
-            { text: 'Overview', link: '/telos/' }
-          ]
-        }
-      ],
-      '/manifesto/': [
-        {
-          text: 'Manifesto',
-          items: [
-            { text: 'Overview', link: '/manifesto/' }
-          ]
-        }
-      ],
-      '/projects/': [
-        {
-          text: 'Projects',
-          items: [
-            { text: 'Overview', link: '/projects/' }
-          ]
-        }
-      ]
-    },
+    aside: false,
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/kingsleyobi' },
