@@ -41,22 +41,11 @@ const injectGutter = () => {
     return
   }
 
-  // Check if gutter already exists and has correct content
+  // Always remove existing wrapper to ensure fresh content
   const existingWrapper = parent.querySelector('.page-wrapper')
-  const existingTitle = existingWrapper?.querySelector('.page-title')
-  const existingH1 = existingTitle?.querySelector('h1')
-
-  // If gutter exists with correct title, skip injection
-  if (existingH1 && existingH1.textContent === frontmatter.value.title) {
-    console.log('Layout: Gutter already exists with correct title')
-    return
-  }
-
-  // Remove existing wrapper if it exists (title changed or needs refresh)
   if (existingWrapper) {
-    // Unwrap - replace wrapper with VPDoc
     parent.replaceChild(doc, existingWrapper)
-    console.log('Layout: Removed existing wrapper for refresh')
+    console.log('Layout: Removed existing wrapper')
   }
 
   // Create wrapper
@@ -113,7 +102,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Injected gutter for', page.value.relativePath)
+  console.log('Layout: Injected gutter for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
