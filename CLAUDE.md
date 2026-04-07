@@ -377,65 +377,6 @@ bun install
     3.  Sitemap generation is handled by `scripts/generate-sitemap.ts`.
     4.  Static files (robots.txt) are copied to the output.
 
-        ## Design System
-
-        This section documents the visual and structural design language for kingsleyobi.com.
-        Always consult this section before creating or modifying any theme component, page layout, or content template.
-
-        **For complete design specifications, see:** `DESIGN.md` in the project root.
-
-        ### Key Design Principles
-
-        1. **Header** — Shared across all pages, standard document flow (not fixed)
-        2. **Typography** — Switchable body fonts with proper line-height per font
-        3. **Custom Elements** — Use defined Vue components for special formatting
-        4. **Images** — Always specify dimensions, make clickable with captions
-        5. **Mobile** — Responsive breakpoints at 520px and 1000px
-
-        ### Custom Vue Components
-
-        These components should be created in `cms/.vitepress/theme/components/`:
-
-        - **TopicTitle.vue** — Page titles with display font styling
-        - **MarginalAside.vue** — Marginal annotations (floats left on desktop)
-        - **Callout.vue** — Key idea callouts with left border
-        - **TitleBlock.vue** — Topic page title containers
-        - **ByTheWay.vue** — Secondary notes sections
-        - **HowToBlock.vue** — App-specific instructions
-        - **Definition.vue** — Term/description/citation blocks
-
-        ### Component Usage in Markdown
-
-        ```markdown
-        <callout>Important information that needs emphasis</callout>
-
-        <aside>Short note under 16 words</aside>
-
-        <tutorial>Explains concepts in instructional voice</tutorial>
-
-        <blockquote>Quote text here<cite>Attribution</cite></blockquote>
-
-        <definition>
-          <term>AUG</term>
-          <description>Being "augmented" by technology.</description>
-          <usage>I assume that was your aug score...</usage>
-          <cite>Coined by Kingsley Obi in 2008</cite>
-        </definition>
-        ```
-
-        ### Content Rules
-
-        - Asides must be under 24 words
-        - No H1 headers in content (auto-generated from frontmatter)
-        - All blog posts need hero images
-        - Internal links use `/blog/` (never `/p/`)
-        - All images must have width/height attributes
-
-        ---
-
-        **See DESIGN.md for:** Complete layout specifications, typography zones, footer navigation patterns, blog post structure, and anti-patterns to avoid.
-
-
     ## Complete Image Pipeline Generation, Optimization & Embedding
 
     ### Overview
