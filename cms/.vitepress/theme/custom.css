@@ -323,63 +323,6 @@ div[class*='language-'] {
   background: rgba(74, 163, 138, 0.1);
 }
 
-/* Blog post layout */
-.daniel-post {
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-  padding: 60px 20px;
-}
-
-.daniel-post-header {
-  text-align: center;
-  margin-bottom: 3rem;
-}
-
-.daniel-post-title {
-  font-size: 2rem;
-  font-weight: 600;
-  line-height: 1.2;
-  margin-bottom: 1rem;
-  color: var(--vp-c-text-1);
-}
-
-.daniel-post-meta {
-  font-size: 0.875rem;
-  color: var(--vp-c-text-3);
-}
-
-.daniel-post-content {
-  line-height: 1.7;
-  font-size: 1.0625rem;
-}
-
-.daniel-post-content h2 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 2.5rem;
-  margin-bottom: 1rem;
-}
-
-.daniel-post-content h3 {
-  font-size: 1.25rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-}
-
-.daniel-post-content p {
-  margin-bottom: 1.5rem;
-}
-
-.daniel-post-content a {
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-}
-
-.daniel-post-content a:hover {
-  text-decoration: underline;
-}
-
 /* Minimal footer */
 .VPFooter {
   border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -390,3 +333,110 @@ div[class*='language-'] {
 .VPFeatures {
   display: none;
 }
+
+/* Left Gutter Layout for Blog Posts and Pages */
+.VPDoc:not(.home) {
+  padding-top: 0;
+}
+
+.VPDoc .container {
+  max-width: 1200px !important;
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 60px;
+  padding: 60px 20px;
+  margin: 0 auto;
+}
+
+/* Hide default title - we'll show it in gutter */
+.VPDoc h1 {
+  display: none;
+}
+
+/* Left Gutter with Page Metadata */
+.page-gutter {
+  position: sticky;
+  top: 80px;
+  height: fit-content;
+}
+
+.page-gutter .page-title-wrapper {
+  position: relative;
+}
+
+.page-gutter h1 {
+  display: block !important;
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.75rem;
+  color: var(--vp-c-text-1);
+}
+
+.page-gutter .subtitle,
+.page-gutter .description {
+  font-size: 0.9375rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.page-gutter .meta-info {
+  font-size: 0.875rem;
+  color: var(--vp-c-text-3);
+  margin-bottom: 1rem;
+}
+
+.page-gutter .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.page-gutter .tag {
+  font-size: 0.75rem;
+  color: var(--vp-c-brand-1);
+  background: rgba(74, 163, 138, 0.1);
+  padding: 0.25rem 0.5rem;
+  border-radius: 3px;
+}
+
+/* Content area takes right column */
+.VPDoc .content {
+  grid-column: 2;
+  min-width: 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .VPDoc .container {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 40px 20px;
+  }
+
+  .page-gutter {
+    position: static;
+    grid-column: 1;
+  }
+
+  .VPDoc .content {
+    grid-column: 1;
+  }
+
+  .page-gutter h1 {
+    font-size: 1.75rem;
+  }
+
+  .page-gutter .subtitle,
+  .page-gutter .description {
+    font-size: 1rem;
+  }
+}
+
+/* Homepage keeps original styling */
+.VPDoc.home .container {
+  display: block;
+  max-width: var(--content-max-width) !important;
+}
+
