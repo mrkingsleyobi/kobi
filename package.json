@@ -9,6 +9,9 @@
     "preview": "vitepress preview cms"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.82.0",
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "openai": "^6.33.0",
     "vitepress": "^1.0.0",
     "vue": "^3.4.0"
   },
