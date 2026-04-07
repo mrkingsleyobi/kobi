@@ -1,10 +1,12 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import type { BlogPostData } from '../types'
 
 const posts = ref<BlogPostData[]>([])
 const featuredPost = ref<BlogPostData | null>(null)
 const loading = ref(true)
+const currentPage = ref(1)
+const postsPerPage = 5
 
 onMounted(async () => {
   try {
@@ -83,6 +85,38 @@ const formatDate = (dateStr: string) => {
     day: 'numeric'
   })
 }
+
+// Computed properties for pagination
+const totalPages = computed(() => {
+  // Exclude featured post from pagination
+  const nonFeaturedPosts = posts.value.filter((_, index) => index !== 0)
+  return Math.ceil(nonFeaturedPosts.length / postsPerPage)
+})
+
+const paginatedPosts = computed(() => {
+  // Exclude featured post and get posts for current page
+  const nonFeaturedPosts = posts.value.filter((_, index) => index !== 0)
+  const startIndex = (currentPage.value - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  return nonFeaturedPosts.slice(startIndex, endIndex)
+})
+
+const goToPage = (page: number) => {
+  currentPage.value = page
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    goToPage(currentPage.value + 1)
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    goToPage(currentPage.value - 1)
+  }
+}
 </script>
 
 <template>
@@ -118,7 +152,7 @@ const formatDate = (dateStr: string) => {
       <h3 class="section-title">Latest Content</h3>
       <div class="posts-grid">
         <a
-          v-for="post in posts.slice(1)"
+          v-for="post in paginatedPosts"
           :key="post.slug"
           :href="`/blog/${post.slug}`"
           class="post-card"
@@ -133,6 +167,37 @@ const formatDate = (dateStr: string) => {
             <p v-if="post.excerpt" class="post-excerpt">{{ post.excerpt }}</p>
           </div>
         </a>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="pagination">
+        <button
+          class="pagination-btn"
+          :disabled="currentPage === 1"
+          @click="prevPage"
+        >
+          ← Previous
+        </button>
+
+        <div class="pagination-pages">
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            class="pagination-page"
+            :class="{ active: page === currentPage }"
+            @click="goToPage(page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          class="pagination-btn"
+          :disabled="currentPage === totalPages"
+          @click="nextPage"
+        >
+          Next →
+        </button>
       </div>
     </section>
   </div>
@@ -352,5 +417,82 @@ const formatDate = (dateStr: string) => {
     width: 100%;
     height: 150px;
   }
+
+  .pagination {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pagination-pages {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+.pagination-btn {
+  padding: 10px 20px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  color: var(--vp-c-text-1);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.pagination-btn:hover:not(:disabled) {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+}
+
+.pagination-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination-pages {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.pagination-page {
+  min-width: 40px;
+  height: 40px;
+  padding: 0 12px;
+  background: transparent;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  color: var(--vp-c-text-1);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pagination-page:hover {
+  background: var(--vp-c-bg-soft);
+  border-color: var(--vp-c-brand-1);
+}
+
+.pagination-page.active {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
 }
 </style>
