@@ -1,5 +1,6 @@
 import DefaultTheme from 'vitepress/theme'
 import './custom.css'
+import Layout from './Layout.vue'
 import Tutorial from './components/Tutorial.vue'
 import BottomNote from './components/BottomNote.vue'
 import Callout from './components/Callout.vue'
@@ -13,5 +14,6 @@ export default {
     app.component('bottomNote', BottomNote)
     app.component('callout', Callout)
     app.component('definition', Definition)
-  }
+  },
+  Layout: Layout
 }
