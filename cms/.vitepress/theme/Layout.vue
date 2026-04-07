@@ -91,7 +91,7 @@ const injectGutter = () => {
       const tagEl = document.createElement('a')
       tagEl.className = 'tag'
       tagEl.textContent = tag
-      tagEl.href = `/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`
+      tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
       tagsContainer.appendChild(tagEl)
     })
     pageTitle.appendChild(tagsContainer)
