@@ -63,13 +63,13 @@ export default defineConfig({
     }
   },
 
-  buildEnd: async ({ config }) => {
+  buildEnd: async (siteConfig) => {
     // Generate RSS feed
     const fs = await import('fs')
     const path = await import('path')
 
     const rssItems = []
-    const blogDir = path.join(config.root, 'cms/blog')
+    const blogDir = path.join(siteConfig.root, 'cms/blog')
 
     if (fs.existsSync(blogDir)) {
       const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'))
@@ -119,6 +119,6 @@ ${rssItems.map(item => `    <item>
   </channel>
 </rss>`
 
-    fs.writeFileSync(path.join(config.outDir, 'feed.rss'), rss)
+    fs.writeFileSync(path.join(siteConfig.outDir, 'feed.rss'), rss)
   }
 })
