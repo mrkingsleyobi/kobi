@@ -88,9 +88,10 @@ const injectGutter = () => {
     const tagsContainer = document.createElement('div')
     tagsContainer.className = 'tags'
     tags.value.forEach(tag => {
-      const tagEl = document.createElement('span')
+      const tagEl = document.createElement('a')
       tagEl.className = 'tag'
       tagEl.textContent = tag
+      tagEl.href = `/tags/${tag.toLowerCase().replace(/\s+/g, '-')}/`
       tagsContainer.appendChild(tagEl)
     })
     pageTitle.appendChild(tagsContainer)

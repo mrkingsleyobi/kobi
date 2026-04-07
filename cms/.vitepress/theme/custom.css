@@ -410,6 +410,14 @@ div[class*='language-'] {
   color: var(--vp-c-brand-1);
   margin-bottom: 0.25rem;
   line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.page-title .tag:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
 }
 
 /* VPDoc container adjusts for left gutter */
