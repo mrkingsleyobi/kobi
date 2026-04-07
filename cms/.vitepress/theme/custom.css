@@ -56,13 +56,14 @@ aside {
   font-size: 0.95em;
 }
 
-tutorial {
+.tutorial {
   background-color: rgba(60, 135, 114, 0.1);
   border-left: 3px solid var(--vp-c-brand-1);
   padding: 1rem 1.25rem;
   margin: 1rem 0;
   border-radius: 4px;
   display: block;
+  font-style: italic;
 }
 
 caption {
@@ -111,7 +112,7 @@ definition cite {
   text-align: right;
 }
 
-bottomNote {
+.bottom-note {
   display: block;
   margin-top: 2rem;
   padding-top: 1.5rem;
@@ -120,11 +121,11 @@ bottomNote {
   color: var(--vp-c-text-2);
 }
 
-bottomNote ol {
+.bottom-note ol {
   margin-left: 1.5rem;
 }
 
-bottomNote li {
+.bottom-note li {
   margin-bottom: 0.5rem;
 }
 
