@@ -38,7 +38,7 @@ onMounted(async () => {
         if (slug === 'index') continue
 
         // Get first image from content for thumbnail
-        const imageMatch = content.match(/!\[.*?\]\((\/images\/.+?\)\s*<!--.*?-->)/)
+        const imageMatch = content.match(/!\[.*?\]\((\/images\/.+?\.(jpg|png|jpeg|gif|webp))\)/)
         const image = imageMatch ? imageMatch[1] : null
 
         // Get excerpt (first paragraph after frontmatter)
