@@ -127,12 +127,6 @@ const prevPage = () => {
 
 <template>
   <div class="blog-home">
-    <!-- Hero Section -->
-    <div class="blog-hero">
-      <h1>Blog</h1>
-      <p class="tagline">Thoughts on cybersecurity, AI, technology, and philosophy</p>
-    </div>
-
     <!-- Loading State -->
     <div v-if="loading" class="loading">
       Loading posts...
@@ -230,30 +224,6 @@ const prevPage = () => {
   padding: 0;
   margin: 0;
   overflow-x: hidden;
-}
-
-/* Hero Section - Compact, Centered */
-.blog-hero {
-  text-align: center;
-  padding: 40px 20px 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.blog-hero h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  margin-bottom: 8px;
-  color: var(--vp-c-text-1);
-  line-height: 1.2;
-}
-
-.blog-hero .tagline {
-  font-size: 1.0625rem;
-  color: var(--vp-c-text-2);
-  max-width: 600px;
-  margin: 0 auto;
-  line-height: 1.5;
 }
 
 .loading {
@@ -506,18 +476,6 @@ const prevPage = () => {
 
 /* Desktop - 1280px and up */
 @media (min-width: 1280px) {
-  .blog-hero {
-    padding: 48px 20px 40px;
-  }
-
-  .blog-hero h1 {
-    font-size: 3rem;
-  }
-
-  .blog-hero .tagline {
-    font-size: 1.125rem;
-  }
-
   .featured-image-wrapper {
     height: 550px;
   }
@@ -546,10 +504,6 @@ const prevPage = () => {
 
 /* Tablet - 768px to 1279px */
 @media (min-width: 768px) and (max-width: 1279px) {
-  .blog-hero h1 {
-    font-size: 2.25rem;
-  }
-
   .featured-image-wrapper {
     height: 450px;
   }
@@ -567,18 +521,6 @@ const prevPage = () => {
 @media (max-width: 767px) {
   .blog-home {
     padding: 0;
-  }
-
-  .blog-hero {
-    padding: 32px 20px 24px;
-  }
-
-  .blog-hero h1 {
-    font-size: 2rem;
-  }
-
-  .blog-hero .tagline {
-    font-size: 1rem;
   }
 
   .featured-image-wrapper {
@@ -646,14 +588,6 @@ const prevPage = () => {
 
 /* Small Mobile - up to 480px */
 @media (max-width: 480px) {
-  .blog-hero {
-    padding: 24px 16px 20px;
-  }
-
-  .blog-hero h1 {
-    font-size: 1.75rem;
-  }
-
   .featured-image-wrapper {
     height: 220px;
   }

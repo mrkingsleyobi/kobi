@@ -467,9 +467,9 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Container for page-title and dp-docs siblings */
+/* Container for page-title and dp-doc siblings */
 .page-title,
-.dp-docs {
+.dp-doc {
   position: relative;
   width: 100%;
 }
@@ -487,19 +487,19 @@ div[class*='language-'] {
   z-index: 1;
 }
 
-/* dp-docs wrapper - sibling to page-title */
-.dp-docs {
+/* dp-doc wrapper - sibling to page-title */
+.dp-doc {
   padding-left: 13.5rem;
   padding-right: 1.5rem;
 }
 
-/* Ensure .main inside dp-docs is properly styled */
-.dp-docs .main {
+/* Ensure .main inside dp-doc is properly styled */
+.dp-doc .main {
   width: 100%;
 }
 
-/* Ensure .VPDocFooter inside dp-docs is properly styled */
-.dp-docs .VPDocFooter {
+/* Ensure .VPDocFooter inside dp-doc is properly styled */
+.dp-doc .VPDocFooter {
   width: 100%;
 }
 

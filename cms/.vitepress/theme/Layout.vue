@@ -114,10 +114,10 @@ const injectGutter = () => {
     return
   }
 
-  // For non-homepage only: clean up existing gutters, page titles, and dp-docs wrappers first
+  // For non-homepage only: clean up existing gutters, page titles, and dp-doc wrappers first
   const allWrappers = document.querySelectorAll('.page-wrapper')
   const allPageTitles = document.querySelectorAll('.page-title')
-  const allDpDocs = document.querySelectorAll('.dp-docs')
+  const allDpDocs = document.querySelectorAll('.dp-doc')
 
   // Restore any previously wrapped content back to original structure
   allDpDocs.forEach(wrapper => {
@@ -145,7 +145,7 @@ const injectGutter = () => {
     title.remove()
   })
 
-  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles, and', allDpDocs.length, 'dp-docs wrappers')
+  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles, and', allDpDocs.length, 'dp-doc wrappers')
 
   // Find VPContent (not VPDoc)
   const vpContent = document.querySelector('.VPContent')
@@ -213,9 +213,9 @@ const injectGutter = () => {
     pageTitle.appendChild(tagsContainer)
   }
 
-  // Create dp-docs wrapper
+  // Create dp-doc wrapper
   const dpDocs = document.createElement('div')
-  dpDocs.className = 'dp-docs'
+  dpDocs.className = 'dp-doc'
 
   // Find .main and .VPDocFooter elements
   const mainElement = document.querySelector('.main')
@@ -242,7 +242,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Created .page-title and .dp-docs as siblings, hiding VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Created .page-title and .dp-doc as siblings, hiding VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
