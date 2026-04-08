@@ -63,13 +63,13 @@ const updateNavbarVisibility = () => {
 
 // Function to inject/re-inject gutter
 const injectGutter = () => {
-  // Skip on homepage
+  // Skip on homepage - no gutter needed, no cleanup, no DOM manipulation at all
   if (page.value.relativePath === 'index.md') {
-    console.log('Layout: Skipping gutter for homepage')
+    console.log('Layout: Skipping gutter for homepage - no DOM manipulation')
     return
   }
 
-  // First, clean up ALL existing gutters from previous pages
+  // For non-homepage only: clean up existing gutters first
   const allWrappers = document.querySelectorAll('.page-wrapper')
   allWrappers.forEach(wrapper => {
     const vpDoc = wrapper.querySelector('.VPDoc')
@@ -162,10 +162,18 @@ onUpdated(() => {
 })
 
 // Watch for route changes
-watch(() => page.value.relativePath, () => {
-  console.log('Layout: Route changed to', page.value.relativePath)
-  setTimeout(updateNavbarVisibility, 50)
-  setTimeout(injectGutter, 100)
+watch(() => page.value.relativePath, (newPath, oldPath) => {
+  console.log('Layout: Route changed from', oldPath, 'to', newPath)
+
+  // Update navbar visibility for all routes
+  updateNavbarVisibility()
+
+  // Only inject gutter on non-homepage pages
+  if (newPath !== 'index.md') {
+    setTimeout(injectGutter, 100)
+  } else {
+    console.log('Layout: On homepage, gutter handled by CSS')
+  }
 })
 
 // Watch for frontmatter changes

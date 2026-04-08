@@ -235,6 +235,9 @@ const prevPage = () => {
   max-width: 1000px;
   margin: 0 auto;
   padding: 60px 20px;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .blog-hero {
@@ -489,6 +492,29 @@ const prevPage = () => {
   .pagination-pages {
     flex-wrap: wrap;
     justify-content: center;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .blog-home {
+    padding: 30px 15px;
+  }
+
+  .blog-hero h1 {
+    font-size: 1.5rem;
+  }
+
+  .blog-hero .tagline {
+    font-size: 0.9375rem;
+  }
+
+  .featured-title {
+    font-size: 1.25rem;
+  }
+
+  .post-title {
+    font-size: 1.125rem;
   }
 }
 

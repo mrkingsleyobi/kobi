@@ -3,6 +3,53 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Global responsive fixes */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}
+
+/* Prevent content overflow */
+.VPDoc,
+.VPContent,
+.container,
+.content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Prevent images and media from causing overflow */
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure code blocks don't overflow */
+pre,
+code {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Prevent tables from causing overflow */
+table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
 /* Daniel Miessler-inspired Theme Variables */
 
 /* Light mode colors */
@@ -375,6 +422,9 @@ div[class*='language-'] {
   max-width: 1000px;
   margin: 0 auto;
   padding: 60px 40px 60px 1.5rem;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Page Title in Left Gutter (OUTSIDE VPDoc) */
@@ -469,6 +519,8 @@ div[class*='language-'] {
 @media (max-width: 768px) {
   .page-wrapper {
     padding: 40px 20px;
+    width: 100%;
+    overflow-x: hidden;
   }
 
   .page-title {
@@ -491,6 +543,19 @@ div[class*='language-'] {
   .page-wrapper .VPDoc .container {
     padding-left: 20px;
     padding-right: 20px;
+    overflow-x: hidden;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .page-wrapper {
+    padding: 30px 15px;
+  }
+
+  .page-wrapper .VPDoc .container {
+    padding-left: 15px;
+    padding-right: 15px;
   }
 }
 
@@ -519,8 +584,19 @@ div[class*='language-'] {
   opacity: 0 !important;
 }
 
+/* Hide footer on homepage */
 .VPDoc.home .VPFooter {
   display: none !important;
+}
+
+/* Hide page-wrapper on homepage (to hide any gutters that might persist) */
+.VPDoc.home .page-wrapper {
+  display: none !important;
+}
+
+/* Ensure landing page content is visible */
+.VPDoc.home .landing-page {
+  display: block !important;
 }
 
 

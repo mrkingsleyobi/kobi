@@ -1,4 +1,9 @@
 <script setup lang="ts">
+import { onMounted } from 'vue'
+
+onMounted(() => {
+  console.log('LandingPage component mounted')
+})
 </script>
 
 <template>
@@ -48,14 +53,18 @@
 .landing-page {
   max-width: 1000px;
   margin: 0 auto;
-  /*padding: 120px 40px 80px;*/
+  padding: 120px 40px 80px;
   min-height: 100vh;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  width: 100%;
 }
 
 /* Header Section */
 .landing-header {
   text-align: center;
   margin-bottom: 60px;
+  padding: 0 20px;
 }
 
 .avatar {
@@ -71,6 +80,8 @@
   margin-bottom: 1rem;
   color: var(--vp-c-text-1);
   line-height: 1.2;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .introduction {
@@ -91,6 +102,7 @@
 /* Main Content Section */
 .landing-content {
   margin-bottom: 40px;
+  padding: 0 20px;
 }
 
 .bio {
@@ -103,6 +115,8 @@
   line-height: 1.8;
   color: var(--vp-c-text-1);
   margin-bottom: 1.5rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .bio strong {
@@ -129,20 +143,52 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .landing-page {
-    /*padding: 80px 20px 60px;*/
+    padding: 80px 20px 60px;
+  }
+
+  .landing-header {
+    padding: 0 10px;
   }
 
   .name {
     font-size: 1.5rem;
+    letter-spacing: 0.05em;
   }
 
   .introduction {
     font-size: 1rem;
   }
 
+  .landing-content {
+    padding: 0 10px;
+  }
+
   .bio p {
     font-size: 0.9375rem;
     line-height: 1.7;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 480px) {
+  .landing-page {
+    padding: 60px 15px 40px;
+  }
+
+  .avatar {
+    font-size: 3rem;
+  }
+
+  .name {
+    font-size: 1.25rem;
+  }
+
+  .introduction {
+    font-size: 0.9375rem;
+  }
+
+  .bio p {
+    font-size: 0.875rem;
   }
 }
 </style>
