@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUpdated, computed, watch } from 'vue'
+import { onMounted, onUpdated, computed, watch, nextTick } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData, useRouter } from 'vitepress'
 import type { Frontmatter } from './types'
@@ -8,6 +8,31 @@ import { formatDate, parseTags } from './utils/format'
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
 const router = useRouter()
+
+// Function to move VPNav outside Layout wrapper
+const moveNavbarOutsideLayout = async () => {
+  await nextTick()
+
+  const navbar = document.querySelector('.VPNav')
+  const layout = document.querySelector('.Layout')
+  const app = document.querySelector('#app')
+
+  if (!navbar || !layout || !app) {
+    console.log('Layout: Could not find navbar, layout, or app')
+    return
+  }
+
+  // Check if navbar is already in correct position (sibling of Layout)
+  if (navbar.parentElement === app && navbar.nextElementSibling === layout) {
+    console.log('Layout: Navbar already positioned correctly as sibling of Layout')
+    return
+  }
+
+  // Move navbar to be sibling of Layout (before it)
+  app.insertBefore(navbar, layout)
+
+  console.log('Layout: Moved VPNav to be sibling of Layout wrapper')
+}
 
 const tags = computed(() => parseTags(frontmatter.value.tags))
 const createdDate = computed(() =>
@@ -246,12 +271,14 @@ const injectGutter = () => {
 }
 
 onMounted(() => {
+  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
 })
 
 onUpdated(() => {
+  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
