@@ -467,32 +467,30 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Page Title in Left Gutter (sibling to VPContent) */
+/* Container for page-title and dp-docs siblings */
+.page-title,
+.dp-docs {
+  position: relative;
+  width: 100%;
+}
+
+/* Page Title in Left Gutter */
 .page-title {
-  display: block;
   position: absolute;
   left: 1.5rem;
-  top: 0;
+  top: 60px;
   width: 10rem;
   text-align: right;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
-  margin-top: 60px;
   z-index: 1;
 }
 
-/* VPContent needs padding-left to account for page-title gutter */
-.VPContent {
-  position: relative;
-  padding-left: 13.5rem;
-}
-
-/* dp-docs wrapper - sibling to VPContent */
+/* dp-docs wrapper - sibling to page-title */
 .dp-docs {
-  position: relative;
   padding-left: 13.5rem;
-  width: 100%;
+  padding-right: 1.5rem;
 }
 
 /* Ensure .main inside dp-docs is properly styled */
