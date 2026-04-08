@@ -43,14 +43,13 @@ onMounted(async () => {
 
         // Get excerpt (first actual text paragraph, skipping images, captions, callouts, etc.)
         const afterFrontmatter = content.replace(/^---[\s\S]*?---\n\n/, '')
-        const lines = afterFrontmatter.split('\n').filter(line =>
+        const contentLines = afterFrontmatter.split('\n').filter(line =>
           line.trim() &&
           !line.trim().startsWith('![') &&
           !line.trim().startsWith('<caption>') &&
           !line.trim().startsWith('<callout>')
         )
-        const excerpt = lines.length > 0 ? lines[0].substring(0, 150) + '...' : ''
-        const excerpt = excerptMatch ? excerptMatch[1].substring(0, 150) + '...' : ''
+        const excerpt = contentLines.length > 0 ? contentLines[0].substring(0, 150) + '...' : ''
 
         postData.push({
           slug,
