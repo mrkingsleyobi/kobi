@@ -233,3 +233,10 @@ watch(() => frontmatter.value, () => {
 <template>
   <Layout />
 </template>
+
+<style>
+/* Hide skip to content link on landing page */
+.VPSkipLink {
+  display: none !important;
+}
+</style>

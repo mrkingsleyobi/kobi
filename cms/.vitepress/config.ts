@@ -35,7 +35,6 @@ export default defineConfig({
 
     aside: false,
     sidebars: false,
-    skipToContentLabel: false,
     returnToTopLabel: false,
 
     socialLinks: [
@@ -46,8 +45,8 @@ export default defineConfig({
     ],
 
     footer: {
-      message: 'Mission Possible to Built 10,000 AI Agents to Serve 1,000,000+ people',
-      copyright: '© 2024 Kingsley Obi, All rights reserved.'
+      message: 'Mission Possible to Build 10,000 AI Agents to Serve 1,000,000+ people',
+      copyright: '© 2026 Kingsley Obi, All rights reserved.'
     },
 
     editLink: false,
