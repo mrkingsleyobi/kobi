@@ -192,9 +192,9 @@ const injectGutter = () => {
     return
   }
 
-  const parent = vpContent.parentElement
-  if (!parent) {
-    console.log('Layout: VPContent parent not found')
+  const app = document.querySelector('#app')
+  if (!app) {
+    console.log('Layout: #app not found')
     return
   }
 
@@ -242,21 +242,39 @@ const injectGutter = () => {
   const dpDocs = document.createElement('div')
   dpDocs.className = 'dp-doc'
 
-  // Find .main and .VPDocFooter elements
+  // Find .main element
   const mainElement = document.querySelector('.main')
-  const docFooter = document.querySelector('.VPDocFooter')
 
-  // Move them into dp-docs wrapper
+  // Move main into dp-doc wrapper
   if (mainElement) {
     dpDocs.appendChild(mainElement)
   }
-  if (docFooter) {
-    dpDocs.appendChild(docFooter)
+
+  // Get app, navbar, and layout elements
+  const navbar = document.querySelector('.VPNav')
+  const layout = document.querySelector('.Layout')
+  const vpFooter = document.querySelector('.VPFooter')
+
+  if (!app || !layout) {
+    console.log('Layout: Could not find app or layout')
+    return
   }
 
-  // Structure: page-title and dp-docs are siblings (both replace VPContent)
-  parent.insertBefore(pageTitle, vpContent)
-  parent.insertBefore(dpDocs, vpContent)
+  // Structure: VPNav, page-title, dp-doc, Layout, VPFooter are all siblings
+  // Insert page-title after navbar
+  if (navbar) {
+    app.insertBefore(pageTitle, navbar.nextElementSibling)
+  } else {
+    app.insertBefore(pageTitle, app.firstChild)
+  }
+
+  // Insert dp-doc after page-title
+  app.insertBefore(dpDocs, pageTitle.nextElementSibling)
+
+  // Move VPFooter after Layout
+  if (vpFooter && layout) {
+    app.insertBefore(vpFooter, layout.nextElementSibling)
+  }
 
   // Hide VPContent since we've extracted its content
   vpContent.style.display = 'none'
@@ -267,7 +285,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Created .page-title and .dp-doc as siblings, hiding VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Created page-title, dp-doc, and VPFooter as siblings to Layout and header for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
