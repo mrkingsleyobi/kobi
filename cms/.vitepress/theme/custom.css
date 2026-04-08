@@ -494,10 +494,13 @@ div[class*='language-'] {
   }
 }
 
-/* Homepage keeps original styling */
-.VPDoc.home .container {
-  display: block;
-  max-width: var(--content-max-width) !important;
+/* Homepage - hide default hero and features */
+.VPHome .VPHero {
+  display: none;
+}
+
+.VPHome .VPFeatures {
+  display: none;
 }
 
 

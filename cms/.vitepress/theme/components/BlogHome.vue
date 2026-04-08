@@ -232,7 +232,7 @@ const prevPage = () => {
 
 <style scoped>
 .blog-home {
-  max-width: 1200px;
+  max-width: 1000px;
   margin: 0 auto;
   padding: 60px 20px;
 }

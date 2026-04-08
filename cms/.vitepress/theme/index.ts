@@ -10,6 +10,7 @@ import DescriptionText from './components/DescriptionText.vue'
 import Usage from './components/Usage.vue'
 import DefinitionCite from './components/DefinitionCite.vue'
 import BlogHome from './components/BlogHome.vue'
+import LandingPage from './components/LandingPage.vue'
 
 export default {
   ...DefaultTheme,
@@ -24,6 +25,7 @@ export default {
     app.component('usage', Usage)
     app.component('definition-cite', DefinitionCite)
     app.component('BlogHome', BlogHome)
+    app.component('LandingPage', LandingPage)
   },
   Layout: Layout
 }
