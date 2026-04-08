@@ -149,7 +149,17 @@ const prevPage = () => {
           <h2 class="featured-title">{{ featuredPost.title }}</h2>
           <p v-if="featuredPost.subtitle" class="featured-subtitle">{{ featuredPost.subtitle }}</p>
           <p class="featured-date">{{ formatDate(featuredPost.created_at) }}</p>
-          <p v-if="featuredPost.excerpt" class="featured-excerpt">{{ featuredPost.excerpt }}</p>
+          <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
+            <a
+              v-for="tag in featuredPost.tags"
+              :key="tag"
+              :href="`/archives/?tag=${tag}`"
+              class="tag-link"
+              @click.stop
+            >
+              {{ tag }}
+            </a>
+          </div>
         </div>
       </a>
     </section>
@@ -171,7 +181,17 @@ const prevPage = () => {
             <h4 class="post-title">{{ post.title }}</h4>
             <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
             <p class="post-date">{{ formatDate(post.created_at) }}</p>
-            <p v-if="post.excerpt" class="post-excerpt">{{ post.excerpt }}</p>
+            <div v-if="post.tags && post.tags.length" class="post-tags">
+              <a
+                v-for="tag in post.tags"
+                :key="tag"
+                :href="`/archives/?tag=${tag}`"
+                class="tag-link"
+                @click.stop
+              >
+                {{ tag }}
+              </a>
+            </div>
           </div>
         </a>
       </div>
@@ -301,10 +321,30 @@ const prevPage = () => {
   font-weight: 500;
 }
 
-.featured-excerpt {
-  font-size: 1rem;
+.featured-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 1rem;
+}
+
+.featured-tags .tag-link {
+  font-size: 0.875rem;
+  padding: 6px 14px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 16px;
   color: var(--vp-c-text-2);
-  line-height: 1.6;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.featured-tags .tag-link:hover {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+  transform: translateY(-1px);
 }
 
 .section-title {
@@ -384,14 +424,30 @@ const prevPage = () => {
   font-weight: 500;
 }
 
-.post-excerpt {
-  font-size: 0.875rem;
+.post-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.tag-link {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
   color: var(--vp-c-text-2);
-  line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.tag-link:hover {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+  transform: translateY(-1px);
 }
 
 @media (max-width: 768px) {
