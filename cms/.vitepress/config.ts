@@ -2,7 +2,7 @@ import { defineConfig } from 'vitepress'
 
 export default defineConfig({
   title: 'Kingsley Obi',
-  description: 'Cybersecurity, AI, Technology, and Philosophy',
+  description: 'Cybersecurity, AI, Technology, and Philosophy. Expert AI coaching and agentic engineering consultation. Personalized sessions on autonomous AI systems, neural networks, and multi-agent orchestration. Book your consultation today.',
   lang: 'en-US',
   base: '/',
   head: [
@@ -15,7 +15,7 @@ export default defineConfig({
     ['meta', { property: 'og:image', content: '/og-image.png' }],
     ['meta', { property: 'og:url', content: 'https://kingsleyobi.com/' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:site', content: '@kingsleyobi' }],
+    ['meta', { name: 'twitter:site', content: '@mrkingsleyobi' }],
     ['script', { src: 'https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js', defer: true }]
   ],
 
@@ -24,14 +24,19 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: 'BLOG', link: '/blog/' },
-      { text: 'TELOS', link: '/telos/' },
-      { text: 'MANIFESTO', link: '/manifesto/' },
-      { text: 'PROJECTS', link: '/projects/' },
-      { text: 'ABOUT', link: '/about/' }
+      { text: 'Home', link: '/' },
+      { text: 'Start Here', link: '/start-here/' },
+      { text: 'Blog', link: '/blog/' },
+      { text: 'Telos', link: '/telos/' },
+      { text: 'Manifesto', link: '/manifesto/' },
+      { text: 'Projects', link: '/projects/' },
+      { text: 'About', link: '/about/' }
     ],
 
     aside: false,
+    sidebars: false,
+    skipToContentLabel: false,
+    returnToTopLabel: false,
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/mrkingsleyobi' },
@@ -46,9 +51,7 @@ export default defineConfig({
     },
 
     editLink: false,
-    outline: false,
-    skipToContentLabel: false,
-    returnToTopLabel: false
+    outline: false
   },
 
   markdown: {
@@ -103,7 +106,7 @@ export default defineConfig({
   <channel>
     <title>Kingsley Obi</title>
     <link>https://kingsleyobi.com</link>
-    <description>Cybersecurity, AI, Technology, and Philosophy</description>
+    <description>Cybersecurity, AI, Technology, and Philosophy. Expert AI coaching and agentic engineering consultation. Personalized sessions on autonomous AI systems, neural networks, and multi-agent orchestration. Book your consultation today.</description>
     <language>en-us</language>
 ${rssItems.map(item => `    <item>
       <title>${item.title}</title>

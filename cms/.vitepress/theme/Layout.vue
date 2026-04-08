@@ -39,9 +39,9 @@ const addFooterSocialLinks = () => {
   // Define all social links with Iconify icons
   const links = [
     { url: 'mailto:contact@kingsleyobi.com', icon: 'mdi:email', label: 'Email' },
-    { url: 'https://linkedin.com/in/kingsleyobi', icon: 'mdi:linkedin', label: 'LinkedIn' },
-    { url: 'https://youtube.com/@kingsleyobi', icon: 'mdi:youtube', label: 'YouTube' },
-    { url: 'https://x.com/kingsleyobi', icon: 'simple-icons:x', label: 'X' },
+    { url: 'https://linkedin.com/in/mrkingsleyobi', icon: 'mdi:linkedin', label: 'LinkedIn' },
+    { url: 'https://youtube.com/@mrkingsleyobi', icon: 'mdi:youtube', label: 'YouTube' },
+    { url: 'https://x.com/mrkingsleyobi', icon: 'simple-icons:x', label: 'X' },
     { url: 'https://github.com/mrkingsleyobi', icon: 'mdi:github', label: 'GitHub' },
     { url: '/podcast', icon: 'mdi:podcast', label: 'Podcast' },
     { url: '/feed.rss', icon: 'mdi:rss', label: 'RSS' }

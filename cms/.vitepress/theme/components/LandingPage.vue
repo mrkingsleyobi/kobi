@@ -53,7 +53,7 @@ onMounted(() => {
 .landing-page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 120px 40px 80px;
+  /*padding: 120px 40px 80px;*/
   min-height: 100vh;
   box-sizing: border-box;
   overflow-x: hidden;
@@ -143,7 +143,7 @@ onMounted(() => {
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .landing-page {
-    padding: 80px 20px 60px;
+    /*padding: 80px 20px 60px;*/
   }
 
   .landing-header {
