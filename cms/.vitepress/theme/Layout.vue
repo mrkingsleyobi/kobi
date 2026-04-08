@@ -9,31 +9,6 @@ const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
 const router = useRouter()
 
-// Function to move VPNav outside Layout wrapper
-const moveNavbarOutsideLayout = async () => {
-  await nextTick()
-
-  const navbar = document.querySelector('.VPNav')
-  const layout = document.querySelector('.Layout')
-  const app = document.querySelector('#app')
-
-  if (!navbar || !layout || !app) {
-    console.log('Layout: Could not find navbar, layout, or app')
-    return
-  }
-
-  // Check if navbar is already in correct position (sibling of Layout)
-  if (navbar.parentElement === app && navbar.nextElementSibling === layout) {
-    console.log('Layout: Navbar already positioned correctly as sibling of Layout')
-    return
-  }
-
-  // Move navbar to be sibling of Layout (before it)
-  app.insertBefore(navbar, layout)
-
-  console.log('Layout: Moved VPNav to be sibling of Layout wrapper')
-}
-
 const tags = computed(() => parseTags(frontmatter.value.tags))
 const createdDate = computed(() =>
   frontmatter.value.created_at ? formatDate(frontmatter.value.created_at) : null
@@ -250,17 +225,16 @@ const injectGutter = () => {
     dpDocs.appendChild(mainElement)
   }
 
-  // Get app, navbar, and layout elements
+  // Get app, navbar, and footer elements
   const navbar = document.querySelector('.VPNav')
-  const layout = document.querySelector('.Layout')
   const vpFooter = document.querySelector('.VPFooter')
 
-  if (!app || !layout) {
-    console.log('Layout: Could not find app or layout')
+  if (!app) {
+    console.log('Layout: Could not find app')
     return
   }
 
-  // Structure: VPNav, page-title, dp-doc, Layout, VPFooter are all siblings
+  // Structure: VPNav, page-title, dp-doc, VPFooter are all siblings under #app
   // Insert page-title after navbar
   if (navbar) {
     app.insertBefore(pageTitle, navbar.nextElementSibling)
@@ -271,9 +245,9 @@ const injectGutter = () => {
   // Insert dp-doc after page-title
   app.insertBefore(dpDocs, pageTitle.nextElementSibling)
 
-  // Move VPFooter after Layout
-  if (vpFooter && layout) {
-    app.insertBefore(vpFooter, layout.nextElementSibling)
+  // Move VPFooter after dp-doc
+  if (vpFooter) {
+    app.insertBefore(vpFooter, dpDocs.nextElementSibling)
   }
 
   // Hide VPContent since we've extracted its content
@@ -289,14 +263,12 @@ const injectGutter = () => {
 }
 
 onMounted(() => {
-  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
 })
 
 onUpdated(() => {
-  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
@@ -325,7 +297,7 @@ watch(() => frontmatter.value, () => {
 </script>
 
 <template>
-  <Layout />
+  <!-- Don't render Layout component, content is already moved outside -->
 </template>
 
 <style>
