@@ -6,7 +6,7 @@ const posts = ref<BlogPostData[]>([])
 const featuredPost = ref<BlogPostData | null>(null)
 const loading = ref(true)
 const currentPage = ref(1)
-const postsPerPage = 5
+const postsPerPage = 6
 
 onMounted(async () => {
   try {
@@ -41,7 +41,7 @@ onMounted(async () => {
         const imageMatch = content.match(/!\[.*?\]\((\/images\/.+?\.(jpg|png|jpeg|gif|webp))\)/)
         const image = imageMatch ? imageMatch[1] : null
 
-        // Get excerpt (first actual text paragraph, skipping images, captions, callouts, etc.)
+        // Get excerpt (first actual text paragraph)
         const afterFrontmatter = content.replace(/^---[\s\S]*?---\n\n/, '')
         const contentLines = afterFrontmatter.split('\n').filter(line =>
           line.trim() &&
@@ -139,58 +139,50 @@ const prevPage = () => {
     </div>
 
     <!-- Featured Post -->
-    <section v-if="featuredPost && !loading" class="featured-post">
-      <h3 class="section-title">Featured Blog</h3>
-      <a :href="`/blog/${featuredPost.slug}`" class="featured-link">
-        <div v-if="featuredPost.image" class="featured-image">
-          <img :src="featuredPost.image" :alt="featuredPost.title" />
+    <section v-if="featuredPost && !loading" class="featured-section">
+      <a :href="`/blog/${featuredPost.slug}`" class="featured-card">
+        <div class="featured-image-wrapper">
+          <img
+            v-if="featuredPost.image"
+            :src="featuredPost.image"
+            :alt="featuredPost.title"
+            class="featured-image"
+          />
         </div>
         <div class="featured-content">
           <h2 class="featured-title">{{ featuredPost.title }}</h2>
           <p v-if="featuredPost.subtitle" class="featured-subtitle">{{ featuredPost.subtitle }}</p>
-          <p class="featured-date">{{ formatDate(featuredPost.created_at) }}</p>
-          <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
-            <a
-              v-for="tag in featuredPost.tags"
-              :key="tag"
-              :href="`/archives/?tag=${tag}`"
-              class="tag-link"
-              @click.stop
-            >
-              {{ tag }}
-            </a>
+          <div class="featured-meta">
+            <time class="featured-date">{{ formatDate(featuredPost.created_at) }}</time>
+            <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
+              <span v-for="tag in featuredPost.tags" :key="tag" class="tag">{{ tag }}</span>
+            </div>
           </div>
         </div>
       </a>
     </section>
 
     <!-- Latest Content -->
-    <section v-if="posts.length > 1 && !loading" class="latest-content">
-      <h3 class="section-title">Latest Content</h3>
-      <div class="posts-grid">
+    <section v-if="posts.length > 1 && !loading" class="latest-section">
+      <h2 class="section-title">Latest Content</h2>
+
+      <div class="posts-container">
         <a
-          v-for="post in paginatedPosts"
+          v-for="(post, index) in paginatedPosts"
           :key="post.slug"
           :href="`/blog/${post.slug}`"
           class="post-card"
+          :class="{ alternate: index % 2 === 1 }"
         >
           <div v-if="post.image" class="post-image">
-            <img :src="post.image" :alt="post.title" />
+            <img :src="post.image" :alt="post.title" loading="lazy" />
           </div>
           <div class="post-content">
-            <h4 class="post-title">{{ post.title }}</h4>
+            <h3 class="post-title">{{ post.title }}</h3>
+            <time class="post-date">{{ formatDate(post.created_at) }}</time>
             <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
-            <p class="post-date">{{ formatDate(post.created_at) }}</p>
             <div v-if="post.tags && post.tags.length" class="post-tags">
-              <a
-                v-for="tag in post.tags"
-                :key="tag"
-                :href="`/archives/?tag=${tag}`"
-                class="tag-link"
-                @click.stop
-              >
-                {{ tag }}
-              </a>
+              <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
             </div>
           </div>
         </a>
@@ -231,33 +223,37 @@ const prevPage = () => {
 </template>
 
 <style scoped>
+/* Daniel Miessler Layout Structure - Full Width, Minimal Padding */
+
 .blog-home {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 60px 20px;
-  box-sizing: border-box;
-  overflow-x: hidden;
   width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
 }
 
+/* Hero Section - Compact, Centered */
 .blog-hero {
   text-align: center;
-  margin-bottom: 60px;
+  padding: 40px 20px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .blog-hero h1 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  margin-bottom: 1rem;
+  margin-bottom: 8px;
   color: var(--vp-c-text-1);
+  line-height: 1.2;
 }
 
 .blog-hero .tagline {
-  font-size: 1.25rem;
+  font-size: 1.0625rem;
   color: var(--vp-c-text-2);
   max-width: 600px;
   margin: 0 auto;
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .loading {
@@ -266,102 +262,90 @@ const prevPage = () => {
   color: var(--vp-c-text-2);
 }
 
-.featured-post {
-  margin-bottom: 60px;
+/* Featured Section - Full Width, Large Hero Image */
+.featured-section {
+  width: 100%;
+  margin-bottom: 32px;
 }
 
-.featured-link {
+.featured-card {
   display: block;
   text-decoration: none;
   color: inherit;
-  border-radius: 12px;
-  overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
-.featured-link:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 24px color-mix(in srgb, var(--vp-c-text-1) 15%, transparent);
+.featured-image-wrapper {
+  width: 100%;
+  height: 500px;
+  overflow: hidden;
+  background: var(--vp-c-bg-soft);
 }
 
 .featured-image {
   width: 100%;
-  height: 400px;
-  overflow: hidden;
-  border-radius: 12px;
-  margin-bottom: 24px;
-}
-
-.featured-image img {
-  width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
 }
 
 .featured-content {
-  padding: 0 20px;
+  padding: 24px 32px 32px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .featured-title {
-  font-size: 2rem;
+  font-size: 1.875rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   color: var(--vp-c-text-1);
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .featured-subtitle {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   color: var(--vp-c-text-2);
-  margin-bottom: 1rem;
+  margin-bottom: 16px;
   line-height: 1.5;
+}
+
+.featured-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
 
 .featured-date {
   font-size: 0.875rem;
   color: var(--vp-c-brand-1);
-  margin-bottom: 1rem;
   font-weight: 500;
 }
 
 .featured-tags {
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 1rem;
+  gap: 8px;
 }
 
-.featured-tags .tag-link {
-  font-size: 0.875rem;
-  padding: 6px 14px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 16px;
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  transition: all 0.2s ease;
-  font-weight: 500;
-}
-
-.featured-tags .tag-link:hover {
-  background: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
-  color: white;
-  transform: translateY(-1px);
+/* Latest Section - Full Width Container */
+.latest-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
 }
 
 .section-title {
-  font-size: 1.75rem;
+  font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 32px;
+  margin-bottom: 24px;
   color: var(--vp-c-text-1);
 }
 
-.latest-content {
-  margin-top: 60px;
-}
-
-.posts-grid {
+/* Posts Container - Alternating Layout */
+.posts-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
@@ -371,151 +355,87 @@ const prevPage = () => {
   display: flex;
   text-decoration: none;
   color: inherit;
+  width: 100%;
+  background: var(--vp-c-bg-soft);
   border-radius: 8px;
   overflow: hidden;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
-  background: var(--vp-c-bg-soft);
-  align-items: center;
-  gap: 20px;
-  padding: 16px;
+  transition: box-shadow 0.2s ease;
+  min-height: 200px;
 }
 
 .post-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);
 }
 
-.post-image {
-  width: 100px;
-  height: 100px;
-  flex-shrink: 0;
+/* Image takes 40% width */
+.post-card .post-image {
+  flex: 0 0 40%;
+  max-width: 480px;
   overflow: hidden;
-  border-radius: 6px;
+  background: var(--vp-c-divider);
 }
 
-.post-image img {
+.post-card .post-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  display: block;
+}
+
+/* Alternate direction */
+.post-card.alternate {
+  flex-direction: row-reverse;
+}
+
+.post-card.alternate .post-image {
+  order: 2;
 }
 
 .post-content {
   flex: 1;
-  padding: 0;
+  padding: 24px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   min-width: 0;
 }
 
 .post-title {
-  font-size: 1.25rem;
+  font-size: 1.3125rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
+  margin-bottom: 8px;
   color: var(--vp-c-text-1);
   line-height: 1.3;
-}
-
-.post-subtitle {
-  font-size: 0.9375rem;
-  color: var(--vp-c-text-2);
-  margin-bottom: 0.75rem;
-  line-height: 1.4;
 }
 
 .post-date {
   font-size: 0.8125rem;
   color: var(--vp-c-brand-1);
-  margin-bottom: 0.75rem;
   font-weight: 500;
+  margin-bottom: 12px;
+}
+
+.post-subtitle {
+  font-size: 0.9375rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.5;
+  margin-bottom: 12px;
 }
 
 .post-tags {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
-  margin-top: 0.5rem;
 }
 
-.tag-link {
+.tag {
   font-size: 0.75rem;
   padding: 4px 10px;
-  background: var(--vp-c-bg-soft);
+  background: var(--vp-c-bg);
   border: 1px solid var(--vp-c-divider);
   border-radius: 12px;
   color: var(--vp-c-text-2);
-  text-decoration: none;
-  transition: all 0.2s ease;
   font-weight: 500;
-}
-
-.tag-link:hover {
-  background: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
-  color: white;
-  transform: translateY(-1px);
-}
-
-@media (max-width: 768px) {
-  .blog-home {
-    padding: 40px 20px;
-  }
-
-  .blog-hero h1 {
-    font-size: 2rem;
-  }
-
-  .blog-hero .tagline {
-    font-size: 1rem;
-  }
-
-  .featured-image {
-    height: 250px;
-  }
-
-  .featured-title {
-    font-size: 1.5rem;
-  }
-
-  .post-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .post-image {
-    width: 100%;
-    height: 150px;
-  }
-
-  .pagination {
-    flex-direction: column;
-    gap: 16px;
-  }
-
-  .pagination-pages {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-}
-
-/* Extra small mobile */
-@media (max-width: 480px) {
-  .blog-home {
-    padding: 30px 15px;
-  }
-
-  .blog-hero h1 {
-    font-size: 1.5rem;
-  }
-
-  .blog-hero .tagline {
-    font-size: 0.9375rem;
-  }
-
-  .featured-title {
-    font-size: 1.25rem;
-  }
-
-  .post-title {
-    font-size: 1.125rem;
-  }
 }
 
 /* Pagination */
@@ -523,13 +443,13 @@ const prevPage = () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 48px;
-  padding-top: 32px;
+  margin-top: 40px;
+  padding-top: 24px;
   border-top: 1px solid var(--vp-c-divider);
 }
 
 .pagination-btn {
-  padding: 10px 20px;
+  padding: 8px 16px;
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
   border-radius: 6px;
@@ -553,14 +473,14 @@ const prevPage = () => {
 
 .pagination-pages {
   display: flex;
-  gap: 8px;
+  gap: 6px;
   align-items: center;
 }
 
 .pagination-page {
-  min-width: 40px;
-  height: 40px;
-  padding: 0 12px;
+  min-width: 36px;
+  height: 36px;
+  padding: 0 10px;
   background: transparent;
   border: 1px solid var(--vp-c-divider);
   border-radius: 6px;
@@ -575,7 +495,6 @@ const prevPage = () => {
 }
 
 .pagination-page:hover {
-  background: var(--vp-c-bg-soft);
   border-color: var(--vp-c-brand-1);
 }
 
@@ -583,5 +502,184 @@ const prevPage = () => {
   background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
   color: white;
+}
+
+/* Desktop - 1280px and up */
+@media (min-width: 1280px) {
+  .blog-hero {
+    padding: 48px 20px 40px;
+  }
+
+  .blog-hero h1 {
+    font-size: 3rem;
+  }
+
+  .blog-hero .tagline {
+    font-size: 1.125rem;
+  }
+
+  .featured-image-wrapper {
+    height: 550px;
+  }
+
+  .featured-content {
+    padding: 32px 20px 40px;
+  }
+
+  .featured-title {
+    font-size: 2.125rem;
+  }
+
+  .post-card .post-image {
+    flex: 0 0 45%;
+    max-width: 540px;
+  }
+
+  .post-content {
+    padding: 32px 40px;
+  }
+
+  .post-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablet - 768px to 1279px */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .blog-hero h1 {
+    font-size: 2.25rem;
+  }
+
+  .featured-image-wrapper {
+    height: 450px;
+  }
+
+  .post-card .post-image {
+    flex: 0 0 38%;
+  }
+
+  .post-content {
+    padding: 20px 28px;
+  }
+}
+
+/* Mobile - up to 767px */
+@media (max-width: 767px) {
+  .blog-home {
+    padding: 0;
+  }
+
+  .blog-hero {
+    padding: 32px 20px 24px;
+  }
+
+  .blog-hero h1 {
+    font-size: 2rem;
+  }
+
+  .blog-hero .tagline {
+    font-size: 1rem;
+  }
+
+  .featured-image-wrapper {
+    height: 280px;
+  }
+
+  .featured-content {
+    padding: 20px 20px 24px;
+  }
+
+  .featured-title {
+    font-size: 1.5rem;
+  }
+
+  .featured-subtitle {
+    font-size: 1rem;
+  }
+
+  .latest-section {
+    padding: 0 16px 40px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  /* Stack vertically on mobile */
+  .post-card {
+    flex-direction: column !important;
+  }
+
+  .post-card .post-image {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+  }
+
+  .post-card.alternate .post-image {
+    order: 0;
+  }
+
+  .post-content {
+    padding: 20px;
+  }
+
+  .post-title {
+    font-size: 1.1875rem;
+  }
+
+  .post-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pagination-pages {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
+/* Small Mobile - up to 480px */
+@media (max-width: 480px) {
+  .blog-hero {
+    padding: 24px 16px 20px;
+  }
+
+  .blog-hero h1 {
+    font-size: 1.75rem;
+  }
+
+  .featured-image-wrapper {
+    height: 220px;
+  }
+
+  .featured-content {
+    padding: 16px 16px 20px;
+  }
+
+  .latest-section {
+    padding: 0 12px 32px;
+  }
+
+  .post-card .post-image {
+    height: 180px;
+  }
+
+  .post-content {
+    padding: 16px;
+  }
+
+  .post-title {
+    font-size: 1.125rem;
+  }
+
+  .pagination {
+    padding-top: 20px;
+  }
 }
 </style>

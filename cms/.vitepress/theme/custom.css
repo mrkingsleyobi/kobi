@@ -462,37 +462,22 @@ div[class*='language-'] {
   display: none;
 }
 
-/* Left Gutter Layout for Blog Posts and Pages */
+/* VPDoc styling */
 .VPDoc:not(.home) {
   padding-top: 0;
 }
 
-/* Wrapper for page title and VPDoc - Daniel's 1000px width */
-.page-wrapper {
-  position: relative;
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 60px 40px 60px 1.5rem;
-  box-sizing: border-box;
-  overflow-x: hidden;
-  width: 100%;
-}
-
-/* Page Title in Left Gutter (OUTSIDE VPDoc) */
+/* Page Title in Left Gutter (sibling to content) */
 .page-title {
   display: block;
-  float: left;
   position: absolute;
-  margin-left: 0;
   left: 1.5rem;
   width: 10rem;
   text-align: right;
-  list-style-type: none;
-  clear: both;
-  margin-bottom: 2em;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
+  margin-top: 60px;
 }
 
 .page-title h1 {
@@ -551,9 +536,11 @@ div[class*='language-'] {
   text-decoration: underline;
 }
 
-/* VPDoc container adjusts for left gutter */
-.page-wrapper .VPDoc .container {
+/* VPDoc container adjusts for left gutter (content is now sibling) */
+.VPDoc .container {
   padding-left: 13.5rem;
+  padding-right: 1.5rem;
+  padding-top: 60px;
 }
 
 /* Hide default h1 */
@@ -561,25 +548,14 @@ div[class*='language-'] {
   display: none;
 }
 
-/* Content area - right padding */
-.page-wrapper .VPDoc .container {
-  padding-right: 1.5rem;
-}
-
 /* Mobile responsive */
 @media (max-width: 768px) {
-  .page-wrapper {
-    padding: 40px 20px;
-    width: 100%;
-    overflow-x: hidden;
-  }
-
   .page-title {
     position: static;
-    float: none;
     width: auto;
     text-align: left;
     left: 0;
+    margin-top: 40px;
     margin-bottom: 1.5rem;
   }
 
@@ -591,22 +567,23 @@ div[class*='language-'] {
     font-size: 0.9375rem;
   }
 
-  .page-wrapper .VPDoc .container {
+  .VPDoc .container {
     padding-left: 20px;
     padding-right: 20px;
-    overflow-x: hidden;
+    padding-top: 40px;
   }
 }
 
 /* Extra small mobile */
 @media (max-width: 480px) {
-  .page-wrapper {
-    padding: 30px 15px;
+  .page-title {
+    margin-top: 30px;
   }
 
-  .page-wrapper .VPDoc .container {
+  .VPDoc .container {
     padding-left: 15px;
     padding-right: 15px;
+    padding-top: 30px;
   }
 }
 

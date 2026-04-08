@@ -114,8 +114,10 @@ const injectGutter = () => {
     return
   }
 
-  // For non-homepage only: clean up existing gutters first
+  // For non-homepage only: clean up existing gutters and page titles first
   const allWrappers = document.querySelectorAll('.page-wrapper')
+  const allPageTitles = document.querySelectorAll('.page-title')
+
   allWrappers.forEach(wrapper => {
     const vpDoc = wrapper.querySelector('.VPDoc')
     if (vpDoc && wrapper.parentElement) {
@@ -123,12 +125,24 @@ const injectGutter = () => {
     }
     wrapper.remove()
   })
-  console.log('Layout: Cleaned up', allWrappers.length, 'existing gutters')
+
+  allPageTitles.forEach(title => {
+    title.remove()
+  })
+
+  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers and', allPageTitles.length, 'page titles')
 
   // Find the current VPDoc
   const doc = document.querySelector('.VPDoc')
   if (!doc) {
     console.log('Layout: VPDoc not found, retrying...')
+    return
+  }
+
+  // Find the content div within VPDoc
+  const content = doc.querySelector('.content')
+  if (!content) {
+    console.log('Layout: .content not found in VPDoc, retrying...')
     return
   }
 
@@ -138,11 +152,7 @@ const injectGutter = () => {
     return
   }
 
-  // Create wrapper
-  const wrapper = document.createElement('div')
-  wrapper.className = 'page-wrapper'
-
-  // Create page-title
+  // Create page-title (sibling to content, no wrapper)
   const pageTitle = document.createElement('div')
   pageTitle.className = 'page-title'
 
@@ -182,18 +192,17 @@ const injectGutter = () => {
     pageTitle.appendChild(tagsContainer)
   }
 
-  // Wrap structure
-  parent.insertBefore(wrapper, doc)
-  wrapper.appendChild(pageTitle)
-  wrapper.appendChild(doc)
+  // Structure: page-title and content are siblings, no wrapper
+  parent.insertBefore(pageTitle, doc)
+  // content stays where it is in VPDoc
 
-  // Hide default h1
-  const defaultH1 = doc.querySelector('.content h1')
+  // Hide default h1 in content
+  const defaultH1 = content.querySelector('h1')
   if (defaultH1) {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Injected gutter for', page.value.relativePath, 'with title:', frontmatter.value.title, 'Total gutters in DOM:', document.querySelectorAll('.page-wrapper').length)
+  console.log('Layout: Injected page-title as sibling to content (no wrapper) for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
