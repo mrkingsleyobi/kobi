@@ -24,6 +24,51 @@ const showGutter = computed(() => page.value.relativePath !== 'index.md')
 // Store observer reference to avoid multiple instances
 let navbarObserver: MutationObserver | null = null
 
+// Function to add footer social links
+const addFooterSocialLinks = () => {
+  const footer = document.querySelector('.VPFooter')
+  if (!footer) return
+
+  // Check if we've already added the links
+  if (footer.querySelector('.footer-social-links')) return
+
+  // Create social links container
+  const socialLinks = document.createElement('div')
+  socialLinks.className = 'footer-social-links'
+
+  // Define all social links with Iconify icons
+  const links = [
+    { url: 'mailto:contact@kingsleyobi.com', icon: 'mdi:email', label: 'Email' },
+    { url: 'https://linkedin.com/in/kingsleyobi', icon: 'mdi:linkedin', label: 'LinkedIn' },
+    { url: 'https://youtube.com/@kingsleyobi', icon: 'mdi:youtube', label: 'YouTube' },
+    { url: 'https://x.com/kingsleyobi', icon: 'simple-icons:x', label: 'X' },
+    { url: 'https://github.com/mrkingsleyobi', icon: 'mdi:github', label: 'GitHub' },
+    { url: '/podcast', icon: 'mdi:podcast', label: 'Podcast' },
+    { url: '/feed.rss', icon: 'mdi:rss', label: 'RSS' }
+  ]
+
+  // Create link elements with Iconify
+  links.forEach(link => {
+    const a = document.createElement('a')
+    a.href = link.url
+    a.title = link.label
+    a.target = '_blank'
+    a.rel = 'noopener noreferrer'
+
+    // Create iconify-icon element
+    const icon = document.createElement('iconify-icon')
+    icon.setAttribute('icon', link.icon)
+    icon.setAttribute('width', '24')
+    icon.setAttribute('height', '24')
+
+    a.appendChild(icon)
+    socialLinks.appendChild(a)
+  })
+
+  // Insert at the beginning of footer (before the message)
+  footer.insertBefore(socialLinks, footer.firstChild)
+}
+
 // Function to hide/show navbar based on page
 const updateNavbarVisibility = () => {
   const navbar = document.querySelector('.VPNavBar')
@@ -154,11 +199,13 @@ const injectGutter = () => {
 onMounted(() => {
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
+  setTimeout(addFooterSocialLinks, 300)
 })
 
 onUpdated(() => {
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
+  setTimeout(addFooterSocialLinks, 300)
 })
 
 // Watch for route changes

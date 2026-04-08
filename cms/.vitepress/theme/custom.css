@@ -406,6 +406,55 @@ div[class*='language-'] {
 .VPFooter {
   border-top: 1px solid var(--custom-c-border);
   padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Custom footer social links */
+.VPFooter .footer-social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  order: -1; /* Place above the message */
+}
+
+.VPFooter .footer-social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.VPFooter .footer-social-links a:hover {
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  transform: translateY(-2px);
+}
+
+.VPFooter .footer-social-links a svg,
+.VPFooter .footer-social-links a iconify-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile responsive footer */
+@media (max-width: 768px) {
+  .VPFooter .footer-social-links {
+    gap: 1rem;
+  }
+
+  .VPFooter .footer-social-links a svg,
+  .VPFooter .footer-social-links a iconify-icon {
+    width: 20px;
+    height: 20px;
+  }
 }
 
 /* Remove feature cards on homepage */
@@ -588,6 +637,11 @@ div[class*='language-'] {
 
 /* Hide footer on homepage */
 .VPDoc.home .VPFooter {
+  display: none !important;
+}
+
+/* Hide footer social links on homepage */
+.VPDoc.home .footer-social-links {
   display: none !important;
 }
 

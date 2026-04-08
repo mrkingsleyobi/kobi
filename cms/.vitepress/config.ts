@@ -15,7 +15,8 @@ export default defineConfig({
     ['meta', { property: 'og:image', content: '/og-image.png' }],
     ['meta', { property: 'og:url', content: 'https://kingsleyobi.com/' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { name: 'twitter:site', content: '@kingsleyobi' }]
+    ['meta', { name: 'twitter:site', content: '@kingsleyobi' }],
+    ['script', { src: 'https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js', defer: true }]
   ],
 
   lastUpdated: false,
@@ -34,8 +35,9 @@ export default defineConfig({
 
     socialLinks: [
       { icon: 'github', link: 'https://github.com/mrkingsleyobi' },
-      { icon: 'twitter', link: 'https://twitter.com/mrkingsleyobi' },
-      { icon: 'linkedin', link: 'https://linkedin.com/in/mrkingsleyobi' }
+      { icon: 'twitter', link: 'https://x.com/kingsleyobi' },
+      { icon: 'linkedin', link: 'https://linkedin.com/in/kingsleyobi' },
+      { icon: 'youtube', link: 'https://youtube.com/@kingsleyobi' }
     ],
 
     footer: {
