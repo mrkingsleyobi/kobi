@@ -503,4 +503,24 @@ div[class*='language-'] {
   display: none;
 }
 
+/* Hide VitePress header and footer on landing page using class */
+.VPNavBar.hide-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Also hide any scroll-triggered navbar states on homepage */
+.VPNavBar.has-sidebar.hide-navbar,
+.VPNavBar.scrolled.hide-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+.VPDoc.home .VPFooter {
+  display: none !important;
+}
+
 

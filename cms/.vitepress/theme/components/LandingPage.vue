@@ -5,6 +5,7 @@
   <div class="landing-page">
     <!-- Header Section -->
     <header class="landing-header">
+      <div class="avatar">👨‍💻</div>
       <h1 class="name">KINGSLEY OBI</h1>
       <p class="introduction">
         Exploring the intersection of cybersecurity, AI, technology, and philosophy
@@ -47,7 +48,7 @@
 .landing-page {
   max-width: 1000px;
   margin: 0 auto;
-  padding: 120px 40px 80px;
+  /*padding: 120px 40px 80px;*/
   min-height: 100vh;
 }
 
@@ -55,6 +56,12 @@
 .landing-header {
   text-align: center;
   margin-bottom: 60px;
+}
+
+.avatar {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 15%, transparent));
 }
 
 .name {
@@ -122,7 +129,7 @@
 /* Mobile Responsive */
 @media (max-width: 768px) {
   .landing-page {
-    padding: 80px 20px 60px;
+    /*padding: 80px 20px 60px;*/
   }
 
   .name {

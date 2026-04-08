@@ -21,6 +21,46 @@ const updatedDate = computed(() =>
 
 const showGutter = computed(() => page.value.relativePath !== 'index.md')
 
+// Store observer reference to avoid multiple instances
+let navbarObserver: MutationObserver | null = null
+
+// Function to hide/show navbar based on page
+const updateNavbarVisibility = () => {
+  const navbar = document.querySelector('.VPNavBar')
+  if (!navbar) return
+
+  // Clean up existing observer
+  if (navbarObserver) {
+    navbarObserver.disconnect()
+    navbarObserver = null
+  }
+
+  if (page.value.relativePath === 'index.md') {
+    navbar.classList.add('hide-navbar')
+    navbar.style.display = 'none'
+    navbar.style.visibility = 'hidden'
+    navbar.style.opacity = '0'
+
+    // Keep it hidden even if VitePress tries to show it
+    navbarObserver = new MutationObserver(() => {
+      if (navbar.classList.contains('hide-navbar') && navbar.style.display !== 'none') {
+        navbar.style.display = 'none'
+        navbar.style.visibility = 'hidden'
+        navbar.style.opacity = '0'
+      }
+    })
+    navbarObserver.observe(navbar, {
+      attributes: true,
+      attributeFilter: ['class', 'style']
+    })
+  } else {
+    navbar.classList.remove('hide-navbar')
+    navbar.style.display = ''
+    navbar.style.visibility = ''
+    navbar.style.opacity = ''
+  }
+}
+
 // Function to inject/re-inject gutter
 const injectGutter = () => {
   // Skip on homepage
@@ -112,16 +152,19 @@ const injectGutter = () => {
 }
 
 onMounted(() => {
+  setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
 })
 
 onUpdated(() => {
+  setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
 })
 
 // Watch for route changes
 watch(() => page.value.relativePath, () => {
   console.log('Layout: Route changed to', page.value.relativePath)
+  setTimeout(updateNavbarVisibility, 50)
   setTimeout(injectGutter, 100)
 })
 
