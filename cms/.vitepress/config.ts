@@ -23,29 +23,30 @@ export default defineConfig({
 
   themeConfig: {
     nav: [
-      { text: 'Blog', link: '/blog/' },
-      { text: 'Telos', link: '/telos/' },
-      { text: 'Manifesto', link: '/manifesto/' },
-      { text: 'Projects', link: '/projects/' },
-      { text: 'About', link: '/about/' }
+      { text: 'BLOG', link: '/blog/' },
+      { text: 'TELOS', link: '/telos/' },
+      { text: 'MANIFESTO', link: '/manifesto/' },
+      { text: 'PROJECTS', link: '/projects/' },
+      { text: 'ABOUT', link: '/about/' }
     ],
 
     aside: false,
 
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/kingsleyobi' },
-      { icon: 'twitter', link: 'https://twitter.com/kingsleyobi' },
-      { icon: 'linkedin', link: 'https://linkedin.com/in/kingsleyobi' }
+      { icon: 'github', link: 'https://github.com/mrkingsleyobi' },
+      { icon: 'twitter', link: 'https://twitter.com/mrkingsleyobi' },
+      { icon: 'linkedin', link: 'https://linkedin.com/in/mrkingsleyobi' }
     ],
 
     footer: {
-      message: 'Built with VitePress',
-      copyright: '© 2024 Kingsley Obi'
+      message: 'Mission Possible to Built 10,000 AI Agents to Serve 1,000,000+ people',
+      copyright: '© 2024 Kingsley Obi, All rights reserved.'
     },
 
     editLink: false,
     outline: false,
-    skipToContentLabel: false
+    skipToContentLabel: false,
+    returnToTopLabel: false
   },
 
   markdown: {

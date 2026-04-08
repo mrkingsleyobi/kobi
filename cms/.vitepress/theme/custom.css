@@ -310,6 +310,8 @@ div[class*='language-'] {
 
 .VPNavBarMenu .item {
   font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 /* Clean blog listing */
