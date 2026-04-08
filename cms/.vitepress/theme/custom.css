@@ -645,13 +645,6 @@ div[class*='language-'] {
   display: none !important;
 }
 
-/* Layout wrapper styling */
-.Layout {
-  padding: 3.5rem 0 18rem;
-  margin-left: 12rem;
-  margin-right: 2.5rem;
-}
-
 /* Hide page-wrapper on homepage (to hide any gutters that might persist) */
 .VPDoc.home .page-wrapper {
   display: none !important;
