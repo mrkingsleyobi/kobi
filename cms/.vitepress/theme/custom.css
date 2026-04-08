@@ -489,6 +489,8 @@ div[class*='language-'] {
 
 /* dp-doc wrapper - sibling to page-title */
 .dp-doc {
+  max-width: 1000px;
+  margin: 0 auto;
   padding-left: 13.5rem;
   padding-right: 1.5rem;
 }
