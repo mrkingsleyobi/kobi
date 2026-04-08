@@ -250,16 +250,17 @@ const injectGutter = () => {
     dpDocs.appendChild(mainElement)
   }
 
-  // Get app, navbar, and footer elements
+  // Get app, navbar, and layout elements
   const navbar = document.querySelector('.VPNav')
+  const layout = document.querySelector('.Layout')
   const vpFooter = document.querySelector('.VPFooter')
 
-  if (!app) {
-    console.log('Layout: Could not find app')
+  if (!app || !layout) {
+    console.log('Layout: Could not find app or layout')
     return
   }
 
-  // Structure: VPNav, page-title, dp-doc, VPFooter are all siblings under #app
+  // Structure: VPNav, page-title, dp-doc, Layout, VPFooter are all siblings
   // Insert page-title after navbar
   if (navbar) {
     app.insertBefore(pageTitle, navbar.nextElementSibling)
@@ -270,9 +271,9 @@ const injectGutter = () => {
   // Insert dp-doc after page-title
   app.insertBefore(dpDocs, pageTitle.nextElementSibling)
 
-  // Move VPFooter after dp-doc
-  if (vpFooter) {
-    app.insertBefore(vpFooter, dpDocs.nextElementSibling)
+  // Move VPFooter after Layout
+  if (vpFooter && layout) {
+    app.insertBefore(vpFooter, layout.nextElementSibling)
   }
 
   // Hide VPContent since we've extracted its content
@@ -288,12 +289,14 @@ const injectGutter = () => {
 }
 
 onMounted(() => {
+  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
 })
 
 onUpdated(() => {
+  setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
@@ -322,7 +325,7 @@ watch(() => frontmatter.value, () => {
 </script>
 
 <template>
-  <!-- Layout component disabled - content moved outside to sibling structure -->
+  <Layout />
 </template>
 
 <style>
