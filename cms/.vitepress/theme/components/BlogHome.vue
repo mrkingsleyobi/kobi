@@ -41,8 +41,15 @@ onMounted(async () => {
         const imageMatch = content.match(/!\[.*?\]\((\/images\/.+?\.(jpg|png|jpeg|gif|webp))\)/)
         const image = imageMatch ? imageMatch[1] : null
 
-        // Get excerpt (first paragraph after frontmatter)
-        const excerptMatch = content.match(/^---[\s\S]*?---\n\n(.+?)(?:\n\n|\n$)/)
+        // Get excerpt (first actual text paragraph, skipping images, captions, callouts, etc.)
+        const afterFrontmatter = content.replace(/^---[\s\S]*?---\n\n/, '')
+        const lines = afterFrontmatter.split('\n').filter(line =>
+          line.trim() &&
+          !line.trim().startsWith('![') &&
+          !line.trim().startsWith('<caption>') &&
+          !line.trim().startsWith('<callout>')
+        )
+        const excerpt = lines.length > 0 ? lines[0].substring(0, 150) + '...' : ''
         const excerpt = excerptMatch ? excerptMatch[1].substring(0, 150) + '...' : ''
 
         postData.push({
