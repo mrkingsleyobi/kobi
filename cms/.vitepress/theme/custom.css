@@ -474,24 +474,22 @@ div[class*='language-'] {
   width: 100%;
 }
 
-/* Page Title as sibling to header */
+/* Page Title in Left Gutter */
 .page-title {
-  display: block;
-  position: relative;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  margin-left: 1.5rem;
-  margin-top: 1rem;
-  margin-bottom: 1rem;
-  text-align: left;
+  position: absolute;
+  left: 1.5rem;
+  top: 60px;
+  width: 10rem;
+  text-align: right;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
+  z-index: 1;
 }
 
 /* dp-doc wrapper - sibling to page-title */
 .dp-doc {
-  padding-left: 1.5rem;
+  padding-left: 13.5rem;
   padding-right: 1.5rem;
 }
 

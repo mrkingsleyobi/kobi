@@ -192,9 +192,9 @@ const injectGutter = () => {
     return
   }
 
-  const app = document.querySelector('#app')
-  if (!app) {
-    console.log('Layout: #app not found')
+  const parent = vpContent.parentElement
+  if (!parent) {
+    console.log('Layout: VPContent parent not found')
     return
   }
 
@@ -246,7 +246,7 @@ const injectGutter = () => {
   const mainElement = document.querySelector('.main')
   const docFooter = document.querySelector('.VPDocFooter')
 
-  // Move them into dp-doc wrapper
+  // Move them into dp-docs wrapper
   if (mainElement) {
     dpDocs.appendChild(mainElement)
   }
@@ -254,20 +254,9 @@ const injectGutter = () => {
     dpDocs.appendChild(docFooter)
   }
 
-  // Structure: page-title, header, and Layout are all siblings
-  // Insert page-title after header (VPNav)
-  const navbar = document.querySelector('.VPNav')
-  const layout = document.querySelector('.Layout')
-
-  if (navbar && layout) {
-    // Insert page-title between navbar and Layout
-    app.insertBefore(pageTitle, layout)
-  } else {
-    // Fallback: insert before Layout if navbar not found
-    if (layout) {
-      app.insertBefore(pageTitle, layout)
-    }
-  }
+  // Structure: page-title and dp-docs are siblings (both replace VPContent)
+  parent.insertBefore(pageTitle, vpContent)
+  parent.insertBefore(dpDocs, vpContent)
 
   // Hide VPContent since we've extracted its content
   vpContent.style.display = 'none'
@@ -278,7 +267,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Created .page-title as sibling to header and Layout, hiding VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Created .page-title and .dp-doc as siblings, hiding VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
