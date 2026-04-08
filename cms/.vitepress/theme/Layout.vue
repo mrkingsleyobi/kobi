@@ -114,9 +114,24 @@ const injectGutter = () => {
     return
   }
 
-  // For non-homepage only: clean up existing gutters and page titles first
+  // For non-homepage only: clean up existing gutters, page titles, and dp-docs wrappers first
   const allWrappers = document.querySelectorAll('.page-wrapper')
   const allPageTitles = document.querySelectorAll('.page-title')
+  const allDpDocs = document.querySelectorAll('.dp-docs')
+
+  // Restore any previously wrapped content back to original structure
+  allDpDocs.forEach(wrapper => {
+    const main = wrapper.querySelector('.main')
+    const docFooter = wrapper.querySelector('.VPDocFooter')
+
+    if (main && wrapper.parentElement) {
+      wrapper.parentElement.insertBefore(main, wrapper)
+    }
+    if (docFooter && wrapper.parentElement) {
+      wrapper.parentElement.appendChild(docFooter)
+    }
+    wrapper.remove()
+  })
 
   allWrappers.forEach(wrapper => {
     const vpDoc = wrapper.querySelector('.VPDoc')
@@ -130,7 +145,7 @@ const injectGutter = () => {
     title.remove()
   })
 
-  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers and', allPageTitles.length, 'page titles')
+  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles, and', allDpDocs.length, 'dp-docs wrappers')
 
   // Find VPContent (not VPDoc)
   const vpContent = document.querySelector('.VPContent')
@@ -198,8 +213,25 @@ const injectGutter = () => {
     pageTitle.appendChild(tagsContainer)
   }
 
-  // Structure: page-title is sibling to VPContent (inserted before it)
+  // Create dp-docs wrapper
+  const dpDocs = document.createElement('div')
+  dpDocs.className = 'dp-docs'
+
+  // Find .main and .VPDocFooter elements
+  const mainElement = document.querySelector('.main')
+  const docFooter = document.querySelector('.VPDocFooter')
+
+  // Move them into dp-docs wrapper
+  if (mainElement) {
+    dpDocs.appendChild(mainElement)
+  }
+  if (docFooter) {
+    dpDocs.appendChild(docFooter)
+  }
+
+  // Structure: page-title is sibling to VPContent and dp-docs
   parent.insertBefore(pageTitle, vpContent)
+  parent.insertBefore(dpDocs, vpContent.nextSibling)
 
   // Hide default h1 in content
   const defaultH1 = content.querySelector('h1')
@@ -207,7 +239,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Injected page-title as sibling to VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Injected page-title and dp-docs wrapper as siblings to VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {

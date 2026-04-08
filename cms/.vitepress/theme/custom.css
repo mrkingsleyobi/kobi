@@ -488,6 +488,23 @@ div[class*='language-'] {
   padding-left: 13.5rem;
 }
 
+/* dp-docs wrapper - sibling to VPContent */
+.dp-docs {
+  position: relative;
+  padding-left: 13.5rem;
+  width: 100%;
+}
+
+/* Ensure .main inside dp-docs is properly styled */
+.dp-docs .main {
+  width: 100%;
+}
+
+/* Ensure .VPDocFooter inside dp-docs is properly styled */
+.dp-docs .VPDocFooter {
+  width: 100%;
+}
+
 .page-title h1 {
   display: block !important;
   font-size: 0.875rem;
