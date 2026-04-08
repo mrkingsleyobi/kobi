@@ -134,6 +134,7 @@ const prevPage = () => {
 
     <!-- Featured Post -->
     <section v-if="featuredPost && !loading" class="featured-post">
+      <h3 class="section-title">Featured Blog</h3>
       <a :href="`/blog/${featuredPost.slug}`" class="featured-link">
         <div v-if="featuredPost.image" class="featured-image">
           <img :src="featuredPost.image" :alt="featuredPost.title" />
@@ -251,7 +252,7 @@ const prevPage = () => {
 
 .featured-link:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 12px 24px color-mix(in srgb, var(--vp-c-text-1) 15%, transparent);
 }
 
 .featured-image {
@@ -332,7 +333,7 @@ const prevPage = () => {
 
 .post-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
 }
 
 .post-image {

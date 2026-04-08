@@ -20,11 +20,11 @@
     "blog-search": {
       "command": "node",
       "args": [
-        "/workspaces/kobi/scripts/blog-search-mcp.js"
+        "/workspaces/feature-initial-vitepress-setup/scripts/blog-search-mcp.js"
       ],
       "env": {
         "OPENAI_API_KEY": "${OPENAI_API_KEY}",
-        "BLOG_INDEX_PATH": "/workspaces/kobi/.blog-index"
+        "BLOG_INDEX_PATH": "/workspaces/feature-initial-vitepress-setup/.blog-index"
       }
     }
   }

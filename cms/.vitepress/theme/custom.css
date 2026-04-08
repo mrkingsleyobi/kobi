@@ -4,25 +4,55 @@
 @tailwind utilities;
 
 /* Daniel Miessler-inspired Theme Variables */
+
+/* Light mode colors */
 :root {
-  /* Dark theme colors (primary) */
-  --vp-c-bg: #1a1a2e;
-  --vp-c-bg-soft: #252542;
-  --vp-c-bg-elv: #2a2a4a;
-
-  /* Text colors */
-  --vp-c-text-1: #f5f5f5;
-  --vp-c-text-2: #c9c9c9;
-  --vp-c-text-3: #a0a0a0;
-
-  /* Brand/accent colors */
-  --vp-c-brand-1: #4aa38a;
-  --vp-c-brand-2: #3c8772;
-  --vp-c-brand-3: #2d6656;
+  /* Custom theme colors for light mode */
+  --custom-c-bg: #ffffff;
+  --custom-c-bg-soft: #f8f9fa;
+  --custom-c-bg-elv: #e9ecef;
+  --custom-c-text-1: #212529;
+  --custom-c-text-2: #495057;
+  --custom-c-text-3: #6c757d;
+  --custom-c-brand-1: #3c8772;
+  --custom-c-brand-2: #2d6656;
+  --custom-c-brand-3: #1e4538;
+  --custom-c-border: rgba(0, 0, 0, 0.1);
+  --custom-c-border-light: rgba(0, 0, 0, 0.05);
 
   /* Single-column layout */
   --content-max-width: 680px;
-  --vp-layout-max-width: 900px;
+  --vp-layout-max-width: 1064px;
+}
+
+/* Dark mode colors */
+.dark {
+  /* Custom theme colors for dark mode */
+  --custom-c-bg: #1a1a2e;
+  --custom-c-bg-soft: #252542;
+  --custom-c-bg-elv: #2a2a4a;
+  --custom-c-text-1: #f5f5f5;
+  --custom-c-text-2: #c9c9c9;
+  --custom-c-text-3: #a0a0a0;
+  --custom-c-brand-1: #4aa38a;
+  --custom-c-brand-2: #3c8772;
+  --custom-c-brand-3: #2d6656;
+  --custom-c-border: rgba(255, 255, 255, 0.1);
+  --custom-c-border-light: rgba(255, 255, 255, 0.05);
+}
+
+/* Apply custom theme variables to VitePress variables */
+:root {
+  --vp-c-bg: var(--custom-c-bg);
+  --vp-c-bg-soft: var(--custom-c-bg-soft);
+  --vp-c-bg-elv: var(--custom-c-bg-elv);
+  --vp-c-text-1: var(--custom-c-text-1);
+  --vp-c-text-2: var(--custom-c-text-2);
+  --vp-c-text-3: var(--custom-c-text-3);
+  --vp-c-brand-1: var(--custom-c-brand-1);
+  --vp-c-brand-2: var(--custom-c-brand-2);
+  --vp-c-brand-3: var(--custom-c-brand-3);
+  --vp-c-divider: var(--custom-c-border);
 }
 
 /* Custom typography */
@@ -57,7 +87,7 @@ aside {
 }
 
 .tutorial {
-  background-color: rgba(60, 135, 114, 0.1);
+  background-color: color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
   border-left: 3px solid var(--vp-c-brand-1);
   padding: 1rem 1.25rem;
   margin: 1rem 0;
@@ -151,7 +181,7 @@ definition cite {
 .daniel-post-content img,
 .daniel-blog-post img {
   border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
 }
 
 .daniel-post-content a img:hover,
@@ -224,7 +254,7 @@ div[class*='language-'] {
 
 /* Minimal navigation */
 .VPNav {
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--custom-c-border);
 }
 
 .VPNavBarTitle {
@@ -245,7 +275,7 @@ div[class*='language-'] {
 .daniel-blog-post {
   margin-bottom: 40px;
   padding-bottom: 40px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid var(--custom-c-border);
 }
 
 .daniel-blog-post:last-child {
@@ -311,7 +341,7 @@ div[class*='language-'] {
 
 .daniel-hero-actions a {
   padding: 0.75rem 1.5rem;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid var(--custom-c-border);
   border-radius: 4px;
   color: var(--vp-c-text-1);
   text-decoration: none;
@@ -320,12 +350,12 @@ div[class*='language-'] {
 
 .daniel-hero-actions a:hover {
   border-color: var(--vp-c-brand-1);
-  background: rgba(74, 163, 138, 0.1);
+  background: color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
 }
 
 /* Minimal footer */
 .VPFooter {
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  border-top: 1px solid var(--custom-c-border);
   padding: 2rem 0;
 }
 
@@ -344,7 +374,7 @@ div[class*='language-'] {
   position: relative;
   max-width: 1000px;
   margin: 0 auto;
-  padding: 60px 40px 60px 2.5rem;
+  padding: 60px 40px 60px 1.5rem;
 }
 
 /* Page Title in Left Gutter (OUTSIDE VPDoc) */
@@ -353,8 +383,8 @@ div[class*='language-'] {
   float: left;
   position: absolute;
   margin-left: 0;
-  left: 2.5rem;
-  width: 7.5rem;
+  left: 1.5rem;
+  width: 10rem;
   text-align: right;
   list-style-type: none;
   clear: both;
@@ -422,7 +452,7 @@ div[class*='language-'] {
 
 /* VPDoc container adjusts for left gutter */
 .page-wrapper .VPDoc .container {
-  padding-left: 12rem;
+  padding-left: 13.5rem;
 }
 
 /* Hide default h1 */
@@ -432,7 +462,7 @@ div[class*='language-'] {
 
 /* Content area - right padding */
 .page-wrapper .VPDoc .container {
-  padding-right: 2rem;
+  padding-right: 1.5rem;
 }
 
 /* Mobile responsive */

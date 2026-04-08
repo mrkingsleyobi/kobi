@@ -18,7 +18,7 @@ export default defineConfig({
     ['meta', { name: 'twitter:site', content: '@kingsleyobi' }]
   ],
 
-  lastUpdated: true,
+  lastUpdated: false,
   cleanUrls: true,
 
   themeConfig: {
@@ -43,17 +43,9 @@ export default defineConfig({
       copyright: '© 2024 Kingsley Obi'
     },
 
-    editLink: {
-      pattern: 'https://github.com/kingsleyobi/kingsleyobi.com/edit/main/cms/:path',
-      text: 'Edit this page on GitHub'
-    },
-
-    lastUpdatedText: 'Last Updated',
-
-    outline: {
-      level: [2, 3],
-      label: 'On this page'
-    }
+    editLink: false,
+    outline: false,
+    skipToContentLabel: false
   },
 
   markdown: {
