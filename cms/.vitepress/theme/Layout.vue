@@ -132,27 +132,33 @@ const injectGutter = () => {
 
   console.log('Layout: Cleaned up', allWrappers.length, 'wrappers and', allPageTitles.length, 'page titles')
 
-  // Find the current VPDoc
-  const doc = document.querySelector('.VPDoc')
-  if (!doc) {
-    console.log('Layout: VPDoc not found, retrying...')
+  // Find VPContent (not VPDoc)
+  const vpContent = document.querySelector('.VPContent')
+  if (!vpContent) {
+    console.log('Layout: VPContent not found, retrying...')
     return
   }
 
   // Find the content div within VPDoc
+  const doc = vpContent.querySelector('.VPDoc')
+  if (!doc) {
+    console.log('Layout: VPDoc not found in VPContent, retrying...')
+    return
+  }
+
   const content = doc.querySelector('.content')
   if (!content) {
     console.log('Layout: .content not found in VPDoc, retrying...')
     return
   }
 
-  const parent = doc.parentElement
+  const parent = vpContent.parentElement
   if (!parent) {
-    console.log('Layout: VPDoc parent not found')
+    console.log('Layout: VPContent parent not found')
     return
   }
 
-  // Create page-title (sibling to content, no wrapper)
+  // Create page-title
   const pageTitle = document.createElement('div')
   pageTitle.className = 'page-title'
 
@@ -192,9 +198,8 @@ const injectGutter = () => {
     pageTitle.appendChild(tagsContainer)
   }
 
-  // Structure: page-title and content are siblings, no wrapper
-  parent.insertBefore(pageTitle, doc)
-  // content stays where it is in VPDoc
+  // Structure: page-title is sibling to VPContent (inserted before it)
+  parent.insertBefore(pageTitle, vpContent)
 
   // Hide default h1 in content
   const defaultH1 = content.querySelector('h1')
@@ -202,7 +207,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Injected page-title as sibling to content (no wrapper) for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Injected page-title as sibling to VPContent for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {

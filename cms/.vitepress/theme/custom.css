@@ -467,17 +467,25 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Page Title in Left Gutter (sibling to content) */
+/* Page Title in Left Gutter (sibling to VPContent) */
 .page-title {
   display: block;
   position: absolute;
   left: 1.5rem;
+  top: 0;
   width: 10rem;
   text-align: right;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
   margin-top: 60px;
+  z-index: 1;
+}
+
+/* VPContent needs padding-left to account for page-title gutter */
+.VPContent {
+  position: relative;
+  padding-left: 13.5rem;
 }
 
 .page-title h1 {
@@ -536,9 +544,9 @@ div[class*='language-'] {
   text-decoration: underline;
 }
 
-/* VPDoc container adjusts for left gutter (content is now sibling) */
+/* VPDoc container - padding already applied at VPContent level */
 .VPDoc .container {
-  padding-left: 13.5rem;
+  padding-left: 0;
   padding-right: 1.5rem;
   padding-top: 60px;
 }
