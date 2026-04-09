@@ -187,6 +187,18 @@ const injectGutter = () => {
     wrapper.remove()
   })
 
+  // Show VPContent and Layout again after cleanup
+  const vpContent = document.querySelector('.VPContent')
+  const layout = document.querySelector('.Layout')
+
+  if (vpContent) {
+    vpContent.style.display = ''
+  }
+
+  if (layout) {
+    layout.style.display = ''
+  }
+
   console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles,', allDpDocs.length, 'dp-doc wrappers, and', allMyContents.length, 'my-content wrappers')
 
   // Find VPContent (not VPDoc)
@@ -298,8 +310,15 @@ const injectGutter = () => {
     app.insertBefore(vpFooter, layout.nextElementSibling)
   }
 
+  // Hide the original Layout element since we're using my-content wrapper
+  if (layout) {
+    layout.style.display = 'none'
+  }
+
   // Hide VPContent since we've extracted its content
-  vpContent.style.display = 'none'
+  if (vpContent) {
+    vpContent.style.display = 'none'
+  }
 
   // Hide default h1 in content
   const defaultH1 = content.querySelector('h1')
