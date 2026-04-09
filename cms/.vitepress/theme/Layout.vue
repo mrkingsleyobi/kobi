@@ -202,22 +202,15 @@ const injectGutter = () => {
   console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles,', allDpDocs.length, 'dp-doc wrappers, and', allMyContents.length, 'my-content wrappers')
 
   // Find VPContent (not VPDoc)
-  const vpContent = document.querySelector('.VPContent')
-  if (!vpContent) {
-    console.log('Layout: VPContent not found, retrying...')
-    return
-  }
-
-  // Find the content div within VPDoc
-  const doc = vpContent.querySelector('.VPDoc')
+  const doc = document.querySelector('.VPDoc')
   if (!doc) {
-    console.log('Layout: VPDoc not found in VPContent, retrying...')
+    console.log('Layout: VPDoc not found')
     return
   }
 
   const content = doc.querySelector('.content')
   if (!content) {
-    console.log('Layout: .content not found in VPDoc, retrying...')
+    console.log('Layout: .content not found in VPDoc')
     return
   }
 
