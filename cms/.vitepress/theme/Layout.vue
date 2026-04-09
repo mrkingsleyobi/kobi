@@ -220,6 +220,10 @@ const injectGutter = () => {
     return
   }
 
+  // Get navbar and vpFooter for later use
+  const navbar = document.querySelector('.VPNav')
+  const vpFooter = document.querySelector('.VPFooter')
+
   // Create page-title
   const pageTitle = document.createElement('div')
   pageTitle.className = 'page-title'
@@ -272,11 +276,7 @@ const injectGutter = () => {
     dpDocs.appendChild(mainElement)
   }
 
-  // Get app, navbar, and layout elements
-  const navbar = document.querySelector('.VPNav')
-  const layout = document.querySelector('.Layout')
-  const vpFooter = document.querySelector('.VPFooter')
-
+  // Get app, navbar, and layout elements (already declared above)
   if (!app || !layout) {
     console.log('Layout: Could not find app or layout')
     return
@@ -309,6 +309,7 @@ const injectGutter = () => {
   }
 
   // Hide VPContent since we've extracted its content
+  const vpContent = document.querySelector('.VPContent')
   if (vpContent) {
     vpContent.style.display = 'none'
   }
