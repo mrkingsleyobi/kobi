@@ -10,12 +10,13 @@
   box-sizing: border-box;
 }
 
-html,
+/*html,
 body {
   overflow-x: hidden;
   width: 100%;
   max-width: 100vw;
-}
+}*/
+
 
 /* Prevent content overflow */
 .VPDoc,
@@ -124,14 +125,14 @@ table {
   font-weight: 500;
 }
 
-aside {
+/*aside {
   background-color: var(--vp-c-bg-soft);
   padding: 0.75rem 1rem;
   margin: 1rem 0;
   border-radius: 4px;
   font-style: italic;
   font-size: 0.95em;
-}
+}*/
 
 .tutorial {
   background-color: color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
@@ -467,14 +468,14 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Container for page-title and dp-doc siblings */
+/* Container for page-title and dp-doc siblings 
 .page-title,
 .dp-doc {
   position: relative;
   width: 100%;
-}
+}*/
 
-/* Page Title in Left Gutter */
+/* Page Title in Left Gutter 
 .page-title {
   position: absolute;
   left: 1.5rem;
@@ -485,24 +486,24 @@ div[class*='language-'] {
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
   z-index: 1;
-}
+}*/
 
-/* dp-doc wrapper - sibling to page-title */
+/* dp-doc wrapper - sibling to page-title 
 .dp-doc {
   padding-left: 13.5rem;
   padding-right: 1.5rem;
-}
+}*/
 
-/* Ensure .main inside dp-doc is properly styled */
+/* Ensure .main inside dp-doc is properly styled 
 .dp-doc .main {
   width: 100%;
-}
+}*/
 
-/* Ensure .VPDocFooter inside dp-doc is properly styled */
+/* Ensure .VPDocFooter inside dp-doc is properly styled 
 .dp-doc .VPDocFooter {
   width: 100%;
-}
-
+}*/
+/*
 .page-title h1 {
   display: block !important;
   font-size: 0.875rem;
@@ -524,8 +525,8 @@ div[class*='language-'] {
   color: var(--vp-c-text-3);
   line-height: 1.4;
 }
-
-/* Metadata elements within page-title */
+*/
+/* Metadata elements within page-title 
 .page-title .meta-info {
   font-size: 0.6875rem;
   color: var(--vp-c-text-3);
@@ -557,7 +558,7 @@ div[class*='language-'] {
 .page-title .tag:hover {
   color: var(--vp-c-brand-2);
   text-decoration: underline;
-}
+}*/
 
 /* VPDoc container - padding already applied at VPContent level */
 .VPDoc .container {
@@ -571,7 +572,7 @@ div[class*='language-'] {
   display: none;
 }
 
-/* Mobile responsive */
+/* Mobile responsive
 @media (max-width: 768px) {
   .page-title {
     position: static;
@@ -595,9 +596,9 @@ div[class*='language-'] {
     padding-right: 20px;
     padding-top: 40px;
   }
-}
+} */
 
-/* Extra small mobile */
+/* Extra small mobile 
 @media (max-width: 480px) {
   .page-title {
     margin-top: 30px;
@@ -608,7 +609,7 @@ div[class*='language-'] {
     padding-right: 15px;
     padding-top: 30px;
   }
-}
+}*/
 
 /* Homepage - hide default hero and features */
 .VPHome .VPHero {
@@ -655,4 +656,184 @@ div[class*='language-'] {
   display: block !important;
 }
 
+/* What I added */
+aside {
+  font-family: heliotrope-t3;
+  font-size: .83rem;
+  line-height: 1.4;
+  color: var(--vp-c-text-3);
+  letter-spacing: .015em;
+  -webkit-hyphens: none;
+  hyphens: none;
+  font-feature-settings: "liga"
+}
 
+.page-title {
+  margin-bottom: 2em;
+  font-weight: 400;
+  font-family: equity-text;
+  border-top: solid 3px var(--vp-c-brand);
+  padding-top: 5px
+}
+
+.frontmatter-subtitle {
+  font-family: valkyrie-text;
+  display: block;
+  font-size: 95%;
+  font-weight: 300;
+  font-color: #gray;
+  line-height: 1.25;
+  font-style: italic;
+  -webkit-hyphens: none;
+  hyphens: none
+}
+
+.page-title,aside {
+  display: block;
+  float: left;
+  position: absolute;
+  margin-left: 0;
+  left: 2.5rem;
+  width: 7.5rem;
+  text-align: right;
+  list-style-type: none;
+  clear: both;
+  margin-bottom: 1rem;
+  font-variant-numeric: normal
+}
+
+.frontmatter-title {
+  display: block;
+  font-family: valkyrie-text;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: .02em;
+  -webkit-hyphens: none;
+  hyphens: none
+}
+
+.frontmatter-title.small {
+  font-family: inherit;
+  font-size: 170%;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-style: italic;
+  padding-top: .1em;
+  padding-bottom: .15em
+}
+
+@media all and (max-width: 520px) {
+  div#app {
+      margin:1.5rem;
+      padding: 0
+  }
+}
+
+.frontmatter-title.commentary {
+  font-size: 2.1rem;
+  border-top: none;
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding-bottom: .75rem;
+  line-height: 1;
+  margin-bottom: .6rem
+}
+
+.page-title .frontmatter-title {
+  font-family: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-size: 125%;
+  line-height: 1.1;
+  border-bottom: inherit;
+  margin-top: 0rem;
+  margin-bottom: .8rem;
+  font-weight: bolder;
+  border-top: 0;
+  padding-top: 0
+}
+
+.frontmatter-title+p {
+  font-size: 115%
+}
+
+@media all and (min-width: 1000px) {
+  html {
+      font-size:24px
+  }
+}
+
+@media all and (max-width: 520px) {
+  html {
+      font-size:21px
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0
+}
+
+li {
+  column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  break-inside: avoid-column
+}
+
+@media all and (min-width: 1200px) {
+  aside {
+      left:0;
+      width: 10rem
+  }
+}
+
+@media all and (max-width: 520px) {
+  .page-title,aside {
+      float:inherit;
+      position: inherit;
+      width: 100%;
+      text-align: left
+  }
+
+  aside {
+      background: var(--vp-c-bg-soft);
+      padding: .3rem .5rem;
+      width: 90%;
+      border: 1px solid var(--vp-c-divider);
+      border-left: 3px solid var(--vp-c-divider)
+  }
+
+  aside>p:last-child {
+      margin-bottom: 0
+  }
+}
+
+.my-content {
+  padding: 3.5rem 0 18rem;
+    margin-left: 12rem;
+    margin-right: 2.5rem;
+}
+
+body {
+  font-family: valkyrie-text,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 100%;
+  position: relative;
+  z-index: -10000;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-weight: 500;
+  line-height: 1.45;
+  font-size: .91rem;
+  font-variant-numeric: oldstyle-nums;
+  background-color: var(--vp-c-bg, #EAE9DF);
+  color: var(--vp-c-text-1, #2c1810)
+}
