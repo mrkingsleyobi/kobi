@@ -55,7 +55,7 @@ Here's how I'm thinking about it.
 
 ## Redefining Human Value
 
-<callout>We've tied human worth to economic productivity for too long. As AI takes over more productive work, we need new ways of thinking about human value.</callop>
+<callout>We've tied human worth to economic productivity for too long. As AI takes over more productive work, we need new ways of thinking about human value.</callout>
 
 **Beyond economic productivity:**
 
@@ -129,7 +129,7 @@ Diversify across multiple domains: some AI-leverage work, some human-centric wor
 
 ## The Meaning Question
 
-<tutorial>When work is no longer the primary source of meaning, we need to figure out what gives life purpose and value.</callop>
+<tutorial>When work is no longer the primary source of meaning, we need to figure out what gives life purpose and value.</callout>
 
 **Sources of meaning beyond work:**
 
@@ -148,7 +148,7 @@ We've made work the center of meaning for so long that many people don't know wh
 
 ## Finding Your Path
 
-<callout>There's no single right answer. The key is to be intentional about what you're optimizing for and why.</callop>
+<callout>There's no single right answer. The key is to be intentional about what you're optimizing for and why.</callout>
 
 **Questions to ask yourself:**
 
@@ -170,7 +170,7 @@ We've made work the center of meaning for so long that many people don't know wh
 
 ## The Optimistic Take
 
-<tutorial>The AI transition could be the beginning of a renaissance of human flourishing — if we navigate it wisely.</callop>
+<tutorial>The AI transition could be the beginning of a renaissance of human flourishing — if we navigate it wisely.</callout>
 
 **What's possible:**
 
@@ -192,7 +192,7 @@ We've made work the center of meaning for so long that many people don't know wh
 
 ## The Bottom Line
 
-<callout>The AI age forces us to confront questions we've avoided for too long: What actually matters? What gives life meaning? What's worth doing with our limited time?</callop>
+<callout>The AI age forces us to confront questions we've avoided for too long: What actually matters? What gives life meaning? What's worth doing with our limited time?</callout>
 
 Money isn't going away, and neither is work. But the relationship between them is changing.
 

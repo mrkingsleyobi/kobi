@@ -128,7 +128,7 @@ Here's a practical framework for building AI systems that align with human value
 
 ## Principle 6: Safety and Reliability
 
-<callout>AI systems should be designed to fail safely and recover gracefully. Unintended consequences should be anticipated and mitigated.</callop>
+<callout>AI systems should be designed to fail safely and recover gracefully. Unintended consequences should be anticipated and mitigated.</callout>
 
 **What this means:**
 
@@ -190,7 +190,7 @@ Here's a practical framework for building AI systems that align with human value
 
 ## The Hard Questions
 
-<callout>The most important ethical questions don't have easy answers. The goal isn't to answer them perfectly, but to take them seriously.</callop>
+<callout>The most important ethical questions don't have easy answers. The goal isn't to answer them perfectly, but to take them seriously.</callout>
 
 **Questions to wrestle with:**
 
@@ -219,7 +219,7 @@ Here's a practical framework for building AI systems that align with human value
 
 ## The Bottom Line
 
-<callout>Building ethical AI isn't about following a checklist — it's about developing wisdom and judgment through practice, reflection, and genuine engagement with these questions.</callop>
+<callout>Building ethical AI isn't about following a checklist — it's about developing wisdom and judgment through practice, reflection, and genuine engagement with these questions.</callout>
 
 AI ethics is hard. The questions don't have easy answers. But that doesn't mean we can ignore them.
 

@@ -49,6 +49,10 @@ const showGutter = computed(() => page.value.relativePath !== 'index.md')
 // Store observer reference to avoid multiple instances
 let navbarObserver: MutationObserver | null = null
 
+// Track current injection to prevent double-injection
+let currentInjectedPath: string | null = null
+let isInjecting = false
+
 // Function to add footer social links
 const addFooterSocialLinks = () => {
   const footer = document.querySelector('.VPFooter')
@@ -142,15 +146,8 @@ const updateNavbarVisibility = () => {
   }
 }
 
-// Function to inject/re-inject gutter
-const injectGutter = () => {
-  // Skip on homepage - no gutter needed, no cleanup, no DOM manipulation at all
-  if (page.value.relativePath === 'index.md') {
-    console.log('Layout: Skipping gutter for homepage - no DOM manipulation')
-    return
-  }
-
-  // For non-homepage only: clean up existing gutters, page titles, dp-doc wrappers, and my-content wrappers first
+// Function to clean up existing gutter elements
+const cleanupGutter = () => {
   const allWrappers = document.querySelectorAll('.page-wrapper')
   const allPageTitles = document.querySelectorAll('.page-title')
   const allDpDocs = document.querySelectorAll('.dp-doc')
@@ -200,147 +197,210 @@ const injectGutter = () => {
   }
 
   console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles,', allDpDocs.length, 'dp-doc wrappers, and', allMyContents.length, 'my-content wrappers')
+}
 
-  // Find VPContent (not VPDoc)
-  const doc = document.querySelector('.VPDoc')
-  if (!doc) {
-    console.log('Layout: VPDoc not found')
+// Function to inject/re-inject gutter
+const injectGutter = async () => {
+  console.log('Layout: [INJECTGUTTER] Function called')
+  console.log('Layout: [INJECTGUTTER] Current page:', page.value.relativePath)
+  console.log('Layout: [INJECTGUTTER] isInjecting:', isInjecting)
+  console.log('Layout: [INJECTGUTTER] currentInjectedPath:', currentInjectedPath)
+
+  // Prevent duplicate injections
+  if (isInjecting) {
+    console.log('Layout: [INJECTGUTTER] Already injecting, skipping duplicate call')
     return
   }
 
-  const content = doc.querySelector('.content')
-  if (!content) {
-    console.log('Layout: .content not found in VPDoc')
+  // Skip on homepage - no gutter needed, no cleanup, no DOM manipulation at all
+  if (page.value.relativePath === 'index.md') {
+    console.log('Layout: [INJECTGUTTER] Skipping gutter for homepage - no DOM manipulation')
     return
   }
 
-  const app = document.querySelector('#app')
-  if (!app) {
-    console.log('Layout: #app not found')
+  // Check if we're already on the correct page
+  if (currentInjectedPath === page.value.relativePath) {
+    console.log('Layout: [INJECTGUTTER] Already injected for', page.value.relativePath, '- skipping')
     return
   }
 
-  // Get navbar and vpFooter for later use
-  const navbar = document.querySelector('.VPNav')
-  const vpFooter = document.querySelector('.VPFooter')
+  isInjecting = true
+  console.log('Layout: [INJECTGUTTER] Starting gutter injection for', page.value.relativePath)
 
-  // Create page-title
-  const pageTitle = document.createElement('div')
-  pageTitle.className = 'page-title'
+  try {
+    // Wait for Vue to finish rendering
+    await nextTick()
 
-  // Add metadata
-  if (frontmatter.value.title) {
-    const h1 = document.createElement('h1')
-    h1.textContent = frontmatter.value.title
-    pageTitle.appendChild(h1)
-  }
+    // Clean up existing gutters first
+    cleanupGutter()
 
-  if (frontmatter.value.subtitle) {
-    const subtitle = document.createElement('div')
-    subtitle.className = 'subtitle'
-    subtitle.textContent = frontmatter.value.subtitle
-    pageTitle.appendChild(subtitle)
-  }
+    // Wait for cleanup to complete
+    await nextTick()
 
-  if (createdDate.value) {
-    const meta = document.createElement('div')
-    meta.className = 'meta-info'
-    const time = document.createElement('time')
-    time.textContent = createdDate.value
-    meta.appendChild(time)
-    pageTitle.appendChild(meta)
-  }
+    // Wait for VPDoc to actually exist in the DOM
+    let attempts = 0
+    let doc = document.querySelector('.VPDoc')
+    while (!doc && attempts < 20) {
+      await new Promise(resolve => setTimeout(resolve, 50))
+      doc = document.querySelector('.VPDoc')
+      attempts++
+      console.log('Layout: Waiting for VPDoc... attempt', attempts)
+    }
 
-  if (tags.value && tags.value.length) {
-    const tagsContainer = document.createElement('div')
-    tagsContainer.className = 'tags'
-    tags.value.forEach(tag => {
-      const tagEl = document.createElement('a')
-      tagEl.className = 'tag'
-      tagEl.textContent = tag
-      tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
-      tagsContainer.appendChild(tagEl)
-    })
-    pageTitle.appendChild(tagsContainer)
-  }
+    if (!doc) {
+      console.log('Layout: VPDoc not found after 20 attempts')
+      isInjecting = false
+      return
+    }
 
-  // Create dp-doc wrapper
-  const dpDocs = document.createElement('div')
-  dpDocs.className = 'dp-doc'
+    const content = doc.querySelector('.content')
+    if (!content) {
+      console.log('Layout: .content not found in VPDoc')
+      isInjecting = false
+      return
+    }
 
-  // Find .main element
-  const mainElement = document.querySelector('.main')
+    const app = document.querySelector('#app')
+    if (!app) {
+      console.log('Layout: #app not found')
+      isInjecting = false
+      return
+    }
 
-  // Move main into dp-doc wrapper
-  if (mainElement) {
-    dpDocs.appendChild(mainElement)
-  }
+    // Get navbar and vpFooter for later use
+    const navbar = document.querySelector('.VPNav')
+    const vpFooter = document.querySelector('.VPFooter')
+    const layout = document.querySelector('.Layout')
 
-  // Get app, navbar, and layout elements (already declared above)
-  if (!app || !layout) {
-    console.log('Layout: Could not find app or layout')
-    return
-  }
+    // Create page-title
+    const pageTitle = document.createElement('div')
+    pageTitle.className = 'page-title'
 
-  // Create my-content wrapper to contain page-title and dp-doc
-  const myContent = document.createElement('div')
-  myContent.className = 'my-content'
+    // Add metadata
+    if (frontmatter.value.title) {
+      const h1 = document.createElement('h1')
+      h1.textContent = frontmatter.value.title
+      pageTitle.appendChild(h1)
+    }
 
-  // Append page-title and dp-doc to my-content
-  myContent.appendChild(pageTitle)
-  myContent.appendChild(dpDocs)
+    if (frontmatter.value.subtitle) {
+      const subtitle = document.createElement('div')
+      subtitle.className = 'subtitle'
+      subtitle.textContent = frontmatter.value.subtitle
+      pageTitle.appendChild(subtitle)
+    }
 
-  // Structure: VPNav, my-content (containing page-title and dp-doc), Layout, VPFooter are all siblings
-  // Insert my-content after navbar
-  if (navbar) {
-    app.insertBefore(myContent, navbar.nextElementSibling)
-  } else {
-    app.insertBefore(myContent, app.firstChild)
-  }
+    if (createdDate.value) {
+      const meta = document.createElement('div')
+      meta.className = 'meta-info'
+      const time = document.createElement('time')
+      time.textContent = createdDate.value
+      meta.appendChild(time)
+      pageTitle.appendChild(meta)
+    }
 
-  // Move VPFooter after Layout
-  if (vpFooter && layout) {
-    app.insertBefore(vpFooter, layout.nextElementSibling)
-  }
+    if (tags.value && tags.value.length) {
+      const tagsContainer = document.createElement('div')
+      tagsContainer.className = 'tags'
+      tags.value.forEach(tag => {
+        const tagEl = document.createElement('a')
+        tagEl.className = 'tag'
+        tagEl.textContent = tag
+        tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
+        tagsContainer.appendChild(tagEl)
+      })
+      pageTitle.appendChild(tagsContainer)
+    }
 
-  // Hide the original Layout element since we're using my-content wrapper
-  if (layout) {
+    // Create dp-doc wrapper
+    const dpDocs = document.createElement('div')
+    dpDocs.className = 'dp-doc'
+
+    // Find .main element
+    const mainElement = document.querySelector('.main')
+
+    // Move main into dp-doc wrapper
+    if (mainElement) {
+      dpDocs.appendChild(mainElement)
+    }
+
+    // Get app, navbar, and layout elements (already declared above)
+    if (!app || !layout) {
+      console.log('Layout: Could not find app or layout')
+      isInjecting = false
+      return
+    }
+
+    // Create my-content wrapper to contain page-title and dp-doc
+    const myContent = document.createElement('div')
+    myContent.className = 'my-content'
+
+    // Append page-title and dp-doc to my-content
+    myContent.appendChild(pageTitle)
+    myContent.appendChild(dpDocs)
+
+    // Structure: VPNav, my-content (containing page-title and dp-doc), Layout, VPFooter are all siblings
+    // Insert my-content after navbar
+    if (navbar) {
+      app.insertBefore(myContent, navbar.nextElementSibling)
+    } else {
+      app.insertBefore(myContent, app.firstChild)
+    }
+
+    // Move VPFooter after Layout
+    if (vpFooter && layout) {
+      app.insertBefore(vpFooter, layout.nextElementSibling)
+    }
+
+    // Hide the original Layout element since we're using my-content wrapper
     layout.style.display = 'none'
-  }
 
-  // Hide VPContent since we've extracted its content (vpContent already declared above)
-  if (vpContent) {
-    vpContent.style.display = 'none'
-  }
+    // Hide VPContent since we've extracted its content
+    const vpContent = document.querySelector('.VPContent')
+    if (vpContent) {
+      vpContent.style.display = 'none'
+    }
 
-  // Hide default h1 in content
-  const defaultH1 = content.querySelector('h1')
-  if (defaultH1) {
-    defaultH1.style.display = 'none'
-  }
+    // Hide default h1 in content
+    const defaultH1 = content.querySelector('h1')
+    if (defaultH1) {
+      defaultH1.style.display = 'none'
+    }
 
-  console.log('Layout: Created my-content wrapper containing page-title and dp-doc as sibling to Layout and VPFooter for', page.value.relativePath, 'with title:', frontmatter.value.title)
+    // Update state to track successful injection
+    currentInjectedPath = page.value.relativePath
+    console.log('Layout: Successfully created my-content wrapper for', page.value.relativePath, 'with title:', frontmatter.value.title)
+
+  } catch (error) {
+    console.error('Layout: Error during gutter injection:', error)
+  } finally {
+    isInjecting = false
+  }
 }
 
 onMounted(() => {
   setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(addThemeTitleClass, 75)
   setTimeout(updateNavbarVisibility, 100)
-  setTimeout(injectGutter, 200)
-  setTimeout(addFooterSocialLinks, 300)
+  setTimeout(() => {
+    injectGutter()
+  }, 300)
+  setTimeout(addFooterSocialLinks, 400)
 })
 
 onUpdated(() => {
   setTimeout(moveNavbarOutsideLayout, 50)
   setTimeout(addThemeTitleClass, 75)
   setTimeout(updateNavbarVisibility, 100)
-  setTimeout(injectGutter, 200)
+  // Note: injectGutter is now handled by the route watcher, not onUpdated
   setTimeout(addFooterSocialLinks, 300)
 })
 
 // Watch for route changes
-watch(() => page.value.relativePath, (newPath, oldPath) => {
-  console.log('Layout: Route changed from', oldPath, 'to', newPath)
+watch(() => page.value.relativePath, async (newPath, oldPath) => {
+  console.log('Layout: [WATCH] Route changed from', oldPath, 'to', newPath)
+  console.log('Layout: [WATCH] Current injected path:', currentInjectedPath)
+  console.log('Layout: [WATCH] isInjecting:', isInjecting)
 
   // Update navbar visibility for all routes
   updateNavbarVisibility()
@@ -350,11 +410,38 @@ watch(() => page.value.relativePath, (newPath, oldPath) => {
 
   // Only inject gutter on non-homepage pages
   if (newPath !== 'index.md') {
-    setTimeout(injectGutter, 100)
+    console.log('Layout: [WATCH] Scheduling gutter injection in 300ms...')
+    // Longer delay to ensure Vue has finished rendering the new page
+    setTimeout(() => {
+      console.log('Layout: [WATCH] executing scheduled gutter injection')
+      injectGutter()
+    }, 300)
   } else {
-    console.log('Layout: On homepage, gutter handled by CSS')
+    console.log('Layout: [WATCH] On homepage, gutter handled by CSS')
+    // Clean up any existing gutter when navigating to homepage
+    cleanupGutter()
+    // Reset injection state
+    currentInjectedPath = null
   }
 })
+
+// Also use VitePress router hooks for more reliable navigation detection
+router.onAfterRouteChanged = () => {
+  console.log('Layout: [ROUTER HOOK] onAfterRouteChanged fired')
+  console.log('Layout: [ROUTER HOOK] Current path:', page.value.relativePath)
+
+  if (page.value.relativePath !== 'index.md') {
+    console.log('Layout: [ROUTER HOOK] Scheduling gutter injection in 400ms...')
+    setTimeout(() => {
+      console.log('Layout: [ROUTER HOOK] Executing gutter injection from router hook')
+      injectGutter()
+    }, 400)
+  } else {
+    console.log('Layout: [ROUTER HOOK] Homepage detected, cleaning up')
+    cleanupGutter()
+    currentInjectedPath = null
+  }
+}
 
 // Watch for frontmatter changes
 watch(() => frontmatter.value, () => {

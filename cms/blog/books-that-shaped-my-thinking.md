@@ -101,7 +101,7 @@ Most behavior change advice focuses on goals and motivation. Clear focuses on sy
 
 ## Surfaces and Essences by Douglas Hofstadter and Emmanuel Sandler
 
-<callout>Deep, challenging, and ultimately transformative. This book will change how you think about analogy, categorization, and what it means to understand something.</call-top>
+<callout>Deep, challenging, and ultimately transformative. This book will change how you think about analogy, categorization, and what it means to understand something.</callout>
 
 **Why it mattered:**
 
