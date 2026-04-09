@@ -139,10 +139,11 @@ const injectGutter = () => {
     return
   }
 
-  // For non-homepage only: clean up existing gutters, page titles, and dp-doc wrappers first
+  // For non-homepage only: clean up existing gutters, page titles, dp-doc wrappers, and my-content wrappers first
   const allWrappers = document.querySelectorAll('.page-wrapper')
   const allPageTitles = document.querySelectorAll('.page-title')
   const allDpDocs = document.querySelectorAll('.dp-doc')
+  const allMyContents = document.querySelectorAll('.my-content')
 
   // Restore any previously wrapped content back to original structure
   allDpDocs.forEach(wrapper => {
@@ -170,7 +171,12 @@ const injectGutter = () => {
     title.remove()
   })
 
-  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles, and', allDpDocs.length, 'dp-doc wrappers')
+  // Clean up my-content wrappers
+  allMyContents.forEach(wrapper => {
+    wrapper.remove()
+  })
+
+  console.log('Layout: Cleaned up', allWrappers.length, 'wrappers,', allPageTitles.length, 'page titles,', allDpDocs.length, 'dp-doc wrappers, and', allMyContents.length, 'my-content wrappers')
 
   // Find VPContent (not VPDoc)
   const vpContent = document.querySelector('.VPContent')
@@ -260,16 +266,21 @@ const injectGutter = () => {
     return
   }
 
-  // Structure: VPNav, page-title, dp-doc, Layout, VPFooter are all siblings
-  // Insert page-title after navbar
-  if (navbar) {
-    app.insertBefore(pageTitle, navbar.nextElementSibling)
-  } else {
-    app.insertBefore(pageTitle, app.firstChild)
-  }
+  // Create my-content wrapper to contain page-title and dp-doc
+  const myContent = document.createElement('div')
+  myContent.className = 'my-content'
 
-  // Insert dp-doc after page-title
-  app.insertBefore(dpDocs, pageTitle.nextElementSibling)
+  // Append page-title and dp-doc to my-content
+  myContent.appendChild(pageTitle)
+  myContent.appendChild(dpDocs)
+
+  // Structure: VPNav, my-content (containing page-title and dp-doc), Layout, VPFooter are all siblings
+  // Insert my-content after navbar
+  if (navbar) {
+    app.insertBefore(myContent, navbar.nextElementSibling)
+  } else {
+    app.insertBefore(myContent, app.firstChild)
+  }
 
   // Move VPFooter after Layout
   if (vpFooter && layout) {
@@ -285,7 +296,7 @@ const injectGutter = () => {
     defaultH1.style.display = 'none'
   }
 
-  console.log('Layout: Created page-title, dp-doc, and VPFooter as siblings to Layout and header for', page.value.relativePath, 'with title:', frontmatter.value.title)
+  console.log('Layout: Created my-content wrapper containing page-title and dp-doc as sibling to Layout and VPFooter for', page.value.relativePath, 'with title:', frontmatter.value.title)
 }
 
 onMounted(() => {
