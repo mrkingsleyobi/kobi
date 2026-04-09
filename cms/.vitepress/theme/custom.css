@@ -51,6 +51,14 @@ code, pre, kbd, samp {
   font-family: var(--font-mono) !important;
 }
 
+/* Theme title styling */
+.theme-title {
+  font-family: 'advocate-c41', Georgia, serif;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 100;
+}
+
 /* Global responsive fixes */
 *,
 *::before,

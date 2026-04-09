@@ -95,6 +95,17 @@ const addFooterSocialLinks = () => {
 }
 
 // Function to hide/show navbar based on page
+// Function to add theme-title class to navbar title
+const addThemeTitleClass = () => {
+  const navbarTitle = document.querySelector('.VPNavBarTitle .title')
+  if (navbarTitle) {
+    const span = navbarTitle.querySelector('span')
+    if (span && !span.classList.contains('theme-title')) {
+      span.classList.add('theme-title')
+    }
+  }
+}
+
 const updateNavbarVisibility = () => {
   const navbar = document.querySelector('.VPNavBar')
   if (!navbar) return
@@ -301,6 +312,7 @@ const injectGutter = () => {
 
 onMounted(() => {
   setTimeout(moveNavbarOutsideLayout, 50)
+  setTimeout(addThemeTitleClass, 75)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
@@ -308,6 +320,7 @@ onMounted(() => {
 
 onUpdated(() => {
   setTimeout(moveNavbarOutsideLayout, 50)
+  setTimeout(addThemeTitleClass, 75)
   setTimeout(updateNavbarVisibility, 100)
   setTimeout(injectGutter, 200)
   setTimeout(addFooterSocialLinks, 300)
@@ -319,6 +332,9 @@ watch(() => page.value.relativePath, (newPath, oldPath) => {
 
   // Update navbar visibility for all routes
   updateNavbarVisibility()
+
+  // Apply theme title class to navbar
+  addThemeTitleClass()
 
   // Only inject gutter on non-homepage pages
   if (newPath !== 'index.md') {
