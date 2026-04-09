@@ -308,8 +308,7 @@ const injectGutter = () => {
     layout.style.display = 'none'
   }
 
-  // Hide VPContent since we've extracted its content
-  const vpContent = document.querySelector('.VPContent')
+  // Hide VPContent since we've extracted its content (vpContent already declared above)
   if (vpContent) {
     vpContent.style.display = 'none'
   }
