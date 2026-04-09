@@ -1,7 +1,55 @@
+/* Custom Fonts */
+@import '/fonts/core-fonts.css';
+@import '/fonts/valkyrie-light.css';
+@import '/fonts/concourse-light.css';
+@import '/fonts/equity-light.css';
+
 /* Tailwind CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Font Family Configuration */
+:root {
+  --font-heading: 'valkyrie-text', Georgia, serif;
+  --font-body: 'equity-text', Georgia, serif;
+  --font-ui: 'concourse-text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'triplicate-text', 'SF Mono', Monaco, monospace;
+}
+
+/* Apply custom fonts to VitePress elements */
+.VPDoc h1,
+.VPDoc h2,
+.VPDoc h3,
+.VPDoc h4,
+.VPDoc h5,
+.VPDoc h6,
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading) !important;
+}
+
+.VPDoc .content,
+.VPDoc p,
+.VPDoc li,
+.VPDoc td,
+.VPDoc th,
+body {
+  font-family: var(--font-body) !important;
+}
+
+.VPSkipLink,
+.VPNavBar,
+.VPNav,
+.VPSidebar,
+.VPLocalNav,
+button, .btn,
+.VPButton {
+  font-family: var(--font-ui) !important;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono) !important;
+}
 
 /* Global responsive fixes */
 *,
