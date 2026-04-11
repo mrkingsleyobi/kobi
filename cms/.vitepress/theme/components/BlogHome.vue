@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { ref, onMounted, computed } from 'vue'
 import type { BlogPostData } from '../types'
+import ShareButtons from './ShareButtons.vue'
+import FollowButtons from './FollowButtons.vue'
 
 const posts = ref<BlogPostData[]>([])
 const featuredPost = ref<BlogPostData | null>(null)
@@ -211,6 +213,14 @@ const prevPage = () => {
         >
           Next →
         </button>
+      </div>
+    </section>
+
+    <!-- Share and Follow Buttons -->
+    <section v-if="!loading" class="share-follow-section">
+      <div class="share-follow-container">
+        <ShareButtons url="https://kingsleyobi.com/blog/" title="Blog" />
+        <FollowButtons url="https://kingsleyobi.com/blog/" title="Blog" />
       </div>
     </section>
   </div>
@@ -614,6 +624,32 @@ const prevPage = () => {
 
   .pagination {
     padding-top: 20px;
+  }
+}
+
+/* Share and Follow Section */
+.share-follow-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.share-follow-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+@media (max-width: 768px) {
+  .share-follow-section {
+    padding: 0 16px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .share-follow-section {
+    padding: 0 12px 32px;
   }
 }
 </style>

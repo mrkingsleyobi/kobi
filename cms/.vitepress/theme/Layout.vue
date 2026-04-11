@@ -4,6 +4,8 @@ import DefaultTheme from 'vitepress/theme'
 import { useData, useRouter } from 'vitepress'
 import type { Frontmatter } from './types'
 import { formatDate, parseTags } from './utils/format'
+import ShareButtons from './components/ShareButtons.vue'
+import FollowButtons from './components/FollowButtons.vue'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
@@ -452,11 +454,53 @@ watch(() => frontmatter.value, () => {
 
 <template>
   <Layout />
+  <!-- Share and Follow Buttons for Blog Posts -->
+  <div v-if="page.relativePath.startsWith('blog/')" class="blog-post-footer">
+    <div class="blog-post-footer-container">
+      <ShareButtons
+        :url="`https://kingsleyobi.com/${page.relativePath.replace('.md', '')}`"
+        :title="frontmatter.title || page.title"
+      />
+      <FollowButtons
+        :url="`https://kingsleyobi.com/${page.relativePath.replace('.md', '')}`"
+        :title="frontmatter.title || page.title"
+      />
+    </div>
+  </div>
 </template>
 
 <style>
 /* Hide skip to content link on landing page */
 .VPSkipLink {
   display: none !important;
+}
+
+/* Blog Post Footer with Share and Follow Buttons */
+.blog-post-footer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 60px auto 0;
+  padding: 0 20px 60px;
+}
+
+.blog-post-footer-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding-top: 32px;
+  border-top: 1px solid var(--vp-c-divider);
+}
+
+@media (max-width: 768px) {
+  .blog-post-footer {
+    padding: 0 16px 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-post-footer {
+    padding: 0 12px 32px;
+    margin-top: 40px;
+  }
 }
 </style>
