@@ -61,10 +61,10 @@ const followLinks = computed(() => [
           :class="link.className"
           :title="link.name"
         >
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
             <path :d="link.icon" />
           </svg>
-          {{ link.label }}
+          <span>{{ link.label }}</span>
         </a>
       </div>
     </div>
@@ -73,63 +73,120 @@ const followLinks = computed(() => [
 
 <style scoped>
 .cta-section {
-  margin: 32px 0;
+  margin: 24px 0 0 0;
 }
 
 .button-group {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
 }
 
 .section-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--vp-c-text-1);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--vp-c-text-2);
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
+  margin-bottom: 4px;
 }
 
 .cta-row {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  align-items: center;
 }
 
 .cta-button {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
+  gap: 8px;
+  padding: 8px 14px;
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
+  border-radius: 8px;
   color: var(--vp-c-text-1);
-  font-size: 0.875rem;
-  font-weight: 500;
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--vp-c-brand-1);
+  opacity: 0;
+  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 8px;
+  z-index: 0;
 }
 
 .cta-button:hover {
-  background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.cta-button:hover::before {
+  opacity: 1;
+}
+
+.cta-button:hover svg,
+.cta-button:hover span {
   color: white;
-  transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 1;
 }
 
 .cta-button svg {
   flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-button span {
+  position: relative;
+  z-index: 1;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 @media (max-width: 768px) {
+  .cta-section {
+    margin: 20px 0 0 0;
+  }
+
   .cta-row {
-    flex-direction: column;
+    gap: 8px;
   }
 
   .cta-button {
+    padding: 9px 14px;
+    font-size: 0.8125rem;
+    flex: 1 1 calc(50% - 4px);
     justify-content: center;
+    min-width: 140px;
+  }
+}
+
+@media (max-width: 480px) {
+  .cta-button {
+    flex: 1 1 100%;
+    min-width: 100%;
   }
 }
 </style>
