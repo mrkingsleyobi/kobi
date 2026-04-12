@@ -27,6 +27,7 @@ export interface BlogPostData {
   image?: string | null
   excerpt?: string
   description?: string
+  curation?: string
 }
 
 export interface Frontmatter {

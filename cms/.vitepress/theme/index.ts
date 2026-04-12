@@ -11,6 +11,8 @@ import Usage from './components/Usage.vue'
 import DefinitionCite from './components/DefinitionCite.vue'
 import BlogHome from './components/BlogHome.vue'
 import LandingPage from './components/LandingPage.vue'
+import ContentStats from './components/ContentStats.vue'
+import SupportSection from './components/SupportSection.vue'
 
 export default {
   ...DefaultTheme,
@@ -26,6 +28,8 @@ export default {
     app.component('definition-cite', DefinitionCite)
     app.component('BlogHome', BlogHome)
     app.component('LandingPage', LandingPage)
+    app.component('ContentStats', ContentStats)
+    app.component('SupportSection', SupportSection)
   },
   Layout: Layout
 }

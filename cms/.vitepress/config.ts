@@ -22,6 +22,31 @@ export default defineConfig({
   lastUpdated: false,
   cleanUrls: true,
 
+  search: {
+    provider: 'local',
+    options: {
+      locales: {
+        root: {
+          translations: {
+            button: {
+              buttonText: 'Search',
+              buttonAriaLabel: 'Search'
+            },
+            modal: {
+              noResultsText: 'No results for',
+              resetButtonTitle: 'Clear search query',
+              footer: {
+                selectText: 'to select',
+                navigateText: 'to navigate',
+                closeText: 'to close'
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },

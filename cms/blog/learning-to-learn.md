@@ -12,6 +12,7 @@ meta_og_description: "Strategies for effective learning and skill development"
 meta_twitter_title: "Learning to Learn: The Most Valuable Skill in the AI Age"
 meta_twitter_description: "Strategies for effective learning and skill development"
 status: published
+curation: recommended
 description: "Strategies for effective learning and skill development in a rapidly changing world"
 ---
 

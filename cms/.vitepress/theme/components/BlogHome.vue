@@ -3,12 +3,16 @@ import { ref, onMounted, computed } from 'vue'
 import type { BlogPostData } from '../types'
 import ShareButtons from './ShareButtons.vue'
 import FollowButtons from './FollowButtons.vue'
+import ContentStats from './ContentStats.vue'
+import SupportSection from './SupportSection.vue'
 
 const posts = ref<BlogPostData[]>([])
 const featuredPost = ref<BlogPostData | null>(null)
+const curatedPosts = ref<BlogPostData[]>([])
 const loading = ref(true)
 const currentPage = ref(1)
 const postsPerPage = 6
+const activeFilter = ref<string>('all')
 
 onMounted(async () => {
   try {
@@ -61,7 +65,8 @@ onMounted(async () => {
           tags: frontmatter.tags ? frontmatter.tags.split('|').map((t: string) => t.trim()) : [],
           image,
           excerpt,
-          description: frontmatter.description || excerpt
+          description: frontmatter.description || excerpt,
+          curation: frontmatter.curation || undefined
         })
       }
     }
@@ -73,10 +78,18 @@ onMounted(async () => {
 
     posts.value = postData
 
-    // Set first post as featured
-    if (postData.length > 0) {
+    // Set featured post as curated post if available, otherwise first post
+    const featuredCuration = postData.find(post => post.curation === 'featured')
+    if (featuredCuration) {
+      featuredPost.value = featuredCuration
+    } else if (postData.length > 0) {
       featuredPost.value = postData[0]
     }
+
+    // Set curated posts (featured, recommended, top)
+    curatedPosts.value = postData.filter(post =>
+      post.curation === 'featured' || post.curation === 'recommended' || post.curation === 'top'
+    )
   } catch (error) {
     console.error('Error loading blog posts:', error)
   } finally {
@@ -87,26 +100,43 @@ onMounted(async () => {
 const formatDate = (dateStr: string) => {
   if (!dateStr) return ''
   const date = new Date(dateStr)
-  return date.toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  })
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const day = String(date.getDate()).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${month}/${day}/${year}`
 }
 
-// Computed properties for pagination
-const totalPages = computed(() => {
-  // Exclude featured post from pagination
-  const nonFeaturedPosts = posts.value.filter((_, index) => index !== 0)
-  return Math.ceil(nonFeaturedPosts.length / postsPerPage)
+// Computed properties for filtering
+const filteredPosts = computed(() => {
+  if (activeFilter.value === 'all') {
+    return posts.value
+  }
+
+  if (activeFilter.value === 'featured') {
+    return posts.value.filter(post => post.curation === 'featured')
+  }
+
+  if (activeFilter.value === 'recommended') {
+    return posts.value.filter(post => post.curation === 'recommended' || post.curation === 'top')
+  }
+
+  return posts.value
 })
 
+// Update paginatedPosts to use filteredPosts
 const paginatedPosts = computed(() => {
-  // Exclude featured post and get posts for current page
-  const nonFeaturedPosts = posts.value.filter((_, index) => index !== 0)
+  // Exclude featured post and get posts for current page from filtered results
+  const nonFeaturedPosts = filteredPosts.value.filter((_, index) => index !== 0)
   const startIndex = (currentPage.value - 1) * postsPerPage
   const endIndex = startIndex + postsPerPage
   return nonFeaturedPosts.slice(startIndex, endIndex)
+})
+
+// Update totalPages to use filteredPosts
+const totalPages = computed(() => {
+  // Exclude featured post from pagination
+  const nonFeaturedPosts = filteredPosts.value.filter((_, index) => index !== 0)
+  return Math.ceil(nonFeaturedPosts.length / postsPerPage)
 })
 
 const goToPage = (page: number) => {
@@ -125,6 +155,34 @@ const prevPage = () => {
     goToPage(currentPage.value - 1)
   }
 }
+
+const setFilter = (filter: string) => {
+  activeFilter.value = filter
+  currentPage.value = 1
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Computed property for stats (for curation header)
+const stats = computed(() => {
+  if (posts.value.length === 0) return { yearsActive: '0' }
+
+  const dates = posts.value
+    .map(post => new Date(post.created_at))
+    .filter(date => !isNaN(date.getTime()))
+
+  if (dates.length === 0) return { yearsActive: '0' }
+
+  const oldestDate = new Date(Math.min(...dates.map(d => d.getTime())))
+  const newestDate = new Date(Math.max(...dates.map(d => d.getTime())))
+
+  const yearsDiff = newestDate.getFullYear() - oldestDate.getFullYear()
+  const monthsDiff = newestDate.getMonth() - oldestDate.getMonth()
+  const totalMonths = yearsDiff * 12 + monthsDiff
+
+  return {
+    yearsActive: (totalMonths / 12).toFixed(2)
+  }
+})
 </script>
 
 <template>
@@ -133,6 +191,39 @@ const prevPage = () => {
     <div v-if="loading" class="loading">
       Loading posts...
     </div>
+
+    <!-- Content Statistics -->
+    <ContentStats v-if="!loading" />
+
+    <!-- Content Curation Filters -->
+    <section v-if="!loading && curatedPosts.length > 0" class="curation-filters">
+      <h2 class="section-header">Top/Recommended Content <span class="time-span">(across {{ stats.yearsActive }} years)</span></h2>
+      <div class="filter-container">
+        <button
+          class="filter-btn"
+          :class="{ active: activeFilter === 'all' }"
+          @click="setFilter('all')"
+        >
+          all <span class="filter-count">({{ posts.length }})</span>
+        </button>
+        <button
+          v-if="curatedPosts.some(p => p.curation === 'featured')"
+          class="filter-btn"
+          :class="{ active: activeFilter === 'featured' }"
+          @click="setFilter('featured')"
+        >
+          featured <span class="filter-count">({{ curatedPosts.filter(p => p.curation === 'featured').length }})</span>
+        </button>
+        <button
+          v-if="curatedPosts.some(p => p.curation === 'recommended' || p.curation === 'top')"
+          class="filter-btn"
+          :class="{ active: activeFilter === 'recommended' }"
+          @click="setFilter('recommended')"
+        >
+          recommended <span class="filter-count">({{ curatedPosts.filter(p => p.curation === 'recommended' || p.curation === 'top').length }})</span>
+        </button>
+      </div>
+    </section>
 
     <!-- Featured Post -->
     <section v-if="featuredPost && !loading" class="featured-section">
@@ -151,7 +242,7 @@ const prevPage = () => {
           <div class="featured-meta">
             <time class="featured-date">{{ formatDate(featuredPost.created_at) }}</time>
             <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
-              <span v-for="tag in featuredPost.tags" :key="tag" class="tag">{{ tag }}</span>
+              <span v-for="tag in featuredPost.tags" :key="tag" class="tag">#{{ tag }}</span>
             </div>
           </div>
         </div>
@@ -178,7 +269,7 @@ const prevPage = () => {
             <time class="post-date">{{ formatDate(post.created_at) }}</time>
             <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
             <div v-if="post.tags && post.tags.length" class="post-tags">
-              <span v-for="tag in post.tags" :key="tag" class="tag">{{ tag }}</span>
+              <span v-for="tag in post.tags" :key="tag" class="tag">#{{ tag }}</span>
             </div>
           </div>
         </a>
@@ -223,6 +314,9 @@ const prevPage = () => {
         <FollowButtons url="https://kingsleyobi.com/blog/" title="Blog" />
       </div>
     </section>
+
+    <!-- Support Section -->
+    <SupportSection v-if="!loading" />
   </div>
 </template>
 
@@ -240,6 +334,72 @@ const prevPage = () => {
   text-align: center;
   padding: 40px;
   color: var(--vp-c-text-2);
+}
+
+/* Content Curation Filters */
+.curation-filters {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 20px;
+}
+
+.section-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--vp-c-text-1);
+  text-align: center;
+}
+
+.time-span {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  font-style: italic;
+}
+
+.filter-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: var(--vp-c-bg-soft);
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.filter-btn {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-transform: lowercase;
+}
+
+.filter-btn:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.filter-btn.active {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+}
+
+.filter-count {
+  font-size: 0.75rem;
+  margin-left: 2px;
+  opacity: 0.7;
+  font-weight: 400;
 }
 
 /* Featured Section - Full Width, Large Hero Image */

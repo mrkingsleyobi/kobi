@@ -12,6 +12,7 @@ meta_og_description: "Three transformational AI shifts coming in the next 4 year
 meta_twitter_title: "AI Predictions 2026-2030: The Convergence We're Not Ready For"
 meta_twitter_description: "Three transformational AI shifts coming in the next 4 years that will reshape work, intelligence, and society"
 status: published
+curation: featured
 description: "Three transformational AI shifts coming in the next 4 years that will reshape work, intelligence, and society"
 ---
 
