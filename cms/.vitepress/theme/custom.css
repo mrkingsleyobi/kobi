@@ -815,6 +815,12 @@ aside {
   font-feature-settings: "liga"
 }
 
+/* Asides inside page-title */
+.page-title aside {
+  display: block;
+  margin-bottom: 1rem;
+}
+
 .page-title,aside {
   display: block;
   float: left;
@@ -1027,7 +1033,7 @@ li {
       text-align: left
   }
 
-  aside {
+  .page-title aside {
       background: var(--vp-c-bg-soft);
       padding: .3rem .5rem;
       width: 90%;
@@ -1035,7 +1041,7 @@ li {
       border-left: 3px solid var(--vp-c-divider)
   }
 
-  aside>p:last-child {
+  .page-title aside>p:last-child {
       margin-bottom: 0
   }
 }
