@@ -343,7 +343,10 @@ const tagCounts = computed(() => {
             <div class="blog-content-right">
               <div class="blog-date">{{ formatDateFeatured(featuredPost.created_at) }}</div>
               <div v-if="featuredPost.tags && featuredPost.tags.length" class="blog-tags">
-                {{ featuredPost.tags.slice(0, 3).join('  •  ') }}
+                <template v-for="(tag, index) in featuredPost.tags.slice(0, 3)" :key="tag">
+                  <a :href="`/archives/?tag=${tag.toLowerCase()}`" class="blog-tag-link">{{ tag }}</a>
+                  <span v-if="index < featuredPost.tags.slice(0, 3).length - 1">  •  </span>
+                </template>
               </div>
             </div>
           </div>
@@ -376,7 +379,7 @@ const tagCounts = computed(() => {
                     </div>
                     <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
                     <div v-if="post.tags && post.tags.length" class="post-tags">
-                      <span v-for="tag in post.tags" :key="tag" class="post-tag"> #{{ tag }}</span>
+                      <a v-for="tag in post.tags" :key="tag" :href="`/archives/?tag=${tag.toLowerCase()}`" class="post-tag"> #{{ tag }}</a>
                     </div>
                   </div>
                 </div>
@@ -669,6 +672,16 @@ const tagCounts = computed(() => {
   font-weight: 400;
 }
 
+.blog-tag-link {
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.blog-tag-link:hover {
+  color: var(--vp-c-text-1);
+}
+
 /* Posts Container - Main wrapper for blog index */
 .posts-container {
   width: 100%;
@@ -832,6 +845,7 @@ const tagCounts = computed(() => {
   cursor: pointer;
   transition: all 0.15s ease;
   opacity: 0.85;
+  text-decoration: none;
 }
 
 .post-tag:hover {
