@@ -50,6 +50,7 @@ const injectGutter = () => {
   // Title
   if (frontmatter.value.title) {
     const h1 = document.createElement('h1')
+    h1.className = 'frontmatter-title text-pretcty'
     h1.textContent = frontmatter.value.title
     pageTitle.appendChild(h1)
     console.log('PageGutter: Added title', frontmatter.value.title)
@@ -58,7 +59,7 @@ const injectGutter = () => {
   // Subtitle
   if (frontmatter.value.subtitle) {
     const subtitle = document.createElement('div')
-    subtitle.className = 'subtitle'
+    subtitle.className = 'frontmatter-subtitle'
     subtitle.textContent = frontmatter.value.subtitle
     pageTitle.appendChild(subtitle)
     console.log('PageGutter: Added subtitle', frontmatter.value.subtitle)

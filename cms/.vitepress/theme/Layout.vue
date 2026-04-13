@@ -282,13 +282,14 @@ const injectGutter = async () => {
     // Add metadata
     if (frontmatter.value.title) {
       const h1 = document.createElement('h1')
+      h1.className = 'frontmatter-title text-pretcty'
       h1.textContent = frontmatter.value.title
       pageTitle.appendChild(h1)
     }
 
     if (frontmatter.value.subtitle) {
       const subtitle = document.createElement('div')
-      subtitle.className = 'subtitle'
+      subtitle.className = 'frontmatter-subtitle'
       subtitle.textContent = frontmatter.value.subtitle
       pageTitle.appendChild(subtitle)
     }

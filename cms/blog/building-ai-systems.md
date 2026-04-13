@@ -147,7 +147,7 @@ Black-box models are fine for research. In production, people need to understand
 
 ## Lesson 7: Plan for Continuous Evolution
 
-<tutorial>Your AI system will degrade over time as data drifts and user behavior changes. Plan for this from the start.</calendar></tutorial>
+<tutorial>Your AI system will degrade over time as data drifts and user behavior changes. Plan for this from the start.</tutorial></tutorial>
 
 **What causes model drift:**
 
