@@ -815,9 +815,15 @@ aside {
   font-feature-settings: "liga"
 }
 
-/* Asides inside page-title */
+/* Hide asides in main content (they're moved to gutter) */
+.vp-doc aside,
+.VPDoc .content aside {
+  display: none !important;
+}
+
+/* Asides inside page-title should be visible */
 .page-title aside {
-  display: block;
+  display: block !important;
   margin-bottom: 1rem;
 }
 
