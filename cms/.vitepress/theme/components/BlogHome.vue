@@ -344,7 +344,7 @@ const tagCounts = computed(() => {
               <div class="blog-date">{{ formatDateFeatured(featuredPost.created_at) }}</div>
               <div v-if="featuredPost.tags && featuredPost.tags.length" class="blog-tags">
                 <template v-for="(tag, index) in featuredPost.tags.slice(0, 3)" :key="tag">
-                  <a :href="`/archives/?tag=${tag.toLowerCase()}`" class="blog-tag-link">{{ tag }}</a>
+                  <span>{{ tag }}</span>
                   <span v-if="index < featuredPost.tags.slice(0, 3).length - 1">  •  </span>
                 </template>
               </div>
@@ -623,6 +623,26 @@ const tagCounts = computed(() => {
   pointer-events: none;
 }
 
+.blog-ul-logo {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  pointer-events: none;
+}
+
+.ul-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
 .blog-content {
   padding: 24px 32px 32px;
   max-width: 1200px;
@@ -670,16 +690,6 @@ const tagCounts = computed(() => {
   font-size: 0.875rem;
   color: var(--vp-c-text-2);
   font-weight: 400;
-}
-
-.blog-tag-link {
-  color: var(--vp-c-text-2);
-  text-decoration: none;
-  transition: color 0.15s ease;
-}
-
-.blog-tag-link:hover {
-  color: var(--vp-c-text-1);
 }
 
 /* Posts Container - Main wrapper for blog index */
