@@ -285,27 +285,24 @@ const tagCounts = computed(() => {
       </div>
     </section>
 
-    <!-- Recommended Grid -->
+    <!-- Recommended Grid (Daniel's text-based layout in rows) -->
     <section v-if="!loading && shuffledPosts.length > 0" class="recommended-grid-section">
       <div class="recommended-grid">
-        <a
-          v-for="post in shuffledPosts"
-          :key="post.slug"
-          :href="`/blog/${post.slug}`"
-          class="grid-card"
+        <div
+          v-for="(_, rowIndex) in Math.ceil(shuffledPosts.length / 2)"
+          :key="`row-${rowIndex}`"
+          class="recommended-row"
+          :class="{ alternate: rowIndex % 2 === 1 }"
         >
-          <div v-if="post.image" class="grid-image">
-            <img :src="post.image" :alt="post.title" loading="lazy" />
-          </div>
-          <div class="grid-content">
-            <h3 class="grid-title">{{ post.title }}</h3>
-            <time class="grid-date">{{ formatDate(post.created_at) }}</time>
-            <p v-if="post.subtitle" class="grid-subtitle">{{ post.subtitle }}</p>
-            <div v-if="post.tags && post.tags.length" class="grid-tags">
-              <span v-for="tag in post.tags.slice(0, 3)" :key="tag" class="tag">#{{ tag }}</span>
-            </div>
-          </div>
-        </a>
+          <a
+            v-for="post in shuffledPosts.slice(rowIndex * 2, (rowIndex + 1) * 2)"
+            :key="post.slug"
+            :href="`/blog/${post.slug}`"
+            class="recommended-link"
+          >
+            <h3 class="recommended-title">{{ post.title }}</h3>
+          </a>
+        </div>
       </div>
     </section>
 
@@ -830,6 +827,54 @@ const tagCounts = computed(() => {
   color: white;
 }
 
+/* Recommended Grid Section (Daniel's text-based layout) */
+.recommended-grid-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 20px;
+}
+
+.recommended-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recommended-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.recommended-row.alternate {
+  background: var(--vp-c-bg-soft);
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.recommended-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.recommended-link:hover {
+  background: rgba(var(--vp-c-brand-rgb), 0.1);
+}
+
+.recommended-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--vp-c-text-1);
+  line-height: 1.4;
+}
+
+
 /* Desktop - 1280px and up */
 @media (min-width: 1280px) {
   .featured-image-wrapper {
@@ -856,15 +901,6 @@ const tagCounts = computed(() => {
   .post-title {
     font-size: 1.5rem;
   }
-
-  .recommended-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
-  }
-
-  .grid-image {
-    height: 200px;
-  }
 }
 
 /* Tablet - 768px to 1279px */
@@ -879,10 +915,6 @@ const tagCounts = computed(() => {
 
   .post-content {
     padding: 20px 28px;
-  }
-
-  .recommended-grid {
-    grid-template-columns: repeat(2, 1fr);
   }
 
   .featured-content {
@@ -997,6 +1029,10 @@ const tagCounts = computed(() => {
   .tag-filters {
     padding: 12px;
   }
+
+  .recommended-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* Small Mobile - up to 480px */
@@ -1037,12 +1073,8 @@ const tagCounts = computed(() => {
     padding: 0 12px;
   }
 
-  .grid-content {
-    padding: 12px;
-  }
-
-  .grid-image {
-    height: 160px;
+  .recommended-row {
+    grid-template-columns: 1fr;
   }
 }
 
