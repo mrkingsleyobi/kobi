@@ -98,12 +98,13 @@ const shareLinks = computed(() => [
 }
 
 .section-label {
-  font-size: 0.75rem;
-  font-weight: 700;
-  color: var(--vp-c-text-2);
+  font-family: 'concourse-text', -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: .5rem;
+  font-weight: 400;
+  color: var(--vp-c-text-3);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  margin-bottom: 4px;
+  letter-spacing: .1em;
+  opacity: .8;
 }
 
 .share-row {
@@ -116,19 +117,20 @@ const shareLinks = computed(() => [
 .share-button {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 8px 14px;
+  gap: .2rem;
+  padding: .15rem .35rem;
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
+  border-radius: 4px;
   color: var(--vp-c-text-1);
-  font-size: 0.8125rem;
-  font-weight: 600;
+  font-size: .575rem;
+  font-weight: 400;
   text-decoration: none;
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  opacity: .9;
 }
 
 .share-button::before {
@@ -141,7 +143,7 @@ const shareLinks = computed(() => [
   background: var(--vp-c-brand-1);
   opacity: 0;
   transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 8px;
+  border-radius: 4px;
   z-index: 0;
 }
 
@@ -193,12 +195,12 @@ const shareLinks = computed(() => [
   }
 
   .share-row {
-    gap: 8px;
+    gap: .25rem;
   }
 
   .share-button {
-    padding: 9px 14px;
-    font-size: 0.8125rem;
+    padding: .125rem .3rem;
+    font-size: .5rem;
     flex: 1 1 calc(50% - 4px);
     justify-content: center;
     min-width: 140px;
