@@ -81,7 +81,8 @@ export default defineConfig({
   markdown: {
     lineNumbers: true,
     config: (md) => {
-      // Add custom markdown-it plugins if needed
+      // Allow HTML tags in markdown (required for <aside> elements)
+      md.set({ html: true })
     }
   },
 
