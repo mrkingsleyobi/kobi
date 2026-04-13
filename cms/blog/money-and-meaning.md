@@ -129,7 +129,7 @@ Diversify across multiple domains: some AI-leverage work, some human-centric wor
 
 ## The Meaning Question
 
-<tutorial>When work is no longer the primary source of meaning, we need to figure out what gives life purpose and value.</callout>
+<tutorial>When work is no longer the primary source of meaning, we need to figure out what gives life purpose and value.</tutorial>
 
 **Sources of meaning beyond work:**
 
@@ -170,7 +170,7 @@ We've made work the center of meaning for so long that many people don't know wh
 
 ## The Optimistic Take
 
-<tutorial>The AI transition could be the beginning of a renaissance of human flourishing — if we navigate it wisely.</callout>
+<tutorial>The AI transition could be the beginning of a renaissance of human flourishing — if we navigate it wisely.</tutorial>
 
 **What's possible:**
 

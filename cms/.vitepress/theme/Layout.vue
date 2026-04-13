@@ -40,11 +40,6 @@ const tags = computed(() => parseTags(frontmatter.value.tags))
 const createdDate = computed(() =>
   frontmatter.value.created_at ? formatDate(frontmatter.value.created_at) : null
 )
-const updatedDate = computed(() =>
-  frontmatter.value.updated_at && frontmatter.value.updated_at !== frontmatter.value.created_at
-    ? formatDate(frontmatter.value.updated_at)
-    : null
-)
 
 const showGutter = computed(() => page.value.relativePath !== 'index.md')
 
@@ -295,22 +290,20 @@ const injectGutter = async () => {
     }
 
     if (createdDate.value) {
-      const meta = document.createElement('div')
-      meta.className = 'meta-info'
-      const time = document.createElement('time')
-      time.textContent = createdDate.value
-      meta.appendChild(time)
-      pageTitle.appendChild(meta)
+      const dateDiv = document.createElement('div')
+      dateDiv.className = 'frontmatter-created-at'
+      dateDiv.textContent = createdDate.value
+      pageTitle.appendChild(dateDiv)
     }
 
     if (tags.value && tags.value.length) {
       const tagsContainer = document.createElement('div')
-      tagsContainer.className = 'tags'
+      tagsContainer.className = 'frontmatter-tags'
       tags.value.forEach(tag => {
         const tagEl = document.createElement('a')
-        tagEl.className = 'tag'
-        tagEl.textContent = tag
+        tagEl.className = 'tag-link'
         tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
+        tagEl.textContent = `#${tag}`
         tagsContainer.appendChild(tagEl)
       })
       pageTitle.appendChild(tagsContainer)

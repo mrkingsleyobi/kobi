@@ -140,7 +140,7 @@ Explaining ideas in your own words deepens understanding.
 
 ## Learning in the AI Age
 
-<callout>AI changes learning — it gives you powerful tools, but requires new strategies for using them effectively.</callow>
+<callout>AI changes learning — it gives you powerful tools, but requires new strategies for using them effectively.</callout>
 
 **How AI helps:**
 
@@ -227,7 +227,7 @@ Explaining ideas in your own words deepens understanding.
 
 ## The Learning Project Template
 
-<callout>Here's a template you can use for any new learning project.</callow>
+<callout>Here's a template you can use for any new learning project.</callout>
 
 **Project:** [Specific skill or knowledge area]
 **Timeline:** [Start and end dates]
@@ -257,7 +257,7 @@ Explaining ideas in your own words deepens understanding.
 
 ## The Bottom Line
 
-<callout>The ability to learn rapidly and effectively is the ultimate competitive advantage in the AI age. Invest in developing this skill above all others.</callow>
+<callout>The ability to learn rapidly and effectively is the ultimate competitive advantage in the AI age. Invest in developing this skill above all others.</callout>
 
 Knowledge becomes obsolete. Skills become outdated. But the ability to learn?
 

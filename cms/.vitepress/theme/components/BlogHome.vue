@@ -314,29 +314,31 @@ const tagCounts = computed(() => {
     <!-- Featured Blog -->
     <section v-if="featuredPost && !loading" class="featured-section">
       <h2 class="section-title-featured">Featured Blog</h2>
-      <a :href="`/blog/${featuredPost.slug}`" class="featured-card">
-        <div class="featured-image-wrapper">
-          <img
-            v-if="featuredPost.image"
-            :src="featuredPost.image"
-            :alt="featuredPost.title"
-            class="featured-image"
-          />
-          <div class="featured-overlay"></div>
-        </div>
-        <div class="featured-content">
-          <div class="featured-content-left">
-            <h2 class="featured-title">{{ featuredPost.title }}</h2>
-            <p v-if="featuredPost.subtitle" class="featured-subtitle">{{ featuredPost.subtitle }}</p>
+      <div class="blog-card" style="background: rgba(233, 230, 234, 0.95);">
+        <a :href="`/blog/${featuredPost.slug}`" class="blog-link" target="_blank" rel="noopener noreferrer">
+          <div class="blog-thumbnail-hero">
+            <img
+              v-if="featuredPost.image"
+              :src="featuredPost.image"
+              :alt="featuredPost.title"
+              class="blog-thumbnail"
+            />
+            <div class="blog-overlay"></div>
           </div>
-          <div class="featured-content-right">
-            <div class="featured-date">{{ formatDate(featuredPost.created_at) }}</div>
-            <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
-              <span v-for="tag in featuredPost.tags.slice(0, 3)" :key="tag" class="tag">{{ tag }}</span>
+          <div class="blog-content" style="background: rgba(233, 230, 234, 0.95);">
+            <div class="blog-content-left">
+              <h3 class="blog-title">{{ featuredPost.title }}</h3>
+              <p class="blog-subtitle">{{ featuredPost.subtitle }}</p>
+            </div>
+            <div class="blog-content-right">
+              <div class="blog-date">{{ formatDate(featuredPost.created_at) }}</div>
+              <div v-if="featuredPost.tags && featuredPost.tags.length" class="blog-tags">
+                {{ featuredPost.tags.slice(0, 3).join('  • ') }}
+              </div>
             </div>
           </div>
-        </div>
-      </a>
+        </a>
+      </div>
     </section>
 
     <!-- Latest Content -->
@@ -552,15 +554,14 @@ const tagCounts = computed(() => {
   margin-right: auto;
 }
 
-.featured-card {
+.blog-card {
   display: block;
   text-decoration: none;
   color: inherit;
   width: 100%;
-  position: relative;
 }
 
-.featured-image-wrapper {
+.blog-thumbnail-hero {
   width: 100%;
   height: 500px;
   overflow: hidden;
@@ -568,14 +569,14 @@ const tagCounts = computed(() => {
   position: relative;
 }
 
-.featured-image {
+.blog-thumbnail {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.featured-overlay {
+.blog-overlay {
   position: absolute;
   top: 0;
   left: 0;
@@ -585,7 +586,19 @@ const tagCounts = computed(() => {
   pointer-events: none;
 }
 
-.featured-content {
+.blog-ul-logo {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+}
+
+.ul-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+}
+
+.blog-content {
   padding: 24px 32px 32px;
   max-width: 1200px;
   margin: 0 auto;
@@ -595,12 +608,12 @@ const tagCounts = computed(() => {
   gap: 24px;
 }
 
-.featured-content-left {
+.blog-content-left {
   flex: 1;
   min-width: 0;
 }
 
-.featured-content-right {
+.blog-content-right {
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -608,7 +621,7 @@ const tagCounts = computed(() => {
   gap: 12px;
 }
 
-.featured-title {
+.blog-title {
   font-size: 1.875rem;
   font-weight: 700;
   margin-bottom: 8px;
@@ -616,33 +629,22 @@ const tagCounts = computed(() => {
   line-height: 1.3;
 }
 
-.featured-subtitle {
+.blog-subtitle {
   font-size: 1.0625rem;
   color: var(--vp-c-text-2);
   line-height: 1.5;
 }
 
-.featured-date {
+.blog-date {
   font-size: 0.875rem;
   color: var(--vp-c-text-2);
   font-weight: 500;
 }
 
-.featured-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: flex-end;
-}
-
-.featured-tags .tag {
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+.blog-tags {
+  font-size: 0.875rem;
   color: var(--vp-c-text-2);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* Latest Section - Full Width Container */

@@ -10,11 +10,6 @@ const tags = computed(() => parseTags(frontmatter.value.tags))
 const createdDate = computed(() =>
   frontmatter.value.created_at ? formatDate(frontmatter.value.created_at) : null
 )
-const updatedDate = computed(() =>
-  frontmatter.value.updated_at && frontmatter.value.updated_at !== frontmatter.value.created_at
-    ? formatDate(frontmatter.value.updated_at)
-    : null
-)
 
 const injectGutter = () => {
   // Skip on homepage
@@ -77,30 +72,23 @@ const injectGutter = () => {
   if (createdDate.value || tags.value.length) {
     // Date metadata
     if (createdDate.value) {
-      const metaInfo = document.createElement('div')
-      metaInfo.className = 'meta-info'
-
-      const time = document.createElement('time')
-      time.textContent = createdDate.value
-      pageTitle.appendChild(time)
-
-      if (updatedDate.value) {
-        const updated = document.createElement('span')
-        updated.textContent = ` · Updated ${updatedDate.value}`
-        pageTitle.appendChild(updated)
-      }
+      const dateDiv = document.createElement('div')
+      dateDiv.className = 'frontmatter-created-at'
+      dateDiv.textContent = createdDate.value
+      pageTitle.appendChild(dateDiv)
       console.log('PageGutter: Added date', createdDate.value)
     }
 
     // Tags
     if (tags.value && tags.value.length) {
       const tagsContainer = document.createElement('div')
-      tagsContainer.className = 'tags'
+      tagsContainer.className = 'frontmatter-tags'
 
       tags.value.forEach(tag => {
-        const tagEl = document.createElement('span')
-        tagEl.className = 'tag'
-        tagEl.textContent = tag
+        const tagEl = document.createElement('a')
+        tagEl.className = 'tag-link'
+        tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
+        tagEl.textContent = `#${tag}`
         tagsContainer.appendChild(tagEl)
       })
 
