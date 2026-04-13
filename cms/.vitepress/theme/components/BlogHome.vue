@@ -100,10 +100,20 @@ onMounted(async () => {
 const formatDate = (dateStr: string) => {
   if (!dateStr) return ''
   const date = new Date(dateStr)
-  const month = String(date.getMonth() + 1).padStart(2, '0')
   const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
   const year = date.getFullYear()
-  return `${month}/${day}/${year}`
+  return `${day}/${month}/${year}` // DD/MM/YYYY format for latest posts
+}
+
+const formatDateFeatured = (dateStr: string) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = months[date.getMonth()]
+  const day = date.getDate()
+  const year = date.getFullYear()
+  return `${month} ${day}, ${year}` // MMM DD, YYYY format for featured post
 }
 
 // Tag-based filtering for recommended section (Daniel's approach)
@@ -313,7 +323,7 @@ const tagCounts = computed(() => {
 
     <!-- Featured Blog -->
     <section v-if="featuredPost && !loading" class="featured-section">
-      <h2 class="section-title-featured">Featured Blog</h2>
+      <h2 class="section-title">Featured Blog</h2>
       <div class="blog-card" style="background: rgba(233, 230, 234, 0.95);">
         <a :href="`/blog/${featuredPost.slug}`" class="blog-link" target="_blank" rel="noopener noreferrer">
           <div class="blog-thumbnail-hero">
@@ -331,9 +341,9 @@ const tagCounts = computed(() => {
               <p class="blog-subtitle">{{ featuredPost.subtitle }}</p>
             </div>
             <div class="blog-content-right">
-              <div class="blog-date">{{ formatDate(featuredPost.created_at) }}</div>
+              <div class="blog-date">{{ formatDateFeatured(featuredPost.created_at) }}</div>
               <div v-if="featuredPost.tags && featuredPost.tags.length" class="blog-tags">
-                {{ featuredPost.tags.slice(0, 3).join('  • ') }}
+                {{ featuredPost.tags.slice(0, 3).join('  •  ') }}
               </div>
             </div>
           </div>
@@ -342,62 +352,68 @@ const tagCounts = computed(() => {
     </section>
 
     <!-- Latest Content -->
-    <section v-if="posts.length > 1 && !loading" class="latest-section">
+    <section v-if="posts.length > 1 && !loading" class="posts-container">
       <h2 class="section-title">Latest Content</h2>
 
-      <div class="posts-container">
-        <a
-          v-for="(post, index) in paginatedPosts"
-          :key="post.slug"
-          :href="`/blog/${post.slug}`"
-          class="post-link-wrapper"
-        >
-          <article class="post-layout" :class="{ alternate: index % 2 === 1 }">
-            <div class="post-container">
-              <div v-if="post.image" class="post-thumbnail">
-                <img :src="post.image" :alt="post.title" loading="lazy" />
-              </div>
-              <div class="post-content">
-                <div class="post-main">
-                  <h2 class="post-title">{{ post.title }}</h2>
-                  <time class="post-date" :datetime="post.created_at">{{ formatDate(post.created_at) }}</time>
+      <div class="results-section">
+        <div class="posts-list">
+          <div class="posts-grid">
+            <a
+              v-for="(post, index) in paginatedPosts"
+              :key="post.slug"
+              :href="`/blog/${post.slug}`"
+              class="post-link-wrapper"
+            >
+              <article class="post-layout" :class="{ alternate: index % 2 === 1 }">
+                <div class="post-container">
+                  <div v-if="post.image" class="post-thumbnail">
+                    <img :src="post.image" :alt="post.title" loading="lazy" />
+                  </div>
+                  <div class="post-content">
+                    <div class="post-main">
+                      <h2 class="post-title">{{ post.title }}</h2>
+                      <time class="post-date" :datetime="post.created_at">{{ formatDate(post.created_at) }}</time>
+                    </div>
+                    <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
+                    <div v-if="post.tags && post.tags.length" class="post-tags">
+                      <span v-for="tag in post.tags" :key="tag" class="post-tag"> #{{ tag }}</span>
+                    </div>
+                  </div>
                 </div>
-                <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
-                <div v-if="post.tags && post.tags.length" class="post-tags">
-                  <span v-for="tag in post.tags" :key="tag" class="post-tag">#{{ tag }}</span>
-                </div>
-              </div>
-            </div>
-          </article>
-        </a>
+              </article>
+            </a>
+          </div>
+        </div>
       </div>
 
       <!-- Pagination -->
-      <div v-if="totalPages > 1" class="pagination">
+      <div v-if="totalPages > 1" class="pagination" data-v-813d16e3="">
         <button
-          class="pagination-btn"
+          class="page-btn"
           :disabled="currentPage === 1"
           @click="prevPage"
+          data-v-813d16e3=""
         >
           ← Previous
         </button>
 
-        <div class="pagination-pages">
-          <button
-            v-for="page in totalPages"
-            :key="page"
-            class="pagination-page"
-            :class="{ active: page === currentPage }"
-            @click="goToPage(page)"
-          >
-            {{ page }}
-          </button>
+        <div class="page-info" data-v-813d16e3="">
+          <input
+            :value="currentPage"
+            type="text"
+            class="page-input"
+            data-v-813d16e3=""
+            @input="(e: any) => goToPage(parseInt(e.target.value))"
+          />
+          <span class="page-separator" data-v-813d16e3="">/</span>
+          <span class="total-pages" data-v-813d16e3="">{{ totalPages }}</span>
         </div>
 
         <button
-          class="pagination-btn"
+          class="page-btn"
           :disabled="currentPage === totalPages"
           @click="nextPage"
+          data-v-813d16e3=""
         >
           Next →
         </button>
@@ -543,15 +559,26 @@ const tagCounts = computed(() => {
   margin-bottom: 32px;
 }
 
-.section-title-featured {
+.section-title {
   font-size: 1.5rem;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 24px;
   color: var(--vp-c-text-1);
-  padding: 0 20px;
-  max-width: 1200px;
-  margin-left: auto;
-  margin-right: auto;
+}
+
+/* Results/Posts Container Structure - Daniel's layout */
+.results-section {
+  width: 100%;
+}
+
+.posts-list {
+  width: 100%;
+}
+
+.posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
 }
 
 .blog-card {
@@ -647,8 +674,8 @@ const tagCounts = computed(() => {
   font-weight: 400;
 }
 
-/* Latest Section - Full Width Container */
-.latest-section {
+/* Posts Container - Main wrapper for blog index */
+.posts-container {
   width: 100%;
   max-width: 1200px;
   margin: 0 auto;
@@ -763,17 +790,17 @@ const tagCounts = computed(() => {
   font-weight: 500;
 }
 
-/* Pagination */
+/* Pagination - Daniel's style */
 .pagination {
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-top: 40px;
-  padding-top: 24px;
+  padding: 24px 0;
   border-top: 1px solid var(--vp-c-divider);
 }
 
-.pagination-btn {
+.page-btn {
   padding: 8px 16px;
   background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
@@ -785,48 +812,52 @@ const tagCounts = computed(() => {
   transition: all 0.2s ease;
 }
 
-.pagination-btn:hover:not(:disabled) {
+.page-btn:hover:not(:disabled) {
   background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
   color: white;
 }
 
-.pagination-btn:disabled {
+.page-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.pagination-pages {
+.page-info {
   display: flex;
-  gap: 6px;
   align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
 }
 
-.pagination-page {
-  min-width: 36px;
-  height: 36px;
-  padding: 0 10px;
-  background: transparent;
+.page-input {
+  width: 48px;
+  height: 32px;
+  padding: 0 8px;
+  background: var(--vp-c-bg-soft);
   border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
+  border-radius: 4px;
   color: var(--vp-c-text-1);
-  cursor: pointer;
+  text-align: center;
   font-size: 0.875rem;
   font-weight: 500;
   transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
 
-.pagination-page:hover {
+.page-input:focus {
+  outline: none;
   border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg);
 }
 
-.pagination-page.active {
-  background: var(--vp-c-brand-1);
-  border-color: var(--vp-c-brand-1);
-  color: white;
+.page-separator {
+  color: var(--vp-c-text-3);
+}
+
+.total-pages {
+  color: var(--vp-c-text-2);
+  font-weight: 500;
 }
 
 /* Recommended Grid Section (Daniel's text-based layout) */
