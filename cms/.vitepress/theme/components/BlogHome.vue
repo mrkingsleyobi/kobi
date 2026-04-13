@@ -781,15 +781,15 @@ const tagCounts = computed(() => {
 }
 
 .post-title {
-  font-family: heliotrope-caps, sans-serif;
-  font-size: 0.8rem;
+  font-family: heliotrope-t3, sans-serif;
+  font-size: 0.7rem;
   font-weight: 600;
   line-height: 1.2;
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   flex: 1;
-  color: var(--vp-c-text-1);
+  color: #000;
   transition: color 0.15s ease;
 }
 
@@ -798,7 +798,7 @@ const tagCounts = computed(() => {
 }
 
 .post-date {
-  font-family: concourse-t3, sans-serif;
+  font-family: concourse-text, sans-serif;
   font-size: 0.625rem;
   color: var(--vp-c-text-3);
   font-weight: 300;
