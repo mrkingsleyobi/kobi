@@ -816,11 +816,23 @@ aside {
 }
 
 .page-title {
-  margin-bottom: 2em;
+  margin-bottom: 1.5rem;
   font-weight: 400;
   font-family: equity-text;
   border-top: solid 3px var(--vp-c-brand);
   padding-top: 5px
+}
+
+/* Section labels for Share/Follow buttons */
+.section-label {
+  font-family: concourse-text, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: .55rem;
+  font-weight: 400;
+  color: var(--vp-c-text-3);
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  opacity: .8;
+  margin-top: 24px;
 }
 
 .frontmatter-subtitle {
@@ -831,8 +843,42 @@ aside {
   font-color: #gray;
   line-height: 1.25;
   font-style: italic;
+  margin-bottom: .8rem;
   -webkit-hyphens: none;
   hyphens: none
+}
+
+/* Date styling in frontmatter */
+.frontmatter-created-at {
+  font-family: equity-text;
+  display: block;
+  font-size: .8rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: .6rem;
+  color: var(--vp-c-text-2);
+}
+
+/* Tags container in frontmatter */
+.frontmatter-tags {
+  display: block;
+  margin-top: .5rem;
+  line-height: 1.4;
+}
+
+/* Individual tag links */
+.frontmatter-tags .tag-link {
+  display: block;
+  font-size: .75rem;
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  margin-bottom: .2rem;
+  transition: color 0.2s ease;
+}
+
+.frontmatter-tags .tag-link:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
 }
 
 .page-title,aside {
@@ -859,7 +905,7 @@ aside {
   font-weight: 900;
   line-height: 1.1;
   margin-top: 1rem;
-  margin-bottom: 2rem;
+  margin-bottom: .8rem;
   border-top: 1px solid var(--vp-c-divider);
   padding-top: .02em;
   -webkit-hyphens: none;
