@@ -578,7 +578,7 @@ const tagCounts = computed(() => {
 .posts-grid {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 32px;
 }
 
 .blog-card {
@@ -714,10 +714,8 @@ const tagCounts = computed(() => {
 .post-container {
   display: flex;
   width: 100%;
-  background: var(--vp-c-bg-soft);
-  border-radius: 8px;
   overflow: hidden;
-  transition: box-shadow 0.2s ease;
+  transition: all 0.2s ease;
   min-height: 200px;
 }
 
@@ -725,10 +723,10 @@ const tagCounts = computed(() => {
   box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);
 }
 
-/* Image takes 40% width */
+/* Image takes 35% width - Daniel's ratio */
 .post-thumbnail {
-  flex: 0 0 40%;
-  max-width: 480px;
+  flex: 0 0 35%;
+  max-width: 420px;
   overflow: hidden;
   background: var(--vp-c-divider);
 }
@@ -742,7 +740,7 @@ const tagCounts = computed(() => {
 
 .post-content {
   flex: 1;
-  padding: 24px 32px;
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -754,24 +752,25 @@ const tagCounts = computed(() => {
 }
 
 .post-title {
-  font-size: 1.3125rem;
+  font-size: 1.125rem;
   font-weight: 600;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
   color: var(--vp-c-text-1);
   line-height: 1.3;
 }
 
 .post-date {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--vp-c-brand-1);
   font-weight: 500;
+  margin-bottom: 8px;
 }
 
 .post-subtitle {
-  font-size: 0.9375rem;
+  font-size: 0.875rem;
   color: var(--vp-c-text-2);
-  line-height: 1.5;
-  margin-bottom: 12px;
+  line-height: 1.4;
+  margin-bottom: 10px;
 }
 
 .post-tags {
@@ -781,13 +780,12 @@ const tagCounts = computed(() => {
 }
 
 .post-tag {
-  font-size: 0.75rem;
-  padding: 4px 10px;
-  background: var(--vp-c-bg);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 12px;
+  font-size: 0.7rem;
+  padding: 3px 8px;
+  background: transparent;
+  border: none;
   color: var(--vp-c-text-2);
-  font-weight: 500;
+  font-weight: 400;
 }
 
 /* Pagination - Daniel's style */
