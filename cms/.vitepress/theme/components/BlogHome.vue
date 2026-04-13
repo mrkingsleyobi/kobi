@@ -334,9 +334,6 @@ const tagCounts = computed(() => {
               class="blog-thumbnail"
             />
             <div class="blog-overlay"></div>
-            <div class="blog-ul-logo">
-              <img src="/images/favicon.png" alt="Kingsley Obi" class="ul-logo-img" />
-            </div>
           </div>
           <div class="blog-content" style="background: rgba(233, 230, 234, 0.95);">
             <div class="blog-content-left">
@@ -621,18 +618,6 @@ const tagCounts = computed(() => {
   bottom: 0;
   background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
   pointer-events: none;
-}
-
-.blog-ul-logo {
-  position: absolute;
-  bottom: 16px;
-  left: 16px;
-}
-
-.ul-logo-img {
-  width: 32px;
-  height: 32px;
-  border-radius: 4px;
 }
 
 .blog-content {
