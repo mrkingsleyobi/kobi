@@ -119,12 +119,25 @@ const injectGutter = () => {
   }
 
   // Move aside elements from content to page-title gutter (like Daniel's site)
-  const contentAsides = vpDoc.querySelectorAll('.content aside')
-  contentAsides.forEach((aside, index) => {
-    console.log(`PageGutter: Moving aside ${index + 1} to page-title`, aside.textContent?.substring(0, 50))
-    pageTitle.appendChild(aside.cloneNode(true))
-    aside.remove() // Remove from original position
-  })
+  const moveAsidesToGutter = () => {
+    const contentAsides = vpDoc.querySelectorAll('.vp-doc aside')
+    console.log(`PageGutter: Found ${contentAsides.length} asides to move`)
+
+    contentAsides.forEach((aside, index) => {
+      console.log(`PageGutter: Moving aside ${index + 1} to page-title`, aside.textContent?.substring(0, 50))
+      // Clone the aside and add to page-title
+      const asideClone = aside.cloneNode(true) as HTMLElement
+      pageTitle.appendChild(asideClone)
+      // Hide the original aside from content
+      (aside as HTMLElement).style.display = 'none'
+    })
+  }
+
+  // Move asides immediately
+  moveAsidesToGutter()
+
+  // Also move asides after a short delay in case they're rendered late
+  setTimeout(moveAsidesToGutter, 500)
 }
 
 onMounted(() => {
