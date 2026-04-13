@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted, computed, watch } from 'vue'
 import type { BlogPostData } from '../types'
 import ShareButtons from './ShareButtons.vue'
 import FollowButtons from './FollowButtons.vue'
@@ -12,7 +12,7 @@ const curatedPosts = ref<BlogPostData[]>([])
 const loading = ref(true)
 const currentPage = ref(1)
 const postsPerPage = 6
-const activeFilter = ref<string>('all')
+const activeTagFilter = ref<string>('must') // Default to 'must' to match Daniel's site
 
 onMounted(async () => {
   try {
@@ -106,20 +106,49 @@ const formatDate = (dateStr: string) => {
   return `${month}/${day}/${year}`
 }
 
-// Computed properties for filtering
+// Tag-based filtering for recommended section (Daniel's approach)
+// IMPORTANT: Grid should be EMPTY initially, only show posts AFTER filter is clicked
+const hasInteractedWithFilters = ref(false)
+
+const recommendedPosts = computed(() => {
+  // Don't show anything until user interacts with filters
+  if (!hasInteractedWithFilters.value) {
+    return []
+  }
+
+  if (activeTagFilter.value === 'all') {
+    return posts.value.slice(0, 8) // Limit to 8 posts for grid
+  }
+
+  // Filter by tags
+  return posts.value.filter(post =>
+    post.tags.some(tag =>
+      tag.toLowerCase() === activeTagFilter.value.toLowerCase()
+    )
+  ).slice(0, 8)
+})
+
+// Shuffled recommended posts for shuffle button
+const shuffledPosts = ref<BlogPostData[]>([])
+
+const shuffleRecommended = () => {
+  hasInteractedWithFilters.value = true // Mark as interacted
+  const shuffled = [...recommendedPosts.value]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  shuffledPosts.value = shuffled
+}
+
+// Initialize shuffled posts (empty array initially)
+watch(recommendedPosts, (newPosts) => {
+  shuffledPosts.value = [...newPosts]
+}, { immediate: true })
+
+// Computed properties for main content filtering (keeping existing logic)
 const filteredPosts = computed(() => {
-  if (activeFilter.value === 'all') {
-    return posts.value
-  }
-
-  if (activeFilter.value === 'featured') {
-    return posts.value.filter(post => post.curation === 'featured')
-  }
-
-  if (activeFilter.value === 'recommended') {
-    return posts.value.filter(post => post.curation === 'recommended' || post.curation === 'top')
-  }
-
+  // Show all posts in main content (filters only affect recommended section)
   return posts.value
 })
 
@@ -156,13 +185,15 @@ const prevPage = () => {
   }
 }
 
-const setFilter = (filter: string) => {
-  activeFilter.value = filter
-  currentPage.value = 1
+const setTagFilter = (tag: string) => {
+  hasInteractedWithFilters.value = true // Mark as interacted
+  activeTagFilter.value = tag
+  // Reshuffle when filter changes
+  shuffleRecommended()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
-// Computed property for stats (for curation header)
+// Computed property for stats (super precise like Daniel's)
 const stats = computed(() => {
   if (posts.value.length === 0) return { yearsActive: '0' }
 
@@ -180,8 +211,18 @@ const stats = computed(() => {
   const totalMonths = yearsDiff * 12 + monthsDiff
 
   return {
-    yearsActive: (totalMonths / 12).toFixed(2)
+    yearsActive: (totalMonths / 12).toFixed(10) // Super precise like Daniel
   }
+})
+
+// Tag counts for filters
+const tagCounts = computed(() => {
+  const counts = {
+    must: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'must')).length,
+    recommended: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'recommended')).length,
+    top: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'top')).length
+  }
+  return counts
 })
 </script>
 
@@ -197,36 +238,85 @@ const stats = computed(() => {
 
     <!-- Content Curation Filters -->
     <section v-if="!loading && curatedPosts.length > 0" class="curation-filters">
-      <h2 class="section-header">Top/Recommended Content <span class="time-span">(across {{ stats.yearsActive }} years)</span></h2>
-      <div class="filter-container">
+      <h2 class="section-header">
+        Top/Recommended Content <span class="content-age">(across {{ stats.yearsActive }} years)</span>
+        <a href="/archives/" class="search-button-inline" title="Search all posts">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </a>
+        <button class="shuffle-button-inline" title="Show different posts" @click="shuffleRecommended">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <polyline points="23 20 23 14 17 14"></polyline>
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+          </svg>
+        </button>
+      </h2>
+      <div class="tag-filters">
         <button
-          class="filter-btn"
-          :class="{ active: activeFilter === 'all' }"
-          @click="setFilter('all')"
+          v-if="tagCounts.must > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'must' }"
+          @click="setTagFilter('must')"
         >
-          all <span class="filter-count">({{ posts.length }})</span>
+          <span class="tag-name">must</span>
+          <span class="tag-count">({{ tagCounts.must }})</span>
         </button>
         <button
-          v-if="curatedPosts.some(p => p.curation === 'featured')"
-          class="filter-btn"
-          :class="{ active: activeFilter === 'featured' }"
-          @click="setFilter('featured')"
+          v-if="tagCounts.recommended > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'recommended' }"
+          @click="setTagFilter('recommended')"
         >
-          featured <span class="filter-count">({{ curatedPosts.filter(p => p.curation === 'featured').length }})</span>
+          <span class="tag-name">recommended</span>
+          <span class="tag-count">({{ tagCounts.recommended }})</span>
         </button>
         <button
-          v-if="curatedPosts.some(p => p.curation === 'recommended' || p.curation === 'top')"
-          class="filter-btn"
-          :class="{ active: activeFilter === 'recommended' }"
-          @click="setFilter('recommended')"
+          v-if="tagCounts.top > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'top' }"
+          @click="setTagFilter('top')"
         >
-          recommended <span class="filter-count">({{ curatedPosts.filter(p => p.curation === 'recommended' || p.curation === 'top').length }})</span>
+          <span class="tag-name">top</span>
+          <span class="tag-count">({{ tagCounts.top }})</span>
         </button>
       </div>
     </section>
 
-    <!-- Featured Post -->
+    <!-- Recommended Grid -->
+    <section v-if="!loading && shuffledPosts.length > 0" class="recommended-grid-section">
+      <div class="recommended-grid">
+        <a
+          v-for="post in shuffledPosts"
+          :key="post.slug"
+          :href="`/blog/${post.slug}`"
+          class="grid-card"
+        >
+          <div v-if="post.image" class="grid-image">
+            <img :src="post.image" :alt="post.title" loading="lazy" />
+          </div>
+          <div class="grid-content">
+            <h3 class="grid-title">{{ post.title }}</h3>
+            <time class="grid-date">{{ formatDate(post.created_at) }}</time>
+            <p v-if="post.subtitle" class="grid-subtitle">{{ post.subtitle }}</p>
+            <div v-if="post.tags && post.tags.length" class="grid-tags">
+              <span v-for="tag in post.tags.slice(0, 3)" :key="tag" class="tag">#{{ tag }}</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Empty Grid Placeholder (Daniel's site shows empty grid initially) -->
+    <section v-if="!loading && shuffledPosts.length === 0" class="recommended-grid-section">
+      <div class="recommended-grid"></div>
+    </section>
+
+    <!-- Featured Blog -->
     <section v-if="featuredPost && !loading" class="featured-section">
+      <h2 class="section-title-featured">Featured Blog</h2>
       <a :href="`/blog/${featuredPost.slug}`" class="featured-card">
         <div class="featured-image-wrapper">
           <img
@@ -235,14 +325,17 @@ const stats = computed(() => {
             :alt="featuredPost.title"
             class="featured-image"
           />
+          <div class="featured-overlay"></div>
         </div>
         <div class="featured-content">
-          <h2 class="featured-title">{{ featuredPost.title }}</h2>
-          <p v-if="featuredPost.subtitle" class="featured-subtitle">{{ featuredPost.subtitle }}</p>
-          <div class="featured-meta">
-            <time class="featured-date">{{ formatDate(featuredPost.created_at) }}</time>
+          <div class="featured-content-left">
+            <h2 class="featured-title">{{ featuredPost.title }}</h2>
+            <p v-if="featuredPost.subtitle" class="featured-subtitle">{{ featuredPost.subtitle }}</p>
+          </div>
+          <div class="featured-content-right">
+            <div class="featured-date">{{ formatDate(featuredPost.created_at) }}</div>
             <div v-if="featuredPost.tags && featuredPost.tags.length" class="featured-tags">
-              <span v-for="tag in featuredPost.tags" :key="tag" class="tag">#{{ tag }}</span>
+              <span v-for="tag in featuredPost.tags.slice(0, 3)" :key="tag" class="tag">{{ tag }}</span>
             </div>
           </div>
         </div>
@@ -258,20 +351,25 @@ const stats = computed(() => {
           v-for="(post, index) in paginatedPosts"
           :key="post.slug"
           :href="`/blog/${post.slug}`"
-          class="post-card"
-          :class="{ alternate: index % 2 === 1 }"
+          class="post-link-wrapper"
         >
-          <div v-if="post.image" class="post-image">
-            <img :src="post.image" :alt="post.title" loading="lazy" />
-          </div>
-          <div class="post-content">
-            <h3 class="post-title">{{ post.title }}</h3>
-            <time class="post-date">{{ formatDate(post.created_at) }}</time>
-            <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
-            <div v-if="post.tags && post.tags.length" class="post-tags">
-              <span v-for="tag in post.tags" :key="tag" class="tag">#{{ tag }}</span>
+          <article class="post-layout" :class="{ alternate: index % 2 === 1 }">
+            <div class="post-container">
+              <div v-if="post.image" class="post-thumbnail">
+                <img :src="post.image" :alt="post.title" loading="lazy" />
+              </div>
+              <div class="post-content">
+                <div class="post-main">
+                  <h2 class="post-title">{{ post.title }}</h2>
+                  <time class="post-date" :datetime="post.created_at">{{ formatDate(post.created_at) }}</time>
+                </div>
+                <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
+                <div v-if="post.tags && post.tags.length" class="post-tags">
+                  <span v-for="tag in post.tags" :key="tag" class="post-tag">#{{ tag }}</span>
+                </div>
+              </div>
             </div>
-          </div>
+          </article>
         </a>
       </div>
 
@@ -350,16 +448,48 @@ const stats = computed(() => {
   margin-bottom: 16px;
   color: var(--vp-c-text-1);
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
-.time-span {
+.content-age {
   font-size: 0.875rem;
   font-weight: 400;
   color: var(--vp-c-text-2);
   font-style: italic;
 }
 
-.filter-container {
+.search-button-inline,
+.shuffle-button-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.search-button-inline:hover,
+.shuffle-button-inline:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.search-button-inline svg,
+.shuffle-button-inline svg {
+  width: 12px;
+  height: 12px;
+}
+
+.tag-filters {
   display: flex;
   gap: 8px;
   flex-wrap: wrap;
@@ -371,7 +501,7 @@ const stats = computed(() => {
   margin: 0 auto;
 }
 
-.filter-btn {
+.tag-filter {
   padding: 8px 16px;
   background: transparent;
   border: 1px solid var(--vp-c-divider);
@@ -382,22 +512,28 @@ const stats = computed(() => {
   font-weight: 500;
   transition: all 0.2s ease;
   text-transform: lowercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
-.filter-btn:hover {
+.tag-filter:hover {
   border-color: var(--vp-c-brand-1);
   color: var(--vp-c-brand-1);
 }
 
-.filter-btn.active {
+.tag-filter.active {
   background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
   color: white;
 }
 
-.filter-count {
+.tag-name {
+  font-weight: 500;
+}
+
+.tag-count {
   font-size: 0.75rem;
-  margin-left: 2px;
   opacity: 0.7;
   font-weight: 400;
 }
@@ -408,11 +544,23 @@ const stats = computed(() => {
   margin-bottom: 32px;
 }
 
+.section-title-featured {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--vp-c-text-1);
+  padding: 0 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .featured-card {
   display: block;
   text-decoration: none;
   color: inherit;
   width: 100%;
+  position: relative;
 }
 
 .featured-image-wrapper {
@@ -420,6 +568,7 @@ const stats = computed(() => {
   height: 500px;
   overflow: hidden;
   background: var(--vp-c-bg-soft);
+  position: relative;
 }
 
 .featured-image {
@@ -429,10 +578,37 @@ const stats = computed(() => {
   display: block;
 }
 
+.featured-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+}
+
 .featured-content {
   padding: 24px 32px 32px;
   max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.featured-content-left {
+  flex: 1;
+  min-width: 0;
+}
+
+.featured-content-right {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 12px;
 }
 
 .featured-title {
@@ -446,20 +622,12 @@ const stats = computed(() => {
 .featured-subtitle {
   font-size: 1.0625rem;
   color: var(--vp-c-text-2);
-  margin-bottom: 16px;
   line-height: 1.5;
-}
-
-.featured-meta {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
 }
 
 .featured-date {
   font-size: 0.875rem;
-  color: var(--vp-c-brand-1);
+  color: var(--vp-c-text-2);
   font-weight: 500;
 }
 
@@ -467,6 +635,17 @@ const stats = computed(() => {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  justify-content: flex-end;
+}
+
+.featured-tags .tag {
+  font-size: 0.75rem;
+  padding: 4px 10px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 12px;
+  color: var(--vp-c-text-2);
+  font-weight: 500;
 }
 
 /* Latest Section - Full Width Container */
@@ -484,17 +663,30 @@ const stats = computed(() => {
   color: var(--vp-c-text-1);
 }
 
-/* Posts Container - Alternating Layout */
+/* Posts Container - Alternating Layout (Daniel's structure) */
 .posts-container {
   display: flex;
   flex-direction: column;
   gap: 24px;
 }
 
-.post-card {
-  display: flex;
+.post-link-wrapper {
+  display: block;
   text-decoration: none;
   color: inherit;
+}
+
+.post-layout {
+  display: flex;
+  width: 100%;
+}
+
+.post-layout.alternate {
+  flex-direction: row-reverse;
+}
+
+.post-container {
+  display: flex;
   width: 100%;
   background: var(--vp-c-bg-soft);
   border-radius: 8px;
@@ -503,32 +695,23 @@ const stats = computed(() => {
   min-height: 200px;
 }
 
-.post-card:hover {
+.post-link-wrapper:hover .post-container {
   box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);
 }
 
 /* Image takes 40% width */
-.post-card .post-image {
+.post-thumbnail {
   flex: 0 0 40%;
   max-width: 480px;
   overflow: hidden;
   background: var(--vp-c-divider);
 }
 
-.post-card .post-image img {
+.post-thumbnail img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-}
-
-/* Alternate direction */
-.post-card.alternate {
-  flex-direction: row-reverse;
-}
-
-.post-card.alternate .post-image {
-  order: 2;
 }
 
 .post-content {
@@ -538,6 +721,10 @@ const stats = computed(() => {
   flex-direction: column;
   justify-content: center;
   min-width: 0;
+}
+
+.post-main {
+  margin-bottom: 12px;
 }
 
 .post-title {
@@ -552,7 +739,6 @@ const stats = computed(() => {
   font-size: 0.8125rem;
   color: var(--vp-c-brand-1);
   font-weight: 500;
-  margin-bottom: 12px;
 }
 
 .post-subtitle {
@@ -568,7 +754,7 @@ const stats = computed(() => {
   gap: 8px;
 }
 
-.tag {
+.post-tag {
   font-size: 0.75rem;
   padding: 4px 10px;
   background: var(--vp-c-bg);
@@ -658,7 +844,7 @@ const stats = computed(() => {
     font-size: 2.125rem;
   }
 
-  .post-card .post-image {
+  .post-thumbnail {
     flex: 0 0 45%;
     max-width: 540px;
   }
@@ -670,6 +856,15 @@ const stats = computed(() => {
   .post-title {
     font-size: 1.5rem;
   }
+
+  .recommended-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+
+  .grid-image {
+    height: 200px;
+  }
 }
 
 /* Tablet - 768px to 1279px */
@@ -678,12 +873,28 @@ const stats = computed(() => {
     height: 450px;
   }
 
-  .post-card .post-image {
+  .post-thumbnail {
     flex: 0 0 38%;
   }
 
   .post-content {
     padding: 20px 28px;
+  }
+
+  .recommended-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .featured-content {
+    flex-direction: column;
+  }
+
+  .featured-content-right {
+    align-items: flex-start;
+  }
+
+  .featured-tags {
+    justify-content: flex-start;
   }
 }
 
@@ -693,12 +904,27 @@ const stats = computed(() => {
     padding: 0;
   }
 
+  .section-header {
+    font-size: 1rem;
+    flex-direction: column;
+    gap: 8px;
+  }
+
   .featured-image-wrapper {
     height: 280px;
   }
 
   .featured-content {
     padding: 20px 20px 24px;
+    flex-direction: column;
+  }
+
+  .featured-content-right {
+    align-items: flex-start;
+  }
+
+  .featured-tags {
+    justify-content: flex-start;
   }
 
   .featured-title {
@@ -717,19 +943,24 @@ const stats = computed(() => {
     font-size: 1.25rem;
   }
 
+  .section-title-featured {
+    font-size: 1.25rem;
+    padding: 0 16px;
+  }
+
   /* Stack vertically on mobile */
-  .post-card {
+  .post-layout {
     flex-direction: column !important;
   }
 
-  .post-card .post-image {
+  .post-thumbnail {
     flex: none;
     width: 100%;
     max-width: 100%;
     height: 200px;
   }
 
-  .post-card.alternate .post-image {
+  .post-layout.alternate .post-thumbnail {
     order: 0;
   }
 
@@ -754,6 +985,18 @@ const stats = computed(() => {
     flex-wrap: wrap;
     justify-content: center;
   }
+
+  .recommended-grid-section {
+    padding: 0 16px;
+  }
+
+  .recommended-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tag-filters {
+    padding: 12px;
+  }
 }
 
 /* Small Mobile - up to 480px */
@@ -770,7 +1013,11 @@ const stats = computed(() => {
     padding: 0 12px 32px;
   }
 
-  .post-card .post-image {
+  .section-title-featured {
+    padding: 0 12px;
+  }
+
+  .post-thumbnail {
     height: 180px;
   }
 
@@ -784,6 +1031,18 @@ const stats = computed(() => {
 
   .pagination {
     padding-top: 20px;
+  }
+
+  .recommended-grid-section {
+    padding: 0 12px;
+  }
+
+  .grid-content {
+    padding: 12px;
+  }
+
+  .grid-image {
+    height: 160px;
   }
 }
 

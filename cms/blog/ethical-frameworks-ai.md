@@ -4,7 +4,7 @@ title: "Ethical Frameworks for AI Development"
 subtitle: "How to build AI systems that align with human values"
 created_at: 2025-11-15T10:30:00
 updated_at: 2025-11-15T10:30:00
-tags: ethics | ai | philosophy | technology
+tags: ethics | ai | philosophy | technology | top
 meta_default_title: "Ethical Frameworks for AI Development"
 meta_default_description: "A practical guide to ethical considerations when building and deploying AI systems"
 meta_og_title: "Ethical Frameworks for AI Development"

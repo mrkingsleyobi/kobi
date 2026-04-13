@@ -4,7 +4,7 @@ title: "Deep Work in the Age of AI Distraction"
 subtitle: "How to do meaningful work when algorithms compete for your attention"
 created_at: 2025-12-05T13:00:00
 updated_at: 2025-12-05T13:00:00
-tags: productivity | philosophy | technology | meaning
+tags: productivity | philosophy | technology | meaning | recommended
 meta_default_title: "Deep Work in the Age of AI Distraction"
 meta_default_description: "Strategies for maintaining focus and doing deep work in an age of AI-driven distraction"
 meta_og_title: "Deep Work in the Age of AI Distraction"

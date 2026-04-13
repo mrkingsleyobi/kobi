@@ -4,7 +4,7 @@ title: "Learning to Learn: The Most Valuable Skill in the AI Age"
 subtitle: "How to build the learning systems that will keep you relevant"
 created_at: 2025-09-08T14:00:00
 updated_at: 2025-09-08T14:00:00
-tags: learning | productivity | skills | ai
+tags: learning | productivity | skills | ai | must | recommended
 meta_default_title: "Learning to Learn: The Most Valuable Skill in the AI Age"
 meta_default_description: "Strategies for effective learning and skill development in a rapidly changing world"
 meta_og_title: "Learning to Learn: The Most Valuable Skill in the AI Age"
