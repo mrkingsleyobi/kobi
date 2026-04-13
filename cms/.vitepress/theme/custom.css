@@ -803,7 +803,7 @@ div[class*='language-'] {
   display: block !important;
 }
 
-/* What I added */
+/* Aside styling in left gutter */
 aside {
   font-family: heliotrope-t3;
   font-size: .83rem;
@@ -813,6 +813,20 @@ aside {
   -webkit-hyphens: none;
   hyphens: none;
   font-feature-settings: "liga"
+}
+
+.page-title,aside {
+  display: block;
+  float: left;
+  position: absolute;
+  margin-left: 0;
+  left: 2.5rem;
+  width: 7.5rem;
+  text-align: right;
+  list-style-type: none;
+  clear: both;
+  margin-bottom: 1rem;
+  font-variant-numeric: normal
 }
 
 .page-title {
@@ -879,20 +893,6 @@ aside {
 .frontmatter-tags .tag-link:hover {
   color: var(--vp-c-brand-2);
   text-decoration: underline;
-}
-
-.page-title,aside {
-  display: block;
-  float: left;
-  position: absolute;
-  margin-left: 0;
-  left: 2.5rem;
-  width: 7.5rem;
-  text-align: right;
-  list-style-type: none;
-  clear: both;
-  margin-bottom: 1rem;
-  font-variant-numeric: normal
 }
 
 .frontmatter-title {
