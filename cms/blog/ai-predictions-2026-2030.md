@@ -30,7 +30,9 @@ Here are my three predictions for 2026-2030, and why I think we're dramatically 
 
 ## 1. The Economic Unbundling: Half of All "Knowledge Work" Becomes a $50/Month Subscription
 
-<aside>This isn't about job loss — it's about job transformation. The question is: will you be the one paying $50/month or the one collecting it?</aside>
+::: aside
+This isn't about job loss — it's about job transformation. The question is: will you be the one paying $50/month or the one collecting it?
+:::
 
 By 2028, we'll see the economic unbundling of knowledge work that the internet did to media — just compressed into 24 months instead of 20 years.
 
@@ -71,7 +73,9 @@ The software stack we've spent 40 years building is about to be disrupted from t
 ### **LLM-to-LLM Communication** (2026-2027)
 AI systems will begin communicating directly with other AI systems in specialized protocols humans can't easily read. Negotiation bots haggling with supplier bots. Code generation systems talking directly to deployment systems.
 
-<aside>We won't be able to read the logs. We'll just see outcomes. Most of the time, that'll be fine. Sometimes, it won't.</aside>
+::: aside
+We won't be able to read the logs. We'll just see outcomes. Most of the time, that'll be fine. Sometimes, it won't.
+:::
 
 ### **Self-Healing Systems** (2027-2028)
 Software that debugs, patches, and optimizes itself. The DevOps engineer of 2028 is essentially a shepherd of autonomous software systems.
@@ -152,7 +156,9 @@ The reality: Probably both, with massive variance between winners and losers.
 
 ## What I'm Getting Wrong
 
-<aside>I'm almost certainly wrong about specifics. I'm probably right about direction. The question is: are you positioned for the world that's coming, or the world that was?</aside>
+::: aside
+I'm almost certainly wrong about specifics. I'm probably right about direction. The question is: are you positioned for the world that's coming, or the world that was?
+:::
 
 **Potential errors in my thinking:**
 
@@ -170,7 +176,9 @@ The reality: Probably both, with massive variance between winners and losers.
 
 ## What To Do About It
 
-<aside>You can't stop these trends. You can position yourself to benefit from them rather than being disrupted by them.</aside>
+::: aside
+You can't stop these trends. You can position yourself to benefit from them rather than being disrupted by them.
+:::
 
 **Practical steps:**
 

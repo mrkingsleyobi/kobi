@@ -1,0 +1,64 @@
+/* Daniel Miessler's H1-H6 Heading Styles */
+h1 {
+  font-family: valkyrie-text;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  font-weight: 500;
+  font-size: 121.3%;
+}
+
+h2 {
+  font-family: advocate-n34;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-weight: 200;
+  font-size: 128%;
+}
+
+h3 {
+  font-family: heliotrope-caps;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-size: 108%;
+  font-weight: 400;
+}
+
+h4 {
+  font-family: advocate-c14;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-weight: 200;
+  font-size: 120%;
+}
+
+h5 {
+  font-family: advocate-c14;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+  text-transform: lowercase;
+  font-size: 120%;
+}
+
+h6 {
+  font-family: advocate-c14;
+  margin-top: 1.15rem;
+  margin-bottom: 1.15rem;
+  padding-top: .35rem;
+  padding-bottom: .35rem;
+  text-transform: lowercase;
+  font-size: 120%;
+  font-weight: 500;
+}

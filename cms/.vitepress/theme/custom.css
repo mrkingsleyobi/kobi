@@ -817,14 +817,29 @@ aside {
 
 /* Hide asides in main content (they're moved to gutter) */
 .vp-doc aside,
-.VPDoc .content aside {
+.VPDoc .content aside,
+.vp-doc .custom-aside,
+.VPDoc .content .custom-aside {
   display: none !important;
 }
 
 /* Asides inside page-title should be visible */
-.page-title aside {
+.page-title aside,
+.page-title .custom-aside {
   display: block !important;
   margin-bottom: 1rem;
+}
+
+/* Style VitePress custom containers as asides */
+.custom-aside {
+  font-family: heliotrope-t3;
+  font-size: .83rem;
+  line-height: 1.4;
+  color: var(--vp-c-text-3);
+  letter-spacing: .015em;
+  -webkit-hyphens: none;
+  hyphens: none;
+  font-feature-settings: "liga"
 }
 
 .page-title,aside {
