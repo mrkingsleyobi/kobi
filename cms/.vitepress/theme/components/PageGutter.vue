@@ -117,6 +117,14 @@ const injectGutter = () => {
     (defaultH1 as HTMLElement).style.display = 'none'
     console.log('PageGutter: Hid default h1')
   }
+
+  // Move aside elements from content to page-title gutter (like Daniel's site)
+  const contentAsides = vpDoc.querySelectorAll('.content aside')
+  contentAsides.forEach((aside, index) => {
+    console.log(`PageGutter: Moving aside ${index + 1} to page-title`, aside.textContent?.substring(0, 50))
+    pageTitle.appendChild(aside.cloneNode(true))
+    aside.remove() // Remove from original position
+  })
 }
 
 onMounted(() => {
