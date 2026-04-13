@@ -334,6 +334,9 @@ const tagCounts = computed(() => {
               class="blog-thumbnail"
             />
             <div class="blog-overlay"></div>
+            <div class="blog-ul-logo">
+              <img src="/images/favicon.png" alt="Kingsley Obi" class="ul-logo-img" />
+            </div>
           </div>
           <div class="blog-content" style="background: rgba(233, 230, 234, 0.95);">
             <div class="blog-content-left">
@@ -560,10 +563,16 @@ const tagCounts = computed(() => {
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--vp-c-text-2);
   font-weight: 600;
-  margin-bottom: 24px;
-  color: var(--vp-c-text-1);
+  margin: 0.75rem 0 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
 }
 
 /* Results/Posts Container Structure - Daniel's layout */
@@ -572,13 +581,14 @@ const tagCounts = computed(() => {
 }
 
 .posts-list {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 1rem;
 }
 
 .posts-grid {
   display: flex;
   flex-direction: column;
-  gap: 32px;
 }
 
 .blog-card {
@@ -683,10 +693,16 @@ const tagCounts = computed(() => {
 }
 
 .section-title {
-  font-size: 1.5rem;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--vp-c-text-2);
   font-weight: 600;
-  margin-bottom: 24px;
-  color: var(--vp-c-text-1);
+  margin: 0.75rem 0 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
 }
 
 /* Posts Container - Alternating Layout (Daniel's structure) */
@@ -703,89 +719,139 @@ const tagCounts = computed(() => {
 }
 
 .post-layout {
-  display: flex;
-  width: 100%;
+  transition: all 0.15s ease;
+  padding: 0.25rem 0.5rem;
+  border-radius: 8px;
 }
 
 .post-layout.alternate {
-  flex-direction: row-reverse;
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.post-layout:hover {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+}
+
+.post-link-wrapper {
+  display: block;
+  text-decoration: none !important;
+  color: inherit;
 }
 
 .post-container {
+  padding: 0.1rem 0;
   display: flex;
-  width: 100%;
-  overflow: hidden;
-  transition: all 0.2s ease;
-  min-height: 200px;
+  gap: 1rem;
+  align-items: center;
 }
 
 .post-link-wrapper:hover .post-container {
-  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 8%, transparent);
+  /* No shadow on hover in Daniel's design */
 }
 
-/* Image takes 35% width - Daniel's ratio */
+/* Small square thumbnail - Daniel's 100px design */
 .post-thumbnail {
-  flex: 0 0 35%;
-  max-width: 420px;
+  flex-shrink: 0;
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  aspect-ratio: 1/1 !important;
   overflow: hidden;
-  background: var(--vp-c-divider);
+  border-radius: 8px;
 }
 
 .post-thumbnail img {
-  width: 100%;
-  height: 100%;
+  width: 100px !important;
+  min-width: 100px !important;
+  max-width: 100px !important;
+  height: 100px !important;
+  min-height: 100px !important;
+  max-height: 100px !important;
+  aspect-ratio: 1/1 !important;
   object-fit: cover;
-  display: block;
+  object-position: center;
+  transition: transform 0.2s ease;
+  border-radius: 8px;
+  margin: 0 !important;
+}
+
+.post-link-wrapper:hover .post-thumbnail img {
+  transform: scale(1.05);
 }
 
 .post-content {
   flex: 1;
-  padding: 20px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
   min-width: 0;
 }
 
 .post-main {
-  margin-bottom: 12px;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  margin-bottom: 0;
 }
 
 .post-title {
-  font-size: 1.125rem;
+  font-family: heliotrope-caps, sans-serif;
+  font-size: 0.8rem;
   font-weight: 600;
-  margin-bottom: 6px;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  flex: 1;
   color: var(--vp-c-text-1);
-  line-height: 1.3;
+  transition: color 0.15s ease;
+}
+
+.post-link-wrapper:hover .post-title {
+  color: var(--vp-c-text-1);
 }
 
 .post-date {
-  font-size: 0.75rem;
-  color: var(--vp-c-brand-1);
-  font-weight: 500;
-  margin-bottom: 8px;
+  font-family: concourse-t3, sans-serif;
+  font-size: 0.625rem;
+  color: var(--vp-c-text-3);
+  font-weight: 300;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
 }
 
 .post-subtitle {
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.4;
-  margin-bottom: 10px;
+  font-family: valkyrie-text, Georgia, serif;
+  font-size: 0.7rem;
+  line-height: 1.3;
+  color: var(--vp-c-text-1);
+  margin: 0 0 0.125rem;
+  font-weight: 400;
+  opacity: 0.9;
+  text-transform: none !important;
 }
 
 .post-tags {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  margin-top: 0;
 }
 
 .post-tag {
-  font-size: 0.7rem;
-  padding: 3px 8px;
-  background: transparent;
-  border: none;
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, sans-serif;
+  font-size: 0.625rem;
+  font-weight: 300;
   color: var(--vp-c-text-2);
-  font-weight: 400;
+  margin-right: 0.625rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  opacity: 0.85;
+}
+
+.post-tag:hover {
+  color: var(--vp-c-text-1);
+  opacity: 1;
 }
 
 /* Pagination - Daniel's style */
