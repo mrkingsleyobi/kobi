@@ -118,25 +118,33 @@ const injectGutter = () => {
     console.log('PageGutter: Hid default h1')
   }
 
-  // Move aside elements from content to page-title gutter (like Daniel's site)
+  // Move Aside components from content to page-title gutter (like Daniel's site)
   const moveAsidesToGutter = () => {
-    const contentAsides = vpDoc.querySelectorAll('.vp-doc aside')
-    console.log(`PageGutter: Found ${contentAsides.length} asides to move`)
+    // Look for .aside elements (rendered by Aside.vue component)
+    const contentAsides = vpDoc.querySelectorAll('.vp-doc .aside')
+    console.log(`PageGutter: Found ${contentAsides.length} Aside components to move`)
 
     contentAsides.forEach((aside, index) => {
-      console.log(`PageGutter: Moving aside ${index + 1} to page-title`, aside.textContent?.substring(0, 50))
-      // Clone the aside and add to page-title
-      const asideClone = aside.cloneNode(true) as HTMLElement
-      pageTitle.appendChild(asideClone)
-      // Hide the original aside from content
-      (aside as HTMLElement).style.display = 'none'
+      const text = aside.textContent?.trim()
+      console.log(`PageGutter: Moving Aside ${index + 1} to page-title`, text?.substring(0, 50))
+
+      // Create a new aside element for the gutter
+      const gutterAside = document.createElement('aside')
+      gutterAside.className = 'aside'
+      gutterAside.textContent = text
+
+      // Add to page-title gutter
+      pageTitle.appendChild(gutterAside)
+
+      // Hide the original Aside component from content
+      ;(aside as HTMLElement).style.display = 'none'
     })
   }
 
-  // Move asides immediately
+  // Move Asides immediately
   moveAsidesToGutter()
 
-  // Also move asides after a short delay in case they're rendered late
+  // Also move Asides after a short delay in case they're rendered late
   setTimeout(moveAsidesToGutter, 500)
 }
 
