@@ -782,7 +782,7 @@ const tagCounts = computed(() => {
 
 .post-title {
   font-family: heliotrope-t3, sans-serif;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   font-weight: 600;
   line-height: 1.2;
   margin: 0;
