@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.82.0",
+    "@iconify/vue": "^5.0.0",
     "@modelcontextprotocol/sdk": "^1.29.0",
     "openai": "^6.33.0",
     "vitepress": "^1.0.0",
