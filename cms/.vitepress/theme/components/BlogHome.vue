@@ -572,22 +572,21 @@ const uniqueTagCount = computed(() => {
 }
 
 /* Featured Section - Full Width, Large Hero Image */
-.featured-section {
-  width: 100%;
-  margin-bottom: 0;
+.featured-section .section-title {
+    margin-bottom: .5rem;
 }
-
 .section-title {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--vp-c-text-2);
-  font-weight: 600;
-  margin: 0.75rem 0 0.375rem;
-  display: flex;
-  align-items: center;
-  gap: 0.375rem;
-  flex-wrap: wrap;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .6875rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--vp-c-text-2);
+    font-weight: 600;
+    margin: .75rem 0 .375rem;
+    display: flex;
+    align-items: center;
+    gap: .375rem;
+    flex-wrap: wrap;
 }
 
 /* Results/Posts Container Structure - Daniel's layout */
@@ -608,19 +607,16 @@ const uniqueTagCount = computed(() => {
   gap: 12px;
 }
 
-.blog-card {
-  display: block;
-  text-decoration: none;
-  color: inherit;
-  width: 100%;
-}
-
 .blog-thumbnail-hero {
-  width: 100%;
-  height: 500px;
-  overflow: hidden;
-  background: var(--vp-c-bg-soft);
-  position: relative;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    flex: 0 0 auto;
+    border-radius: 14px 14px 0 0;
 }
 
 .blog-thumbnail {
@@ -661,56 +657,85 @@ const uniqueTagCount = computed(() => {
 }
 
 .blog-content {
-  padding: 24px 32px 32px;
-  max-width: 1200px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem 1.25rem;
+    -webkit-backdrop-filter: blur(3px) saturate(1.2);
+    backdrop-filter: blur(3px) saturate(1.2);
+    position: relative;
+    transition: background .3s ease;
+    border-radius: 0 0 14px 14px;
 }
 
 .blog-content-left {
-  flex: 1;
-  min-width: 0;
-}
-
-.blog-content-right {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 12px;
+    flex: 0 0 80%;
+    max-width: 80%;
+    padding-right: 1rem;
 }
 
 .blog-title {
-  font-family: valkyrie-text, Georgia, serif;
-  font-size: 1.875rem;
+  margin: 0 0 .25rem;
+  font-family: valkyrie-text, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  font-size: 1.1rem;
   font-weight: 700;
-  margin-bottom: 8px;
+  line-height: 1.35;
   color: var(--vp-c-text-1);
-  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: 0;
+  text-transform: none;
+  word-wrap: break-word;
+}
+
+.vp-doc a {
+  text-decoration: none!important;
 }
 
 .blog-subtitle {
-  font-family: valkyrie-text, Georgia, serif;
-  font-size: 1.0625rem;
-  color: var(--vp-c-text-2);
-  line-height: 1.5;
+    margin: 0;
+    font-family: valkyrie-text, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--vp-c-text-2);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-style: italic;
+    text-transform: none !important;
+}
+
+.blog-content-right {
+    flex: 0 0 20%;
+    max-width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
 }
 
 .blog-date {
-  font-family: valkyrie-text, Georgia, serif;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  font-weight: 500;
+    font-family: heliotrope-t3, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .75rem;
+    font-weight: 400;
+    color: var(--vp-c-text-3);
+    line-height: 1.3;
+    text-transform: none !important;
+    margin-bottom: .25rem;
 }
 
 .blog-tags {
-  font-family: valkyrie-text, Georgia, serif;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-2);
-  font-weight: 400;
+    font-family: heliotrope-t3, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .65rem;
+    font-weight: 400;
+    color: var(--vp-c-text-3);
+    line-height: 1.3;
+    opacity: .75;
+    text-transform: none !important;
 }
 
 /* Posts Container - Main wrapper for blog index */

@@ -1077,3 +1077,14 @@ body {
   background-color: var(--vp-c-bg, #EAE9DF);
   color: var(--vp-c-text-1, #2c1810)
 }
+
+h3 {
+  font-family: heliotrope-caps;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-size: 108%;
+  font-weight: 400;
+}
