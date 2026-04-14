@@ -433,7 +433,8 @@ const uniqueTagCount = computed(() => {
         </button>
       </div>
     </section>
-
+    <div class="post-footer">
+    <div class="content-end-delimiter"></div>
     <!-- Share and Follow Buttons -->
     <ShareButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
     <FollowButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
@@ -448,11 +449,11 @@ const uniqueTagCount = computed(() => {
       :years-active="stats.yearsActive"
       :tag-count="uniqueTagCount"
     />
+    </div>
   </div>
 </template>
 
 <style scoped>
-/* Daniel Miessler Layout Structure - Full Width, Minimal Padding */
 
 .blog-home {
   width: 100%;
@@ -860,7 +861,6 @@ const uniqueTagCount = computed(() => {
     gap: .5rem;
     margin-bottom: 0;
 }
-
 .post-content h2 {
     font-size: .75rem;
     font-weight: 300;
@@ -890,35 +890,37 @@ const uniqueTagCount = computed(() => {
 
 /* Pagination - Daniel's style */
 .pagination {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 40px;
-  padding: 24px 0;
-  border-top: 1px solid var(--vp-c-divider);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--vp-c-divider-light);
 }
 
+.page-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    color: var(--vp-c-text-3);
+}
 .page-btn {
-  padding: 8px 16px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 6px;
-  color: var(--vp-c-text-1);
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-weight: 500;
-  transition: all 0.2s ease;
+    padding: .375rem .75rem;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .6875rem;
+    font-weight: 500;
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg);
+    cursor: pointer;
+    transition: all .15s ease;
+    border-radius: 4px;
+    color: var(--vp-c-text-2);
 }
 
 .page-btn:hover:not(:disabled) {
   background: var(--vp-c-brand-1);
   border-color: var(--vp-c-brand-1);
   color: white;
-}
-
-.page-btn:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
 }
 
 .page-info {
@@ -1005,30 +1007,6 @@ const uniqueTagCount = computed(() => {
   line-height: 1.4;
 }
 
-
-/* Desktop - 1280px and up 
-@media (min-width: 1280px) {
-  .featured-image-wrapper {
-    height: 550px;
-  }
-
-  .featured-content {
-    padding: 32px 20px 40px;
-  }
-
-  .featured-title {
-    font-size: 2.125rem;
-  }
-
-  .post-thumbnail {
-    flex: 0 0 45%;
-    max-width: 540px;
-  }
-
-  .post-content {
-    padding: 32px 40px;
-  }
-} */
 
 .post-content {
     flex: 1;
@@ -1212,4 +1190,30 @@ const uniqueTagCount = computed(() => {
     grid-template-columns: 1fr;
   }
 }
+
+.vp-doc p {
+  line-height: 24px !important;
+}
+
+.vp-doc p, .vp-doc summary {
+  margin: 0px !important;
+}
+
+.vp-doc h2 {
+  border-top: none !important;
+}
+.post-footer {
+    margin-top: 1.5rem;
+    padding-top: 0;
+}
+
+.content-end-delimiter {
+    width: 100%;
+    height: 1px;
+    background: var(--vp-c-divider);
+    margin-bottom: 1.5rem;
+    opacity: .8;
+}
+
 </style>
+

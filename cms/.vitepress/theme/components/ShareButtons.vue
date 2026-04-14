@@ -86,100 +86,78 @@ const shareLinks = computed(() => [
 
 <style scoped>
 .share-section {
-  margin: 32px 0 24px 0;
+    margin-bottom: 1rem;
 }
 
 .button-group {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    justify-content: flex-start;
 }
 
 .section-label {
-  font-family: 'concourse-text', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: .5rem;
-  font-weight: 400;
-  color: var(--vp-c-text-3);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  opacity: .8;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--vp-c-text-3);
+    font-weight: 400;
+    opacity: .8;
 }
 
 .share-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+    display: flex;
+    gap: .25rem;
+    flex-wrap: wrap;
 }
 
 .share-button {
-  display: inline-flex;
-  align-items: center;
-  gap: .2rem;
-  padding: .15rem .35rem;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 4px;
-  color: var(--vp-c-text-1);
-  font-size: .575rem;
-  font-weight: 400;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  opacity: .9;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: .2rem;
+    padding: .15rem .35rem;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 4px;
+    transition: all .15s ease;
+    background: var(--vp-c-bg-elv);
+    color: var(--vp-c-text-2);
+    opacity: .9;
+    text-decoration: none;
+    font-family: concourse-t2, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .575rem;
+    font-weight: 400;
+    letter-spacing: .01em;
+    text-transform: capitalize;
 }
 
-.share-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--vp-c-brand-1);
-  opacity: 0;
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 4px;
-  z-index: 0;
+.share-button[data-v-17b27531]:hover {
+    opacity: 1;
+    background: var(--vp-c-bg-elv);
+    border-color: var(--vp-c-divider);
+    transform: translateY(-1px)
 }
 
-.share-button:hover {
-  border-color: var(--vp-c-brand-1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+.share-button svg[data-v-17b27531] {
+    opacity: .7;
+    width: 14px;
+    height: 14px
 }
 
-.share-button:hover::before {
-  opacity: 1;
+.share-button:hover svg[data-v-17b27531] {
+    opacity: 1
 }
 
-.share-button:hover span,
-.share-button:hover .iconify {
-  color: white;
-  position: relative;
-  z-index: 1;
+.hn-icon[data-v-17b27531] {
+    font-family: concourse-t2,-apple-system,BlinkMacSystemFont,sans-serif;
+    font-weight: 600;
+    font-size: .575rem;
+    opacity: .7
 }
 
-.share-button .iconify {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.share-button span {
-  position: relative;
-  z-index: 1;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.share-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.share-button:hover .hn-icon[data-v-17b27531] {
+    opacity: 1
 }
 
 @media (max-width: 768px) {

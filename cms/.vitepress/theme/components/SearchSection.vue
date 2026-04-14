@@ -38,7 +38,7 @@ const handleKeyPress = (event: KeyboardEvent) => {
     <div class="search-wrapper">
       <span class="section-label">Search</span>
       <div class="search-container">
-        <span class="search-icon vp-icon">🔍</span>
+        <span class="search-icon vp-icon"></span>
         <input
           ref="searchInput"
           v-model="searchQuery"
@@ -54,65 +54,63 @@ const handleKeyPress = (event: KeyboardEvent) => {
 
 <style scoped>
 .search-section {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 32px 20px;
-  border-top: 1px solid var(--vp-c-divider);
+    margin-bottom: 1rem
 }
 
 .search-wrapper {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    justify-content: flex-start
 }
 
 .section-label {
-  font-size: 0.75rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--vp-c-text-2);
-  font-weight: 600;
+    font-family: concourse-t3,-apple-system,BlinkMacSystemFont,sans-serif;
+    font-size: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--vp-c-text-3);
+    font-weight: 400;
+    opacity: .8
 }
 
 .search-container {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
+    position: relative;
+    width: 100%;
+}
+
+.search-icon.vp-icon {
+    --icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' stroke-width='1.6' viewBox='0 0 20 20'%3E%3Cpath fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' d='m14.386 14.386 4.088 4.088-4.088-4.088A7.533 7.533 0 1 1 3.733 3.733a7.533 7.533 0 0 1 10.653 10.653z'/%3E%3C/svg%3E");
+    mask: var(--icon) no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask: var(--icon) no-repeat;
+    -webkit-mask-size: 100% 100%;
+    background-color: currentColor;
+    display: inline-block
 }
 
 .search-icon {
-  position: absolute;
-  left: 16px;
-  font-size: 1.25rem;
-  color: var(--vp-c-text-2);
-  pointer-events: none;
-  z-index: 1;
+    position: absolute;
+    left: .75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--vp-c-text-3);
+    pointer-events: none;
+    width: 14px;
+    height: 14px;
 }
 
 .search-input {
-  width: 100%;
-  padding: 16px 16px 16px 48px;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 8px;
-  color: var(--vp-c-text-1);
-  font-size: 0.875rem;
-  font-family: inherit;
-  transition: all 0.2s ease;
-}
-
-.search-input:focus {
-  outline: none;
-  border-color: var(--vp-c-brand-1);
-  background: var(--vp-c-bg);
-  box-shadow: 0 0 0 3px rgba(var(--vp-c-brand-rgb), 0.1);
-}
-
-.search-input::placeholder {
-  color: var(--vp-c-text-3);
-  opacity: 0.8;
+    width: 100%;
+    padding: .5rem .75rem .5rem 2.5rem;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .75rem;
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg-soft);
+    transition: all .2s ease;
+    border-radius: 3px;
+    color: var(--vp-c-text-1);
+    height: 36px;
 }
 
 @media (max-width: 768px) {

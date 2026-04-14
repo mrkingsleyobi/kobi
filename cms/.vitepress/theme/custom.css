@@ -851,18 +851,6 @@ aside {
   padding-top: 5px
 }
 
-/* Section labels for Share/Follow buttons */
-.section-label {
-  font-family: concourse-text, -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: .55rem;
-  font-weight: 400;
-  color: var(--vp-c-text-3);
-  text-transform: uppercase;
-  letter-spacing: .05em;
-  opacity: .8;
-  margin-top: 24px;
-}
-
 .frontmatter-subtitle {
   font-family: valkyrie-text;
   display: block;
@@ -1131,10 +1119,53 @@ h3 {
   font-weight: 400;
 }
 
-.vp-doc p {
-  line-height: 28px !important;
+.dp-doc>div>p:first-child, .dp-doc>div>h1:first-child, .dp-doc>div>*:first-child:not(.custom-block), .dp-doc p:first-of-type, .dp-doc>p:first-child, .dp-doc>p:first-of-type, .page-_ideas .dp-doc>p:first-child, .page-_ideas .dp-doc>p:first-of-type, .page-_blog .dp-doc>p:first-child, .page-_speaking .dp-doc>p:first-child, .page-_consulting.dp-doc>p:first-child, .page-_consulting .dp-doc>p:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
-.vp-doc p, .vp-doc summary {
-  margin-bottom: 1em !important;
+h2 {
+  font-family: advocate-n34;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-weight: 200;
+  font-size: 128%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--vp-c-divider-light);
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 90%;
+  --tw-text-opacity: 1;
+  color: rgb(85 89 95 / var(--tw-text-opacity, 1));
+}
+
+.page-btn:disabled {
+  opacity: .4; 
+  cursor: not-allowed;
+}
+.page-btn {
+  padding: .375rem .75rem;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, Segoe UI, Roboto, sans-serif;
+  font-size: .6875rem;
+  font-weight: 500;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  cursor: pointer;
+  transition: all .15s ease;
+  border-radius: 4px;
+  color: var(--vp-c-text-1);
 }

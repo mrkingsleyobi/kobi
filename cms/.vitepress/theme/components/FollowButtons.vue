@@ -72,101 +72,95 @@ const followLinks = computed(() => [
 
 <style scoped>
 .cta-section {
-  margin: 24px 0 0 0;
+    margin-bottom: 1rem;
 }
 
 .button-group {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    justify-content: flex-start;
 }
 
 .section-label {
-  font-family: 'concourse-text', -apple-system, BlinkMacSystemFont, sans-serif;
-  font-size: .5rem;
-  font-weight: 400;
-  color: var(--vp-c-text-3);
-  text-transform: uppercase;
-  letter-spacing: .1em;
-  opacity: .8;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .5rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--vp-c-text-3);
+    font-weight: 400;
+    opacity: .8;
 }
 
 .cta-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
+    display: flex;
+    gap: .25rem;
+    flex-wrap: wrap;
 }
 
 .cta-button {
-  display: inline-flex;
-  align-items: center;
-  gap: .2rem;
-  padding: .125rem .3rem;
-  background: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-divider);
-  border-radius: 4px;
-  color: var(--vp-c-text-1);
-  font-size: .5rem;
-  font-weight: 400;
-  text-decoration: none;
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  opacity: .85;
-}
-
-.cta-button::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: var(--vp-c-brand-1);
-  opacity: 0;
-  transition: opacity 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-  border-radius: 4px;
-  z-index: 0;
+    display: inline-flex;
+    align-items: center;
+    gap: .2rem;
+    padding: .125rem .3rem;
+    font-family: concourse-t2, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .5rem;
+    font-weight: 400;
+    text-decoration: none;
+    text-transform: capitalize;
+    letter-spacing: .01em;
+    border: 1px solid var(--vp-c-divider);
+    border-radius: 4px;
+    transition: all .15s ease;
+    background: var(--vp-c-bg-soft);
+    color: var(--vp-c-text-2);
+    opacity: .85;
 }
 
 .cta-button:hover {
-  border-color: var(--vp-c-brand-1);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    opacity: 1;
+    background: var(--vp-c-bg-soft);
+    border-color: var(--vp-c-divider)
 }
 
-.cta-button:hover::before {
-  opacity: 1;
+.cta-button svg {
+    opacity: .6;
+    width: 12px;
+    height: 12px
 }
 
-.cta-button:hover span,
-.cta-button:hover .iconify {
-  color: white;
-  position: relative;
-  z-index: 1;
+.cta-button.newsletter:hover {
+    color: var(--vp-c-text-1)
 }
 
-.cta-button .iconify {
-  flex-shrink: 0;
-  width: 16px;
-  height: 16px;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.cta-button.newsletter:hover svg {
+    opacity: .8
 }
 
-.cta-button span {
-  position: relative;
-  z-index: 1;
-  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+.cta-button.youtube:hover {
+    color: var(--vp-c-text-1)
 }
 
-.cta-button:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.cta-button.youtube:hover svg {
+    opacity: .8
 }
+
+.cta-button.linkedin:hover {
+    color: var(--vp-c-text-1)
+}
+
+.cta-button.linkedin:hover svg {
+    opacity: .8
+}
+
+.cta-button.x-follow:hover {
+    color: var(--vp-c-text-1)
+}
+
+.cta-button.x-follow:hover svg {
+    opacity: .8
+}
+
 
 @media (max-width: 768px) {
   .cta-section {
