@@ -5,6 +5,7 @@ import ShareButtons from './ShareButtons.vue'
 import FollowButtons from './FollowButtons.vue'
 import ContentStats from './ContentStats.vue'
 import SupportSection from './SupportSection.vue'
+import SearchSection from './SearchSection.vue'
 
 const posts = ref<BlogPostData[]>([])
 const featuredPost = ref<BlogPostData | null>(null)
@@ -234,6 +235,13 @@ const tagCounts = computed(() => {
   }
   return counts
 })
+
+// Count unique tags for search section
+const uniqueTagCount = computed(() => {
+  const allTags = posts.value.flatMap(post => post.tags)
+  const uniqueTags = new Set(allTags.map(tag => tag.toLowerCase()))
+  return uniqueTags.size
+})
 </script>
 
 <template>
@@ -334,6 +342,9 @@ const tagCounts = computed(() => {
               class="blog-thumbnail"
             />
             <div class="blog-overlay"></div>
+            <div class="blog-ul-logo">
+              <img src="/images/favicon.png" alt="Kingsley Obi" class="ul-logo-img">
+            </div>
           </div>
           <div class="blog-content" style="background: rgba(233, 230, 234, 0.95);">
             <div class="blog-content-left">
@@ -361,13 +372,13 @@ const tagCounts = computed(() => {
       <div class="results-section">
         <div class="posts-list">
           <div class="posts-grid">
-            <a
+            <article
               v-for="(post, index) in paginatedPosts"
               :key="post.slug"
-              :href="`/blog/${post.slug}`"
-              class="post-link-wrapper"
+              class="post-layout"
+              :class="{ alternate: index % 2 === 1 }"
             >
-              <article class="post-layout" :class="{ alternate: index % 2 === 1 }">
+              <a :href="`/blog/${post.slug}`" class="post-link-wrapper">
                 <div class="post-container">
                   <div v-if="post.image" class="post-thumbnail">
                     <img :src="post.image" :alt="post.title" loading="lazy" />
@@ -379,12 +390,12 @@ const tagCounts = computed(() => {
                     </div>
                     <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
                     <div v-if="post.tags && post.tags.length" class="post-tags">
-                      <a v-for="tag in post.tags" :key="tag" :href="`/archives/?tag=${tag.toLowerCase()}`" class="post-tag"> #{{ tag }}</a>
+                      <span v-for="tag in post.tags" :key="tag" class="post-tag"> #{{ tag }}</span>
                     </div>
                   </div>
                 </div>
-              </article>
-            </a>
+              </a>
+            </article>
           </div>
         </div>
       </div>
@@ -424,15 +435,19 @@ const tagCounts = computed(() => {
     </section>
 
     <!-- Share and Follow Buttons -->
-    <section v-if="!loading" class="share-follow-section">
-      <div class="share-follow-container">
-        <ShareButtons url="https://kingsleyobi.com/blog/" title="Blog" />
-        <FollowButtons url="https://kingsleyobi.com/blog/" title="Blog" />
-      </div>
-    </section>
+    <ShareButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
+    <FollowButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
 
     <!-- Support Section -->
     <SupportSection v-if="!loading" />
+
+    <!-- Search Section -->
+    <SearchSection
+      v-if="!loading"
+      :post-count="posts.length"
+      :years-active="stats.yearsActive"
+      :tag-count="uniqueTagCount"
+    />
   </div>
 </template>
 
@@ -559,7 +574,7 @@ const tagCounts = computed(() => {
 /* Featured Section - Full Width, Large Hero Image */
 .featured-section {
   width: 100%;
-  margin-bottom: 32px;
+  margin-bottom: 0;
 }
 
 .section-title {
@@ -584,11 +599,13 @@ const tagCounts = computed(() => {
   display: flex;
   flex-direction: column;
   margin-top: 1rem;
+  gap: 16px;
 }
 
 .posts-grid {
   display: flex;
   flex-direction: column;
+  gap: 12px;
 }
 
 .blog-card {
@@ -667,6 +684,7 @@ const tagCounts = computed(() => {
 }
 
 .blog-title {
+  font-family: valkyrie-text, Georgia, serif;
   font-size: 1.875rem;
   font-weight: 700;
   margin-bottom: 8px;
@@ -675,18 +693,21 @@ const tagCounts = computed(() => {
 }
 
 .blog-subtitle {
+  font-family: valkyrie-text, Georgia, serif;
   font-size: 1.0625rem;
   color: var(--vp-c-text-2);
   line-height: 1.5;
 }
 
 .blog-date {
+  font-family: valkyrie-text, Georgia, serif;
   font-size: 0.875rem;
   color: var(--vp-c-text-2);
   font-weight: 500;
 }
 
 .blog-tags {
+  font-family: valkyrie-text, Georgia, serif;
   font-size: 0.875rem;
   color: var(--vp-c-text-2);
   font-weight: 400;
@@ -727,6 +748,7 @@ const tagCounts = computed(() => {
 }
 
 .post-layout {
+  display: block;
   transition: all 0.15s ease;
   padding: 0.25rem 0.5rem;
   border-radius: 8px;
@@ -805,19 +827,19 @@ const tagCounts = computed(() => {
 
 .post-title {
   font-family: heliotrope-t3, sans-serif;
-  font-size: 0.8rem;
-  font-weight: 600;
+  font-size: 0.7rem;
+  font-weight: 400;
   line-height: 1.2;
   margin: 0;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
   flex: 1;
-  color: #000;
+  color: var(--vp-c-text-1);
   transition: color 0.15s ease;
 }
 
 .post-link-wrapper:hover .post-title {
-  color: var(--vp-c-text-1);
+  color: var(--vp-c-brand-1);
 }
 
 .post-date {
@@ -852,14 +874,13 @@ const tagCounts = computed(() => {
   font-weight: 300;
   color: var(--vp-c-text-2);
   margin-right: 0.625rem;
-  cursor: pointer;
   transition: all 0.15s ease;
   opacity: 0.85;
   text-decoration: none;
 }
 
-.post-tag:hover {
-  color: var(--vp-c-text-1);
+.post-link-wrapper:hover .post-tag {
+  color: var(--vp-c-brand-1);
   opacity: 1;
 }
 
@@ -1002,10 +1023,6 @@ const tagCounts = computed(() => {
 
   .post-content {
     padding: 32px 40px;
-  }
-
-  .post-title {
-    font-size: 1.5rem;
   }
 }
 
@@ -1181,32 +1198,6 @@ const tagCounts = computed(() => {
 
   .recommended-row {
     grid-template-columns: 1fr;
-  }
-}
-
-/* Share and Follow Section */
-.share-follow-section {
-  width: 100%;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px 60px;
-}
-
-.share-follow-container {
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-}
-
-@media (max-width: 768px) {
-  .share-follow-section {
-    padding: 0 16px 40px;
-  }
-}
-
-@media (max-width: 480px) {
-  .share-follow-section {
-    padding: 0 12px 32px;
   }
 }
 </style>

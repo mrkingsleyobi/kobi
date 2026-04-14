@@ -78,8 +78,10 @@ const followLinks = computed(() => [
 
 .button-group {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  align-items: center;
   gap: 16px;
+  flex-wrap: wrap;
 }
 
 .section-label {
