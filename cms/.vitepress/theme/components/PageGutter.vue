@@ -34,10 +34,6 @@ const injectGutter = () => {
   const parent = vpDoc.parentElement
   if (!parent) return
 
-  // Create a wrapper div to hold both gutter and VPDoc
-  const wrapper = document.createElement('div')
-  wrapper.className = 'page-wrapper'
-
   // Create page-title div (contains all metadata)
   const pageTitle = document.createElement('div')
   pageTitle.className = 'page-title'
@@ -95,57 +91,39 @@ const injectGutter = () => {
       pageTitle.appendChild(tagsContainer)
       console.log('PageGutter: Added tags', tags.value)
     }
+
+    // Add viewer-count component for blog posts
+    if (createdDate.value || tags.value.length) {
+      const viewerCountDiv = document.createElement('div')
+      viewerCountDiv.className = 'viewer-count'
+
+      // Simulate view count (consistent pseudo-random based on URL)
+      const url = window.location.pathname
+      let hash = 0
+      for (let i = 0; i < url.length; i++) {
+        hash = ((hash << 5) - hash) + url.charCodeAt(i)
+        hash |= 0
+      }
+      const viewCount = Math.abs(hash % 50) + 5 // Between 5 and 55
+
+      viewerCountDiv.innerHTML = `<span class="viewer-count-number">${viewCount}</span> reading now`
+      pageTitle.appendChild(viewerCountDiv)
+      console.log('PageGutter: Added viewer-count', viewCount)
+    }
   }
 
   // Build the new structure:
-  // wrapper
-  //   .page-title (gutter with metadata)
-  //   .VPDoc (original content)
+  // Just insert page-title before VPDoc in the parent (no wrapper needed)
 
-  // Insert wrapper before VPDoc in parent
-  parent.insertBefore(wrapper, vpDoc)
+  // Insert page-title before VPDoc in parent
+  parent.insertBefore(pageTitle, vpDoc)
 
-  // Move VPDoc into wrapper
-  wrapper.appendChild(vpDoc)
-
-  // Insert page-title at the beginning of wrapper (before VPDoc)
-  wrapper.insertBefore(pageTitle, vpDoc)
-
-  // Hide default h1 inside VPDoc
-  const defaultH1 = vpDoc.querySelector('.content h1')
-  if (defaultH1) {
-    (defaultH1 as HTMLElement).style.display = 'none'
-    console.log('PageGutter: Hid default h1')
-  }
-
-  // Move Aside components from content to page-title gutter (like Daniel's site)
-  const moveAsidesToGutter = () => {
-    // Look for .aside elements (rendered by Aside.vue component)
-    const contentAsides = vpDoc.querySelectorAll('.vp-doc .aside')
-    console.log(`PageGutter: Found ${contentAsides.length} Aside components to move`)
-
-    contentAsides.forEach((aside, index) => {
-      const text = aside.textContent?.trim()
-      console.log(`PageGutter: Moving Aside ${index + 1} to page-title`, text?.substring(0, 50))
-
-      // Create a new aside element for the gutter
-      const gutterAside = document.createElement('aside')
-      gutterAside.className = 'aside'
-      gutterAside.textContent = text
-
-      // Add to page-title gutter
-      pageTitle.appendChild(gutterAside)
-
-      // Hide the original Aside component from content
-      ;(aside as HTMLElement).style.display = 'none'
-    })
-  }
-
-  // Move Asides immediately
-  moveAsidesToGutter()
-
-  // Also move Asides after a short delay in case they're rendered late
-  setTimeout(moveAsidesToGutter, 500)
+  // Hide ALL h1 elements in VPDoc content to prevent duplicates
+  const allH1s = vpDoc.querySelectorAll('h1')
+  allH1s.forEach((h1) => {
+    (h1 as HTMLElement).style.display = 'none'
+  })
+  console.log(`PageGutter: Hid ${allH1s.length} default h1 elements`)
 }
 
 onMounted(() => {
