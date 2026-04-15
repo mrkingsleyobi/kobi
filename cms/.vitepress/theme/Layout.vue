@@ -23,10 +23,17 @@ const injectPageGutter = () => {
     return
   }
 
-  // Find the VPDoc container
+  // Find the VPDoc container and its content area
   const vpDoc = document.querySelector('.VPDoc')
   if (!vpDoc) {
     console.log('VPDoc not found')
+    return
+  }
+
+  // Get the content area within VPDoc
+  const content = vpDoc.querySelector('.content')
+  if (!content) {
+    console.log('VPDoc .content not found')
     return
   }
 
@@ -36,10 +43,6 @@ const injectPageGutter = () => {
     console.log('Gutter already exists, removing and recreating')
     existingGutter.remove()
   }
-
-  // Get the parent of VPDoc
-  const parent = vpDoc.parentElement
-  if (!parent) return
 
   console.log('Creating gutter for', frontmatter.value.title)
 
@@ -115,16 +118,21 @@ const injectPageGutter = () => {
     pageTitle.appendChild(viewerCountDiv)
   }
 
-  // Insert page-title before VPDoc in parent
-  parent.insertBefore(pageTitle, vpDoc)
-  console.log('Gutter inserted into DOM')
+  // Insert page-title as first child of content area (for two-column layout)
+  content.insertBefore(pageTitle, content.firstChild)
+  console.log('Gutter inserted into content area for two-column layout')
 
-  // Hide ALL h1 elements in VPDoc content to prevent duplicates
+  // Hide ALL h1 elements in VPDoc content EXCEPT those in .page-title
   const allH1s = vpDoc.querySelectorAll('h1')
+  let hiddenCount = 0
   allH1s.forEach((h1) => {
-    (h1 as HTMLElement).style.display = 'none'
+    // Don't hide H1s that are inside .page-title (that's our title!)
+    if (!h1.closest('.page-title')) {
+      (h1 as HTMLElement).style.display = 'none'
+      hiddenCount++
+    }
   })
-  console.log('Hidden', allH1s.length, 'h1 elements')
+  console.log('Hidden', hiddenCount, 'h1 elements (excluded .page-title H1s)')
 }
 
 // Function to add footer social links
@@ -241,46 +249,70 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   display: none !important;
 }
 
-/* Page Title Gutter - contains frontmatter */
+/* Two-Column Grid Layout for Content Area */
+.VPDoc .content {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 32px;
+  align-items: start;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+/* Page Title Gutter - Left Column */
 .page-title {
-  display: block;
+  grid-column: 1;
   width: 100%;
-  padding: 32px 24px;
-  margin-bottom: 32px;
-  margin-top: 0;
-  border-bottom: 2px solid var(--vp-c-divider);
-  background: var(--vp-c-bg-soft);
+  padding: 0;
+  margin: 0;
+  border: none;
+  background: transparent;
   box-sizing: border-box;
-  clear: both;
-  position: relative;
-  z-index: 10;
+  position: sticky;
+  top: calc(var(--vp-nav-height) + 32px);
+  max-height: calc(100vh - var(--vp-nav-height) - 64px);
+  overflow-y: auto;
+  text-align: left;
+  font-size: 16px;
+}
+
+/* Main Content - Right Column */
+.VPDoc .content .vp-doc {
+  grid-column: 2;
+}
+
+/* Remove default padding from VPDoc container */
+.VPDoc .container {
+  max-width: 100%;
 }
 
 .page-title .frontmatter-title {
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 700;
   color: var(--vp-c-text-1);
   margin: 0 0 12px 0;
-  line-height: 1.2;
+  line-height: 1.3;
 }
 
 .page-title .frontmatter-subtitle {
-  font-size: 18px;
+  font-size: 15px;
   color: var(--vp-c-text-2);
-  margin: 0 0 16px 0;
+  margin: 0 0 12px 0;
   line-height: 1.4;
+  opacity: 0.8;
 }
 
 .page-title .frontmatter-created-at {
   font-size: 14px;
   color: var(--vp-c-text-2);
   margin: 0 0 12px 0;
+  opacity: 0.7;
 }
 
 .page-title .frontmatter-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
+  flex-direction: column;
+  gap: 6px;
   margin: 12px 0 0 0;
 }
 
@@ -289,6 +321,7 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   text-decoration: none;
   font-size: 14px;
   transition: opacity 0.2s ease;
+  display: block;
 }
 
 .page-title .tag-link:hover {
@@ -296,10 +329,10 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
 }
 
 .page-title .description {
-  font-size: 16px;
+  font-size: 15px;
   color: var(--vp-c-text-2);
-  margin: 8px 0 0 0;
-  line-height: 1.5;
+  margin: 12px 0 0 0;
+  line-height: 1.4;
 }
 
 .page-title .viewer-count {
@@ -374,11 +407,24 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   color: var(--vp-c-brand-1);
 }
 
-/* Responsive */
-@media (max-width: 768px) {
+/* Responsive Design - Single column on mobile/tablet */
+@media (max-width: 960px) {
+  .VPDoc .content {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
   .page-title {
-    padding: 24px 16px;
+    grid-column: 1;
+    position: static;
+    padding: 24px 0;
     margin-bottom: 24px;
+    border-bottom: 2px solid var(--vp-c-divider);
+    background: var(--vp-c-bg-soft);
+  }
+
+  .VPDoc .content .vp-doc {
+    grid-column: 1;
   }
 
   .page-title .frontmatter-title {
@@ -387,6 +433,11 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
 
   .page-title .frontmatter-subtitle {
     font-size: 16px;
+  }
+
+  .page-title .frontmatter-tags {
+    flex-wrap: wrap;
+    flex-direction: row;
   }
 
   .footer-social-links {
