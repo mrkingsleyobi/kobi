@@ -377,25 +377,7 @@ const injectGutter = async () => {
       const postUrl = `https://kingsleyobi.com/${page.value.relativePath.replace('.md', '')}`
       const postTitle = frontmatter.value.title || page.value.title
 
-      // Create SearchSection
-      const searchContainer = document.createElement('div')
-      searchContainer.className = 'search-section-container'
-      const searchApp = createApp(SearchSection, {
-        postCount: 10,
-        yearsActive: '2.25',
-        tagCount: 20
-      })
-      searchApp.mount(searchContainer)
-      postFooter.appendChild(searchContainer)
-
-      // Create SupportSection
-      const supportContainer = document.createElement('div')
-      supportContainer.className = 'support-section-container'
-      const supportApp = createApp(SupportSection)
-      supportApp.mount(supportContainer)
-      postFooter.appendChild(supportContainer)
-
-      // Create ShareButtons
+      // Create ShareButtons (first)
       const shareContainer = document.createElement('div')
       shareContainer.className = 'share-buttons-container'
       const shareApp = createApp(ShareButtons, {
@@ -405,7 +387,7 @@ const injectGutter = async () => {
       shareApp.mount(shareContainer)
       postFooter.appendChild(shareContainer)
 
-      // Create FollowButtons
+      // Create FollowButtons (second)
       const followContainer = document.createElement('div')
       followContainer.className = 'follow-buttons-container'
       const followApp = createApp(FollowButtons, {
@@ -414,6 +396,24 @@ const injectGutter = async () => {
       })
       followApp.mount(followContainer)
       postFooter.appendChild(followContainer)
+
+      // Create SupportSection/donation box (third)
+      const supportContainer = document.createElement('div')
+      supportContainer.className = 'support-section-container'
+      const supportApp = createApp(SupportSection)
+      supportApp.mount(supportContainer)
+      postFooter.appendChild(supportContainer)
+
+      // Create SearchSection (last)
+      const searchContainer = document.createElement('div')
+      searchContainer.className = 'search-section-container'
+      const searchApp = createApp(SearchSection, {
+        postCount: 10,
+        yearsActive: '2.25',
+        tagCount: 20
+      })
+      searchApp.mount(searchContainer)
+      postFooter.appendChild(searchContainer)
 
       // Add to dp-doc after main content
       dpDocs.appendChild(postFooter)

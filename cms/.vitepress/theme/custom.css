@@ -360,9 +360,9 @@ div[class*='language-'] {
   font-weight: 500;
 }
 
-.VPNavBarMenu .item {
-  font-weight: 400;
-  text-transform: uppercase;
+/* Target the actual VitePress navbar menu links */
+.VPNavBarMenuLink {
+  text-transform: uppercase !important;
   letter-spacing: 0.05em;
 }
 
