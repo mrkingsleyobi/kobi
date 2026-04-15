@@ -1,12 +1,131 @@
 <script setup lang="ts">
-import { onMounted, computed } from 'vue'
+import { onMounted, watch, nextTick, computed } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import type { Frontmatter } from './types'
-import PageGutter from './components/PageGutter.vue'
+import { formatDate, parseTags } from './utils/format'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
+
+const tags = computed(() => parseTags(frontmatter.value.tags))
+const createdDate = computed(() =>
+  frontmatter.value.created_at ? formatDate(frontmatter.value.created_at) : null
+)
+
+// Function to inject page gutter
+const injectPageGutter = () => {
+  console.log('injectPageGutter called for', page.value.relativePath)
+
+  // Skip on homepage
+  if (page.value.relativePath === 'index.md') {
+    console.log('Skipping gutter for homepage')
+    return
+  }
+
+  // Find the VPDoc container
+  const vpDoc = document.querySelector('.VPDoc')
+  if (!vpDoc) {
+    console.log('VPDoc not found')
+    return
+  }
+
+  // Check if gutter already exists
+  const existingGutter = document.querySelector('.page-title')
+  if (existingGutter) {
+    console.log('Gutter already exists, removing and recreating')
+    existingGutter.remove()
+  }
+
+  // Get the parent of VPDoc
+  const parent = vpDoc.parentElement
+  if (!parent) return
+
+  console.log('Creating gutter for', frontmatter.value.title)
+
+  // Create page-title div (contains all metadata)
+  const pageTitle = document.createElement('div')
+  pageTitle.className = 'page-title'
+
+  // Title
+  if (frontmatter.value.title) {
+    const h1 = document.createElement('h1')
+    h1.className = 'frontmatter-title text-pretcty'
+    h1.textContent = frontmatter.value.title
+    pageTitle.appendChild(h1)
+    console.log('Added title:', frontmatter.value.title)
+  }
+
+  // Subtitle
+  if (frontmatter.value.subtitle) {
+    const subtitle = document.createElement('div')
+    subtitle.className = 'frontmatter-subtitle'
+    subtitle.textContent = frontmatter.value.subtitle
+    pageTitle.appendChild(subtitle)
+  }
+
+  // Description (for non-blog pages)
+  if (frontmatter.value.description && !frontmatter.value.created_at) {
+    const description = document.createElement('div')
+    description.className = 'description'
+    description.textContent = frontmatter.value.description
+    pageTitle.appendChild(description)
+  }
+
+  // Created Date and Tags (for blog posts)
+  if (createdDate.value || tags.value.length) {
+    // Date metadata
+    if (createdDate.value) {
+      const dateDiv = document.createElement('div')
+      dateDiv.className = 'frontmatter-created-at'
+      dateDiv.textContent = createdDate.value
+      pageTitle.appendChild(dateDiv)
+    }
+
+    // Tags
+    if (tags.value && tags.value.length) {
+      const tagsContainer = document.createElement('div')
+      tagsContainer.className = 'frontmatter-tags'
+
+      tags.value.forEach(tag => {
+        const tagEl = document.createElement('a')
+        tagEl.className = 'tag-link'
+        tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
+        tagEl.textContent = `#${tag}`
+        tagsContainer.appendChild(tagEl)
+      })
+
+      pageTitle.appendChild(tagsContainer)
+    }
+
+    // Add viewer-count component for blog posts
+    const viewerCountDiv = document.createElement('div')
+    viewerCountDiv.className = 'viewer-count'
+
+    // Simulate view count (consistent pseudo-random based on URL)
+    const url = window.location.pathname
+    let hash = 0
+    for (let i = 0; i < url.length; i++) {
+      hash = ((hash << 5) - hash) + url.charCodeAt(i)
+      hash |= 0
+    }
+    const viewCount = Math.abs(hash % 50) + 5 // Between 5 and 55
+
+    viewerCountDiv.innerHTML = `<span class="viewer-count-number">${viewCount}</span> reading now`
+    pageTitle.appendChild(viewerCountDiv)
+  }
+
+  // Insert page-title before VPDoc in parent
+  parent.insertBefore(pageTitle, vpDoc)
+  console.log('Gutter inserted into DOM')
+
+  // Hide ALL h1 elements in VPDoc content to prevent duplicates
+  const allH1s = vpDoc.querySelectorAll('h1')
+  allH1s.forEach((h1) => {
+    (h1 as HTMLElement).style.display = 'none'
+  })
+  console.log('Hidden', allH1s.length, 'h1 elements')
+}
 
 // Function to add footer social links
 const addFooterSocialLinks = () => {
@@ -65,17 +184,55 @@ const addThemeTitleClass = () => {
 }
 
 onMounted(() => {
+  console.log('Layout onMounted fired')
   setTimeout(addThemeTitleClass, 100)
   setTimeout(addFooterSocialLinks, 200)
+
+  // Try multiple approaches to inject gutter
+  setTimeout(() => {
+    console.log('Attempting to inject gutter...')
+    injectPageGutter()
+
+    // If it didn't work, try again with a longer delay
+    setTimeout(() => {
+      if (!document.querySelector('.page-title')) {
+        console.log('First attempt failed, trying again...')
+        injectPageGutter()
+      }
+    }, 500)
+  }, 100)
+})
+
+// Watch for route changes to re-inject gutter
+watch(() => page.value.relativePath, async (newPath, oldPath) => {
+  console.log('Route changed from', oldPath, 'to', newPath)
+  await nextTick()
+
+  // Remove existing gutter if present
+  const existingGutter = document.querySelector('.page-title')
+  if (existingGutter) {
+    console.log('Removing existing gutter')
+    existingGutter.remove()
+  }
+
+  // Inject new gutter
+  setTimeout(() => {
+    console.log('Injecting gutter for new route...')
+    injectPageGutter()
+
+    // Retry if needed
+    setTimeout(() => {
+      if (!document.querySelector('.page-title')) {
+        console.log('Retry injecting gutter...')
+        injectPageGutter()
+      }
+    }, 300)
+  }, 100)
 })
 </script>
 
 <template>
-  <Layout>
-    <template #layout-top>
-      <PageGutter />
-    </template>
-  </Layout>
+  <Layout />
 </template>
 
 <style>
