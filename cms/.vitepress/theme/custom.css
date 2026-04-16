@@ -124,8 +124,8 @@ table {
   --custom-c-border: rgba(0, 0, 0, 0.1);
   --custom-c-border-light: rgba(0, 0, 0, 0.05);
 
-  /* Single-column layout */
-  --content-max-width: 680px;
+  /* Single-column layout - Daniel Miessler Style */
+  --content-max-width: 1000px;
   --vp-layout-max-width: 1064px;
 }
 
@@ -611,10 +611,14 @@ div[class*='language-'] {
   text-decoration: underline;
 }*/
 
-/* VPDoc container - padding already applied at VPContent level */
+/* VPDoc container - Daniel Miessler Style */
 .VPDoc .container {
+  max-width: 1000px;
+  margin: 0 auto;
+  margin-left: 12rem;
+  margin-right: 2.5rem;
   padding-left: 0;
-  padding-right: 1.5rem;
+  padding-right: 0;
   padding-top: 60px;
 }
 
@@ -744,14 +748,18 @@ div[class*='language-'] {
 /* Blog Post Content Styling */
 .VPDoc .content {
   position: relative;
-  max-width: 720px;
+  max-width: 1000px;
   margin: 0 auto;
+  margin-left: 12rem;
+  margin-right: 2.5rem;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .VPDoc .content p:first-of-type {
-  font-size: 1.15rem;
-  line-height: 1.7;
-  font-weight: 400;
+  font-size: .91rem;
+  line-height: 1.45;
+  font-weight: 500;
   color: var(--vp-c-text-1);
 }
 

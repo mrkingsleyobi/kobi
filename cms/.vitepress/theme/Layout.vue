@@ -395,90 +395,208 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   display: none !important;
 }
 
-/* Two-Column Grid Layout for Content Area */
+/* Daniel Miessler Body Typography - Foundation */
+body {
+  font-family: valkyrie-text, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica Neue, Arial, sans-serif !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+  width: 100% !important;
+  max-width: 1000px !important;
+  min-height: 100% !important;
+  position: relative !important;
+  z-index: 1 !important;
+  -webkit-font-smoothing: subpixel-antialiased !important;
+  font-weight: 500 !important;
+  line-height: 1.45 !important;
+  font-size: .91rem !important;
+  font-variant-numeric: oldstyle-nums !important;
+  background-color: var(--vp-c-bg, #EAE9DF) !important;
+  color: var(--vp-c-text-1, #2c1810) !important;
+}
+
+/* Two-Column Layout for Content Area - Daniel Miessler Style */
 .VPDoc .content {
-  display: grid;
-  grid-template-columns: 260px 1fr;
-  gap: 32px;
-  align-items: start;
-  max-width: 960px;
-  margin: 0 auto;
+  position: relative !important;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  margin-left: 12rem !important;
+  margin-right: 2.5rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
-/* Page Title Gutter - Left Column */
+/* Page Title Gutter - Daniel Miessler Absolute Positioning */
 .page-title {
-  grid-column: 1;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  border: none;
-  background: transparent;
-  box-sizing: border-box;
-  position: sticky;
-  top: calc(var(--vp-nav-height) + 32px);
-  max-height: calc(100vh - var(--vp-nav-height) - 64px);
-  overflow-y: auto;
-  text-align: left;
-  font-size: 16px;
+  position: absolute !important;
+  left: 1.5rem !important;
+  top: 60px !important;
+  width: 10rem !important;
+  text-align: right !important;
+  font-weight: 400;
+  border-top: solid 3px var(--vp-c-brand-1) !important;
+  padding-top: 5px !important;
+  z-index: 1;
+  background: transparent !important;
+  box-sizing: border-box !important;
+  margin: 0 !important;
 }
 
-/* Main Content - Right Column */
+/* Main Content Area */
 .VPDoc .content .vp-doc {
-  grid-column: 2;
+  width: 100%;
+}
+
+/* Daniel Miessler Content Typography */
+.VPDoc .content,
+.VPDoc .vp-doc,
+.vp-doc {
+  font-family: valkyrie-text, Georgia, serif !important;
+  font-size: .91rem !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Paragraph Styling - Daniel Miessler Style */
+.VPDoc .vp-doc p,
+.vp-doc p {
+  margin-bottom: 1.25rem !important;
+  line-height: 1.45 !important;
+  font-weight: 500 !important;
+}
+
+/* First paragraph styling - remove the larger first paragraph */
+.VPDoc .content p:first-of-type {
+  font-size: .91rem !important;
+  line-height: 1.45 !important;
+  font-weight: 400 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Heading Styling - Daniel Miessler Style */
+.VPDoc .vp-doc h2,
+.vp-doc h2 {
+  font-family: advocate-n34, valkyrie-text, Georgia, serif !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-top: .4rem !important;
+  padding-bottom: .4rem !important;
+  text-transform: lowercase !important;
+  font-weight: 200 !important;
+  font-size: 128% !important;
+  line-height: 1.3 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+.VPDoc .vp-doc h3,
+.vp-doc h3 {
+  font-family: heliotrope-caps, valkyrie-text, Georgia, serif !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 1.25rem !important;
+  padding-top: .4rem !important;
+  padding-bottom: .4rem !important;
+  text-transform: lowercase !important;
+  font-size: 108% !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  color: var(--vp-c-text-1) !important;
+}
+
+/* Remove top margin from first elements */
+.VPDoc .vp-doc > div > p:first-child,
+.VPDoc .vp-doc > div > h1:first-child,
+.VPDoc .vp-doc > div > *:first-child:not(.custom-block),
+.VPDoc .vp-doc p:first-of-type,
+.VPDoc .vp-doc > p:first-child,
+.VPDoc .vp-doc > p:first-of-type {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
 }
 
 /* Remove default padding from VPDoc container */
 .VPDoc .container {
-  max-width: 100%;
+  max-width: 1000px !important;
+  margin: 0 auto !important;
+  margin-left: 12rem !important;
+  margin-right: 2.5rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }
 
+/* VPDoc itself should be full width */
+.VPDoc {
+  max-width: 100% !important;
+}
+
+/* VPContent should allow full width */
+.VPContent {
+  max-width: 100% !important;
+}
+
+/* Daniel Miessler Typography Styles for Frontmatter */
 .page-title .frontmatter-title {
-  font-size: 24px;
-  font-weight: 700;
-  color: var(--vp-c-text-1);
-  margin: 0 0 12px 0;
-  line-height: 1.3;
+  font-family: inherit !important;
+  text-transform: inherit !important;
+  letter-spacing: inherit !important;
+  font-size: 125% !important;
+  line-height: 1.1 !important;
+  border-bottom: inherit !important;
+  margin-top: 0rem !important;
+  margin-bottom: .8rem !important;
+  font-weight: bolder !important;
+  border-top: 0 !important;
+  padding-top: 0 !important;
+  color: var(--vp-c-text-1) !important;
 }
 
 .page-title .frontmatter-subtitle {
-  font-size: 15px;
-  color: var(--vp-c-text-2);
-  margin: 0 0 12px 0;
-  line-height: 1.4;
-  opacity: 0.8;
+  font-family: valkyrie-text, Georgia, serif !important;
+  display: block !important;
+  font-size: 95% !important;
+  font-weight: 300 !important;
+  color: var(--vp-c-text-2) !important;
+  line-height: 1.25 !important;
+  font-style: italic !important;
+  margin-bottom: .8rem !important;
+  -webkit-hyphens: none !important;
+  hyphens: none !important;
 }
 
 .page-title .frontmatter-created-at {
-  font-size: 14px;
-  color: var(--vp-c-text-2);
-  margin: 0 0 12px 0;
-  opacity: 0.7;
+  font-family: equity-text, Georgia, serif !important;
+  display: block !important;
+  font-size: .8rem !important;
+  font-weight: 400 !important;
+  line-height: 1.3 !important;
+  margin-bottom: .6rem !important;
+  color: var(--vp-c-text-2) !important;
 }
 
 .page-title .frontmatter-tags {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin: 12px 0 0 0;
+  display: block !important;
+  margin-top: .5rem !important;
+  line-height: 1.4 !important;
 }
 
 .page-title .tag-link {
-  color: var(--vp-c-brand-1);
-  text-decoration: none;
-  font-size: 14px;
-  transition: opacity 0.2s ease;
-  display: block;
+  display: block !important;
+  font-size: .75rem !important;
+  color: var(--vp-c-brand-1) !important;
+  text-decoration: none !important;
+  margin-bottom: .2rem !important;
+  transition: color 0.2s ease !important;
 }
 
 .page-title .tag-link:hover {
-  opacity: 0.8;
+  color: var(--vp-c-brand-2) !important;
+  text-decoration: underline !important;
 }
 
 .page-title .description {
-  font-size: 15px;
-  color: var(--vp-c-text-2);
-  margin: 12px 0 0 0;
-  line-height: 1.4;
+  font-size: .6875rem !important;
+  color: var(--vp-c-text-3) !important;
+  line-height: 1.4 !important;
+  margin: 0 !important;
 }
 
 .page-title .viewer-count {
@@ -765,6 +883,100 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   border-radius: 4px;
 }
 
+/* Daniel Miessler List Styling */
+.VPDoc .vp-doc ul,
+.VPDoc .vp-doc ol,
+.vp-doc ul,
+.vp-doc ol {
+  margin-bottom: 1.25rem !important;
+  padding-left: 1.5rem !important;
+  line-height: 1.45 !important;
+}
+
+.VPDoc .vp-doc li,
+.vp-doc li {
+  margin-bottom: 0.5rem !important;
+  line-height: 1.45 !important;
+  column-break-inside: avoid !important;
+  -moz-column-break-inside: avoid !important;
+  break-inside: avoid-column !important;
+}
+
+/* Daniel Miessler Link Styling */
+.VPDoc .vp-doc a,
+.vp-doc a {
+  color: var(--vp-c-brand-1) !important;
+  text-decoration: none !important;
+  transition: color 0.2s ease !important;
+}
+
+.VPDoc .vp-doc a:hover,
+.vp-doc a:hover {
+  color: var(--vp-c-brand-2) !important;
+  text-decoration: underline !important;
+}
+
+/* Daniel Miessler Blockquote Styling */
+.VPDoc .vp-doc blockquote,
+.vp-doc blockquote {
+  margin: 1.25rem 0 !important;
+  padding: 0.5rem 1rem !important;
+  border-left: 3px solid var(--vp-c-brand-1) !important;
+  background: var(--vp-c-bg-soft) !important;
+  color: var(--vp-c-text-2) !important;
+  font-style: italic !important;
+  line-height: 1.45 !important;
+}
+
+/* Daniel Miessler Code Styling */
+.VPDoc .vp-doc code,
+.vp-doc code {
+  font-family: triplicate-text, 'SF Mono', Monaco, monospace !important;
+  font-size: 0.9em !important;
+  background: var(--vp-c-bg-soft) !important;
+  padding: 0.2em 0.4em !important;
+  border-radius: 3px !important;
+}
+
+.VPDoc .vp-doc pre,
+.vp-doc pre {
+  margin: 1.25rem 0 !important;
+  padding: 1rem !important;
+  background: var(--vp-c-bg-soft) !important;
+  border-radius: 4px !important;
+  overflow-x: auto !important;
+  line-height: 1.4 !important;
+}
+
+/* Daniel Miessler Table Styling */
+.VPDoc .vp-doc table,
+.vp-doc table {
+  margin: 1.25rem 0 !important;
+  border-collapse: collapse !important;
+  width: 100% !important;
+  font-size: .91rem !important;
+}
+
+.VPDoc .vp-doc table th,
+.VPDoc .vp-doc table td,
+.vp-doc table th,
+.vp-doc table td {
+  border: 1px solid var(--vp-c-divider) !important;
+  padding: 0.75rem 1rem !important;
+  text-align: left !important;
+}
+
+.VPDoc .vp-doc table th,
+.vp-doc table th {
+  background: var(--vp-c-bg-soft) !important;
+  font-weight: 600 !important;
+}
+
+.VPDoc .vp-doc table tr:hover,
+.vp-doc table tr:hover {
+  background: var(--vp-c-bg-soft) !important;
+}
+
 /* Footer Social Links */
 .footer-social-links {
   display: flex;
@@ -784,30 +996,40 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
 
 /* Responsive Design - Single column on mobile/tablet */
 @media (max-width: 960px) {
+  body {
+    max-width: 100% !important;
+    padding: 0 1rem;
+  }
+
   .VPDoc .content {
-    grid-template-columns: 1fr;
-    gap: 24px;
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+    max-width: 100% !important;
+  }
+
+  .VPDoc .container {
+    margin-left: 20px !important;
+    margin-right: 20px !important;
+    max-width: 100% !important;
   }
 
   .page-title {
-    grid-column: 1;
-    position: static;
-    padding: 24px 0;
-    margin-bottom: 24px;
-    border-bottom: 2px solid var(--vp-c-divider);
-    background: var(--vp-c-bg-soft);
-  }
-
-  .VPDoc .content .vp-doc {
-    grid-column: 1;
+    position: static !important;
+    width: auto !important;
+    text-align: left !important;
+    left: 0 !important;
+    margin-top: 40px !important;
+    margin-bottom: 1.5rem !important;
+    border: none !important;
+    padding: 0 !important;
   }
 
   .page-title .frontmatter-title {
-    font-size: 24px;
+    font-size: 1.125rem !important;
   }
 
   .page-title .frontmatter-subtitle {
-    font-size: 16px;
+    font-size: 0.9375rem !important;
   }
 
   .page-title .frontmatter-tags {
@@ -817,6 +1039,42 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
 
   .footer-social-links {
     flex-wrap: wrap;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 520px) {
+  body {
+    max-width: 100% !important;
+    padding: 0 1rem;
+  }
+
+  .page-title {
+    margin-top: 30px !important;
+  }
+
+  .VPDoc .content {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+    max-width: 100% !important;
+  }
+
+  .VPDoc .container {
+    margin-left: 15px !important;
+    margin-right: 15px !important;
+    max-width: 100% !important;
+  }
+
+  .page-title aside {
+    background: var(--vp-c-bg-soft);
+    padding: .3rem .5rem;
+    width: 90%;
+    border: 1px solid var(--vp-c-divider);
+    border-left: 3px solid var(--vp-c-divider)
+  }
+
+  .page-title aside>p:last-child {
+    margin-bottom: 0
   }
 }
 </style>
