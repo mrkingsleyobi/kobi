@@ -125,8 +125,8 @@ table {
   --custom-c-border-light: rgba(0, 0, 0, 0.05);
 
   /* Single-column layout - Daniel Miessler Style */
-  --content-max-width: 700px;
-  --vp-layout-max-width: 740px;
+  --content-max-width: 900px;
+  --vp-layout-max-width: 940px;
 }
 
 /* Dark mode colors */
@@ -613,7 +613,7 @@ div[class*='language-'] {
 
 /* VPDoc container - Daniel Miessler Style */
 .VPDoc .container {
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   margin-left: 12rem;
   margin-right: 2.5rem;
@@ -748,7 +748,7 @@ div[class*='language-'] {
 /* Blog Post Content Styling */
 .VPDoc .content {
   position: relative;
-  max-width: 700px;
+  max-width: 900px;
   margin: 0 auto;
   margin-left: 12rem;
   margin-right: 2.5rem;
@@ -1144,7 +1144,7 @@ li {
   padding: 3.5rem 0 18rem;
     margin-left: 12rem;
     margin-right: 2.5rem;
-    max-width: 700px;
+    max-width: 900px;
 }
 
 body {
@@ -1152,7 +1152,7 @@ body {
   margin-left: auto!important;
   margin-right: auto!important;
   width: 100%;
-  max-width: 700px;
+  max-width: 900px;
   min-height: 100%;
   position: relative;
   z-index: -10000;
