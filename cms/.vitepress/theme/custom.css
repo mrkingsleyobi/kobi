@@ -536,7 +536,8 @@ div[class*='language-'] {
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1);
   padding-top: 5px;
-  z-index: 1;
+  z-index: 10;
+  pointer-events: none;
 }
 
 /* dp-doc wrapper - sibling to page-title 
@@ -614,8 +615,7 @@ div[class*='language-'] {
 /* VPDoc container - Daniel Miessler Style */
 .VPDoc .container {
   max-width: 900px;
-  margin: 0 auto;
-  margin-left: 12rem;
+  margin-left: 14rem;
   margin-right: 2.5rem;
   padding-left: 0;
   padding-right: 0;
@@ -749,11 +749,11 @@ div[class*='language-'] {
 .VPDoc .content {
   position: relative;
   max-width: 900px;
-  margin: 0 auto;
-  margin-left: 12rem;
+  margin-left: 14rem;
   margin-right: 2.5rem;
   padding-left: 0;
   padding-right: 0;
+  z-index: 5;
 }
 
 .VPDoc .content p:first-of-type {
@@ -1142,7 +1142,7 @@ li {
 
 .my-content {
   padding: 3.5rem 0 18rem;
-    margin-left: 12rem;
+    margin-left: 14rem;
     margin-right: 2.5rem;
     max-width: 900px;
 }
