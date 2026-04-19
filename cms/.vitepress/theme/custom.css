@@ -827,12 +827,14 @@ aside {
 }
 
 /* Hide asides in main content (they're moved to gutter) */
+/* DISABLED: Show asides in content like Daniel Miessler's site
 .vp-doc aside,
 .VPDoc .content aside,
 .vp-doc .custom-aside,
 .VPDoc .content .custom-aside {
   display: none !important;
 }
+*/
 
 /* Asides inside page-title should be visible */
 .page-title aside {
@@ -841,6 +843,7 @@ aside {
 }
 
 /* Separated selector - .page-title uses left gutter positioning, aside uses this */
+/* DISABLED: Show asides inline in content like Daniel Miessler's site
 aside {
   display: block;
   float: left;
@@ -852,7 +855,25 @@ aside {
   list-style-type: none;
   clear: both;
   margin-bottom: 1rem;
-  font-variant-numeric: normal
+}
+*/
+
+/* Show asides inline in content */
+.vp-doc aside,
+.VPDoc .content aside {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  float: none !important;
+  margin: 1.5rem 0 !important;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-radius: 4px;
 }
 
 /* Conflicting rule - disabled for left gutter layout
@@ -1112,6 +1133,7 @@ li {
   break-inside: avoid-column
 }
 
+/* DISABLED: Aside positioning media queries - not needed for inline asides
 @media all and (min-width: 1200px) {
   aside {
       left:0;
@@ -1139,6 +1161,7 @@ li {
       margin-bottom: 0
   }
 }
+*/
 
 .my-content {
   padding: 3.5rem 0 18rem;
