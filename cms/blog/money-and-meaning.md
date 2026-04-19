@@ -15,9 +15,9 @@ status: published
 description: "How AI is changing the relationship between money, meaning, and valuable work"
 ---
 
-![Money and Meaning](/images/money-meaning.jpg) <!-- width="1200" height="630" -->
+<!-- ![Money and Meaning](/images/money-meaning.jpg)  width="1200" height="630" -->
 
-<caption>What becomes valuable when intelligence is cheap? (click for full size)</caption>
+<!-- <caption>What becomes valuable when intelligence is cheap? (click for full size)</caption> -->
 
 <callout>We've spent decades optimizing for intelligence and technical skills. AI is about to make those much less valuable. What should we optimize for instead?</callout>
 

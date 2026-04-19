@@ -9,7 +9,7 @@
         "@iconify/vue": "^5.0.0",
         "@modelcontextprotocol/sdk": "^1.29.0",
         "openai": "^6.33.0",
-        "vitepress": "^1.0.0",
+        "vitepress": "^1.6.4",
         "vue": "^3.4.0",
       },
       "devDependencies": {

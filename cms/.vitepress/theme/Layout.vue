@@ -22,6 +22,29 @@ const isBlogPost = computed(() => {
   return !!frontmatter.value.created_at
 })
 
+// Computed to detect if footer components should be shown
+// Only show on: blog index, blog posts, and archive page
+const shouldShowFooterComponents = computed(() => {
+  const currentPath = page.value.relativePath
+
+  // Blog index page
+  if (currentPath === 'blog/index.md') {
+    return true
+  }
+
+  // Archive page
+  if (currentPath === 'archives/index.md') {
+    return true
+  }
+
+  // Blog posts (have created_at)
+  if (frontmatter.value.created_at) {
+    return true
+  }
+
+  return false
+})
+
 // Computed for current page URL
 const currentUrl = computed(() => {
   return typeof window !== 'undefined' ? window.location.href : ''
@@ -42,10 +65,17 @@ const injectPageGutter = () => {
     return
   }
 
-  // Find the VPDoc container and its content area
+  // Find the VPDoc container
   const vpDoc = document.querySelector('.VPDoc')
   if (!vpDoc) {
     console.log('VPDoc not found')
+    return
+  }
+
+  // Get the container within VPDoc (this is where we'll inject the gutter)
+  const container = vpDoc.querySelector('.container')
+  if (!container) {
+    console.log('VPDoc .container not found')
     return
   }
 
@@ -55,6 +85,10 @@ const injectPageGutter = () => {
     console.log('VPDoc .content not found')
     return
   }
+
+  // Set container as positioning context for absolute gutter
+  container.style.position = 'relative'
+  console.log('Set container position to relative for gutter positioning')
 
   // Check if gutter already exists
   const existingGutter = document.querySelector('.page-title')
@@ -136,8 +170,8 @@ const injectPageGutter = () => {
     viewerCountDiv.innerHTML = `<span class="viewer-count-number">${viewCount}</span> reading now`
     pageTitle.appendChild(viewerCountDiv)
 
-    // Add footer components for blog posts at the end of content
-    if (isBlogPost.value) {
+    // Add footer components for blog index, blog posts, and archive page
+    if (shouldShowFooterComponents.value) {
       const encodedUrl = encodeURIComponent(currentUrl.value)
       const encodedTitle = encodeURIComponent(currentTitle.value)
 
@@ -264,9 +298,9 @@ const injectPageGutter = () => {
     }
   }
 
-  // Insert page-title as first child of content area (for two-column layout)
-  content.insertBefore(pageTitle, content.firstChild)
-  console.log('Gutter inserted into content area for two-column layout')
+  // Insert page-title as first child of container (for proper absolute positioning)
+  container.insertBefore(pageTitle, container.firstChild)
+  console.log('Gutter inserted into container for two-column layout')
 
   // Hide ALL h1 elements in VPDoc content EXCEPT those in .page-title
   const allH1s = vpDoc.querySelectorAll('h1')
@@ -419,8 +453,8 @@ body {
   position: relative !important;
   max-width: 1000px !important;
   margin: 0 auto !important;
-  margin-left: 12rem !important;
-  margin-right: 2.5rem !important;
+  margin-left: 356px !important;
+  margin-right: 60px !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
@@ -517,8 +551,8 @@ body {
 .VPDoc .container {
   max-width: 1000px !important;
   margin: 0 auto !important;
-  margin-left: 12rem !important;
-  margin-right: 2.5rem !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
   padding-left: 0 !important;
   padding-right: 0 !important;
 }

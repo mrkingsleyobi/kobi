@@ -519,12 +519,11 @@ div[class*='language-'] {
   padding-top: 0;
 }
 
-/* Container for page-title and dp-doc siblings 
-.page-title,
+/* Container for dp-doc - page-title uses absolute positioning */
 .dp-doc {
   position: relative;
   width: 100%;
-}*/
+}
 
 /* Page Title in Left Gutter */
 .page-title {
@@ -860,7 +859,9 @@ aside {
 
 /* Show asides inline in content */
 .vp-doc aside,
-.VPDoc .content aside {
+.VPDoc .content aside,
+.dp-doc aside,
+.dp-doc .content aside {
   display: block !important;
   visibility: visible !important;
   position: relative !important;
@@ -1290,4 +1291,126 @@ h2 {
   transition: all .15s ease;
   border-radius: 4px;
   color: var(--vp-c-text-1);
+}
+
+/* ========================================
+   CUSTOM THEME ARCHITECTURE - Daniel Miessler Style
+   Replaces VitePress default .VPDoc with custom .dp-doc
+   ======================================== */
+
+/* Custom doc wrapper - replaces .VPDoc */
+.dp-doc {
+  /* Copy all existing .VPDoc styles */
+  overflow-x: hidden;
+  max-width: 100%;
+  padding: 32px 24px 64px;
+  margin: 0 auto;
+}
+
+/* Custom content body wrapper - replaces .content */
+.dp-doc .content .content-body {
+  max-width: var(--content-max-width);
+  overflow-x: hidden;
+}
+
+/* Also target just .content in .dp-doc for backward compatibility */
+.dp-doc .content {
+  max-width: var(--content-max-width);
+}
+
+/* Apply custom fonts to .dp-doc elements */
+.dp-doc h1,
+.dp-doc h2,
+.dp-doc h3,
+.dp-doc h4,
+.dp-doc h5,
+.dp-doc h6 {
+  font-family: var(--font-heading) !important;
+}
+
+.dp-doc .content-body,
+.dp-doc p,
+.dp-doc li,
+.dp-doc td,
+.dp-doc th {
+  font-family: var(--font-body) !important;
+}
+
+/* Dynamic page classes - for flexible theming */
+body.page-blog {
+  /* Blog-specific styles can be added here */
+}
+
+body.page-telos {
+  /* Telos-specific styles can be added here */
+}
+
+body.page-manifesto {
+  /* Manifesto-specific styles can be added here */
+}
+
+body.page-projects {
+  /* Projects-specific styles can be added here */
+}
+
+body.page-about {
+  /* About-specific styles can be added here */
+}
+
+body.page-start-here {
+  /* Start-here-specific styles can be added here */
+}
+
+/* Enhanced post layout classes */
+.dp-doc .post-layout {
+  /* Maintain existing post layout styles */
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.dp-doc .post-layout.alternate {
+  flex-direction: row-reverse;
+}
+
+/* Fonts loaded indicator */
+body.fonts-loaded {
+  /* Indicates custom fonts have loaded */
+}
+
+/* Responsive adjustments for .dp-doc */
+@media (max-width: 768px) {
+  .dp-doc {
+    padding: 24px 16px 48px;
+  }
+
+  .dp-doc .post-layout {
+    flex-direction: column;
+  }
+
+  .dp-doc .post-layout.alternate {
+    flex-direction: column;
+  }
+}
+
+/* Ensure consistency with existing VPDoc styles during transition */
+.dp-doc {
+  /* Inherit all VPDoc positioning and layout */
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+/* Custom content-body specific styles */
+.dp-doc .content-body > * {
+  max-width: 100%;
+}
+
+/* Page-specific body classes for theming */
+body.page-_blog {
+  /* Blog index page */
+}
+
+body.page-_blog.fonts-loaded {
+  /* Blog index with fonts loaded */
 }

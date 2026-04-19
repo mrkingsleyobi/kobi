@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vitepress'
+import { useData } from 'vitepress'
 
 interface BlogPostData {
   slug: string
@@ -19,6 +20,9 @@ interface FilterState {
 
 const router = useRouter()
 const route = useRoute()
+const { frontmatter } = useData()
+const currentUrl = computed(() => typeof window !== 'undefined' ? window.location.href : '')
+const currentTitle = computed(() => frontmatter.value.title || 'Kingsley Obi')
 
 const posts = ref<BlogPostData[]>([])
 const loading = ref(true)
@@ -371,6 +375,92 @@ const prevPage = () => {
         >
           Next →
         </button>
+      </div>
+    </div>
+
+    <!-- Footer Components (Share, Follow, Donation, Search) -->
+    <div class="footer-components">
+      <!-- Share Buttons -->
+      <div class="share-section">
+        <div class="button-group">
+          <span class="section-label">Share</span>
+          <div class="share-row">
+            <a :href="`https://twitter.com/intent/tweet?url=${encodeURIComponent(currentUrl)}&text=${encodeURIComponent(currentTitle)}`" target="_blank" rel="noopener noreferrer" class="share-button x-share" title="Share on X">
+              <span>Post</span>
+            </a>
+            <a :href="`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(currentUrl)}`" target="_blank" rel="noopener noreferrer" class="share-button linkedin-share" title="LinkedIn">
+              <span>LinkedIn</span>
+            </a>
+            <a :href="`https://news.ycombinator.com/submitlink?u=${encodeURIComponent(currentUrl)}&t=${encodeURIComponent(currentTitle)}`" target="_blank" rel="noopener noreferrer" class="share-button hn-share" title="Hacker News">
+              <span>Hacker News</span>
+            </a>
+            <a :href="`https://www.reddit.com/submit?url=${encodeURIComponent(currentUrl)}&title=${encodeURIComponent(currentTitle)}`" target="_blank" rel="noopener noreferrer" class="share-button reddit-share" title="Reddit">
+              <span>Reddit</span>
+            </a>
+            <a :href="`mailto:?subject=${encodeURIComponent(currentTitle)}&body=${encodeURIComponent(currentUrl)}`" class="share-button email-share" title="Forward">
+              <span>Forward</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Follow Buttons -->
+      <div class="cta-section">
+        <div class="button-group">
+          <span class="section-label">Follow</span>
+          <div class="cta-row">
+            <a href="/feed.rss" target="_blank" rel="noopener noreferrer" class="cta-button newsletter" title="Newsletter">
+              <span>Get The Newsletter</span>
+            </a>
+            <a href="https://x.com/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button x-follow" title="X">
+              <span>Follow On X</span>
+            </a>
+            <a href="https://youtube.com/@mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button youtube" title="YouTube">
+              <span>Subscribe On YouTube</span>
+            </a>
+            <a href="https://linkedin.com/in/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button linkedin" title="LinkedIn">
+              <span>Follow On LinkedIn</span>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Donation Box -->
+      <div class="donation-box">
+        <h2 class="donation-heading">supporting = loving</h2>
+        <div class="donation-divider"></div>
+        <p class="donation-intro">
+          For <strong>2 years</strong> I've been creating ad-free technical tutorials and essays here.
+          This is a one-person effort that's also my livelihood. If it makes your day easier or more pleasant in any way,
+          please consider supporting the work with a monthly or one-time donation.
+        </p>
+        <p class="donation-intro">
+          It helps me make more content, and is deeply appreciated as well. 🫶🏼
+        </p>
+        <div class="donation-columns">
+          <div class="donation-column donation-column--monthly">
+            <h4 class="column-heading">Monthly Support</h4>
+            <div class="column-divider"></div>
+            <div class="tier-list">
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
+            </div>
+          </div>
+          <div class="donation-column">
+            <h4 class="column-heading">One-Time Support</h4>
+            <div class="column-divider"></div>
+            <div class="tier-list">
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
+              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -732,6 +822,198 @@ const prevPage = () => {
 
   .clear-filters-btn {
     width: 100%;
+  }
+}
+
+/* Footer Components */
+.footer-components {
+  margin-top: 60px;
+  padding-top: 40px;
+  border-top: 2px solid var(--vp-c-divider);
+}
+
+.share-section,
+.cta-section {
+  margin-bottom: 32px;
+}
+
+.button-group {
+  width: 100%;
+}
+
+.section-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.share-row,
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.share-button,
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+/* Share Buttons */
+.share-button {
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  color: var(--vp-c-text-1);
+}
+
+.share-button:hover {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+  transform: translateY(-2px);
+}
+
+/* CTA Buttons */
+.cta-button {
+  background: var(--vp-c-brand-1);
+  border: 1px solid var(--vp-c-brand-1);
+  color: white;
+}
+
+.cta-button:hover {
+  background: var(--vp-c-brand-2);
+  border-color: var(--vp-c-brand-2);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-brand-1) 20%, transparent);
+}
+
+/* Donation Box */
+.donation-box {
+  margin-top: 32px;
+  padding: 32px;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.donation-heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-bottom: 16px;
+}
+
+.donation-divider {
+  height: 2px;
+  background: var(--vp-c-divider);
+  margin-bottom: 24px;
+}
+
+.donation-intro {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--vp-c-text-2);
+  margin-bottom: 16px;
+}
+
+.donation-intro strong {
+  color: var(--vp-c-text-1);
+}
+
+.donation-columns {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 24px;
+  margin-top: 24px;
+}
+
+.donation-column {
+  padding: 20px;
+  background: var(--vp-c-bg);
+  border-radius: 6px;
+  border: 1px solid var(--vp-c-divider);
+}
+
+.column-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin-bottom: 12px;
+}
+
+.column-divider {
+  height: 1px;
+  background: var(--vp-c-divider);
+  margin-bottom: 16px;
+}
+
+.tier-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tier-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 6px;
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.tier-link:hover {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+  transform: translateX(4px);
+}
+
+.tier-heart {
+  font-size: 1rem;
+}
+
+/* Responsive for Footer Components */
+@media (max-width: 768px) {
+  .footer-components {
+    margin-top: 40px;
+    padding-top: 32px;
+  }
+
+  .share-row,
+  .cta-row {
+    flex-direction: column;
+  }
+
+  .share-button,
+  .cta-button {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .donation-box {
+    padding: 24px 20px;
+  }
+
+  .donation-columns {
+    grid-template-columns: 1fr;
   }
 }
 </style>
