@@ -1190,17 +1190,17 @@ body {
 }
 
 .post-date {
-  font-family: Concourse T3, sans-serif;
+  font-family: 'Concourse T3', sans-serif;
   font-size: .625rem;
   color: var(--vp-c-text-3);
-  font-weight: 300;
+  font-weight: 400;
   flex-shrink: 0;
   text-transform: uppercase;
-  letter-spacing: .02em;
+  letter-spacing: .025em;
 }
 
 .post-subtitle {
-  font-family: Valkyrie A, Georgia, serif;
+  font-family: 'Valkyrie A', Georgia, serif;
   font-size: .7rem;
   line-height: 1.3;
   color: var(--vp-c-text-1);
@@ -1217,10 +1217,11 @@ body {
 .post-tag {
   display: inline-block;
   font-family: -apple-system, BlinkMacSystemFont, Inter, Segoe UI, Roboto, sans-serif;
-  font-size: 0.625rem;
+  font-size: 0.6rem;
   font-weight: 300;
   color: var(--vp-c-text-2);
   margin-right: 0.625rem;
+  letter-spacing: 0.01em;
   transition: all 0.15s ease;
   opacity: 0.85;
   text-decoration: none;
