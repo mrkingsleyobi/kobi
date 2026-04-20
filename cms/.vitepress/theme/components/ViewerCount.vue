@@ -66,10 +66,11 @@ onUnmounted(() => {
 
 <style scoped>
 .viewer-count {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--vp-c-text-2);
-  margin: 0.5rem 0;
+  margin: 0.6rem 0;
   font-style: italic;
+  font-weight: 500;
 }
 
 .viewer-count-number {

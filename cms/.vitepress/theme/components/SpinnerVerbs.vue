@@ -59,8 +59,8 @@ onUnmounted(() => {
 
 <style scoped>
 .spinner-verbs {
-  margin: 1rem 0;
-  font-size: 0.9rem;
+  margin: 0.8rem 0;
+  font-size: 0.85rem;
   font-style: italic;
 }
 

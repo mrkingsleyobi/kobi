@@ -58,7 +58,7 @@ const isBlogPost = computed(() => !!frontmatter.value.created_at)
   position: absolute !important;
   left: 1.5rem !important;
   top: 60px !important;
-  width: 10rem !important;
+  width: 14rem !important;
   text-align: right !important;
   font-weight: 400;
   border-top: solid 3px var(--vp-c-brand-1) !important;
