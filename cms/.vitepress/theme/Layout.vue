@@ -4,10 +4,7 @@ import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import type { Frontmatter } from './types'
 import { formatDate, parseTags } from './utils/format'
-import ShareButtons from './components/ShareButtons.vue'
-import FollowButtons from './components/FollowButtons.vue'
-import SupportSection from './components/SupportSection.vue'
-import SearchSection from './components/SearchSection.vue'
+import PageTitle from './components/PageTitle.vue'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
@@ -55,13 +52,13 @@ const currentTitle = computed(() => {
   return frontmatter.value.title || 'Kingsley Obi'
 })
 
-// Function to inject page gutter
-const injectPageGutter = () => {
-  console.log('injectPageGutter called for', page.value.relativePath)
+// Function to inject footer components (share buttons, follow buttons, donation box)
+const injectFooterComponents = () => {
+  console.log('injectFooterComponents called for', page.value.relativePath)
 
-  // Skip on homepage
-  if (page.value.relativePath === 'index.md') {
-    console.log('Skipping gutter for homepage')
+  // Only show on: blog index, blog posts, and archive page
+  if (!shouldShowFooterComponents.value) {
+    console.log('Skipping footer components - not a blog page')
     return
   }
 
@@ -72,17 +69,10 @@ const injectPageGutter = () => {
     return
   }
 
-  // Get the container within VPDoc (this is where we'll inject the gutter)
+  // Get the container within VPDoc
   const container = vpDoc.querySelector('.container')
   if (!container) {
     console.log('VPDoc .container not found')
-    return
-  }
-
-  // Get the content area within VPDoc
-  const content = vpDoc.querySelector('.content')
-  if (!content) {
-    console.log('VPDoc .content not found')
     return
   }
 
@@ -90,217 +80,149 @@ const injectPageGutter = () => {
   container.style.position = 'relative'
   console.log('Set container position to relative for gutter positioning')
 
-  // Check if gutter already exists
-  const existingGutter = document.querySelector('.page-title')
-  if (existingGutter) {
-    console.log('Gutter already exists, removing and recreating')
-    existingGutter.remove()
+  // Check if footer already exists
+  const existingFooter = document.querySelector('.blog-post-footer')
+  if (existingFooter) {
+    console.log('Footer already exists, removing and recreating')
+    existingFooter.remove()
   }
 
-  console.log('Creating gutter for', frontmatter.value.title)
+  console.log('Creating footer components for', frontmatter.value.title)
 
-  // Create page-title div (contains all metadata)
-  const pageTitle = document.createElement('div')
-  pageTitle.className = 'page-title'
+  // Add footer components for blog index, blog posts, and archive page
+  if (shouldShowFooterComponents.value) {
+    const encodedUrl = encodeURIComponent(currentUrl.value)
+    const encodedTitle = encodeURIComponent(currentTitle.value)
 
-  // Title
-  if (frontmatter.value.title) {
-    const h1 = document.createElement('h1')
-    h1.className = 'frontmatter-title text-pretcty'
-    h1.textContent = frontmatter.value.title
-    pageTitle.appendChild(h1)
-    console.log('Added title:', frontmatter.value.title)
-  }
+    // Create footer container that goes in the main content area (right column)
+    const blogPostFooter = document.createElement('div')
+    blogPostFooter.className = 'blog-post-footer'
 
-  // Subtitle
-  if (frontmatter.value.subtitle) {
-    const subtitle = document.createElement('div')
-    subtitle.className = 'frontmatter-subtitle'
-    subtitle.textContent = frontmatter.value.subtitle
-    pageTitle.appendChild(subtitle)
-  }
+    // Share Buttons
+    const shareSection = document.createElement('div')
+    shareSection.className = 'share-section'
+    shareSection.innerHTML = `
+      <div class="button-group">
+        <span class="section-label">Share</span>
+        <div class="share-row">
+          <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button x-share" title="Share on X">
+            <span>Post</span>
+          </a>
+          <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="share-button linkedin-share" title="LinkedIn">
+            <span>LinkedIn</span>
+          </a>
+          <a href="https://news.ycombinator.com/submitlink?u=${encodedUrl}&t=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button hn-share" title="Hacker News">
+            <span>Hacker News</span>
+          </a>
+          <a href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button reddit-share" title="Reddit">
+            <span>Reddit</span>
+          </a>
+          <a href="mailto:?subject=${encodedTitle}&body=${encodedUrl}" class="share-button email-share" title="Forward">
+            <span>Forward</span>
+          </a>
+        </div>
+      </div>
+    `
+    blogPostFooter.appendChild(shareSection)
 
-  // Description (for non-blog pages)
-  if (frontmatter.value.description && !frontmatter.value.created_at) {
-    const description = document.createElement('div')
-    description.className = 'description'
-    description.textContent = frontmatter.value.description
-    pageTitle.appendChild(description)
-  }
+    // Follow Buttons
+    const followSection = document.createElement('div')
+    followSection.className = 'cta-section'
+    followSection.innerHTML = `
+      <div class="button-group">
+        <span class="section-label">Follow</span>
+        <div class="cta-row">
+          <a href="/feed.rss" target="_blank" rel="noopener noreferrer" class="cta-button newsletter" title="Newsletter">
+            <span>Get The Newsletter</span>
+          </a>
+          <a href="https://x.com/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button x-follow" title="X">
+            <span>Follow On X</span>
+          </a>
+          <a href="https://youtube.com/@mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button youtube" title="YouTube">
+            <span>Subscribe On YouTube</span>
+          </a>
+          <a href="https://linkedin.com/in/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button linkedin" title="LinkedIn">
+            <span>Follow On LinkedIn</span>
+          </a>
+        </div>
+      </div>
+    `
+    blogPostFooter.appendChild(followSection)
 
-  // Created Date and Tags (for blog posts)
-  if (createdDate.value || tags.value.length) {
-    // Date metadata
-    if (createdDate.value) {
-      const dateDiv = document.createElement('div')
-      dateDiv.className = 'frontmatter-created-at'
-      dateDiv.textContent = createdDate.value
-      pageTitle.appendChild(dateDiv)
-    }
-
-    // Tags
-    if (tags.value && tags.value.length) {
-      const tagsContainer = document.createElement('div')
-      tagsContainer.className = 'frontmatter-tags'
-
-      tags.value.forEach(tag => {
-        const tagEl = document.createElement('a')
-        tagEl.className = 'tag-link'
-        tagEl.href = `/archives/?tag=${tag.toLowerCase()}`
-        tagEl.textContent = `#${tag}`
-        tagsContainer.appendChild(tagEl)
-      })
-
-      pageTitle.appendChild(tagsContainer)
-    }
-
-    // Add viewer-count component for blog posts
-    const viewerCountDiv = document.createElement('div')
-    viewerCountDiv.className = 'viewer-count'
-
-    // Simulate view count (consistent pseudo-random based on URL)
-    const url = window.location.pathname
-    let hash = 0
-    for (let i = 0; i < url.length; i++) {
-      hash = ((hash << 5) - hash) + url.charCodeAt(i)
-      hash |= 0
-    }
-    const viewCount = Math.abs(hash % 50) + 5 // Between 5 and 55
-
-    viewerCountDiv.innerHTML = `<span class="viewer-count-number">${viewCount}</span> reading now`
-    pageTitle.appendChild(viewerCountDiv)
-
-    // Add footer components for blog index, blog posts, and archive page
-    if (shouldShowFooterComponents.value) {
-      const encodedUrl = encodeURIComponent(currentUrl.value)
-      const encodedTitle = encodeURIComponent(currentTitle.value)
-
-      // Create footer container that goes in the main content area (right column)
-      const blogPostFooter = document.createElement('div')
-      blogPostFooter.className = 'blog-post-footer'
-
-      // Share Buttons
-      const shareSection = document.createElement('div')
-      shareSection.className = 'share-section'
-      shareSection.innerHTML = `
-        <div class="button-group">
-          <span class="section-label">Share</span>
-          <div class="share-row">
-            <a href="https://twitter.com/intent/tweet?url=${encodedUrl}&text=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button x-share" title="Share on X">
-              <span>Post</span>
-            </a>
-            <a href="https://www.linkedin.com/sharing/share-offsite/?url=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="share-button linkedin-share" title="LinkedIn">
-              <span>LinkedIn</span>
-            </a>
-            <a href="https://news.ycombinator.com/submitlink?u=${encodedUrl}&t=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button hn-share" title="Hacker News">
-              <span>Hacker News</span>
-            </a>
-            <a href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button reddit-share" title="Reddit">
-              <span>Reddit</span>
-            </a>
-            <a href="mailto:?subject=${encodedTitle}&body=${encodedUrl}" class="share-button email-share" title="Forward">
-              <span>Forward</span>
-            </a>
+    // Donation Box (SupportSection)
+    const donationBox = document.createElement('div')
+    donationBox.className = 'donation-box'
+    donationBox.innerHTML = `
+      <h2 class="donation-heading">supporting = loving</h2>
+      <div class="donation-divider"></div>
+      <p class="donation-intro">
+        For <strong>2 years</strong> I've been creating ad-free technical tutorials and essays here.
+        This is a one-person effort that's also my livelihood. If it makes your day easier or more pleasant in any way,
+        please consider supporting the work with a monthly or one-time donation.
+      </p>
+      <p class="donation-intro">
+        It helps me make more content, and is deeply appreciated as well. 🫶🏼
+      </p>
+      <div class="donation-columns">
+        <div class="donation-column donation-column--monthly">
+          <h4 class="column-heading">Monthly Support</h4>
+          <div class="column-divider"></div>
+          <div class="tier-list">
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
           </div>
         </div>
-      `
-      blogPostFooter.appendChild(shareSection)
-
-      // Follow Buttons
-      const followSection = document.createElement('div')
-      followSection.className = 'cta-section'
-      followSection.innerHTML = `
-        <div class="button-group">
-          <span class="section-label">Follow</span>
-          <div class="cta-row">
-            <a href="/feed.rss" target="_blank" rel="noopener noreferrer" class="cta-button newsletter" title="Newsletter">
-              <span>Get The Newsletter</span>
-            </a>
-            <a href="https://x.com/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button x-follow" title="X">
-              <span>Follow On X</span>
-            </a>
-            <a href="https://youtube.com/@mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button youtube" title="YouTube">
-              <span>Subscribe On YouTube</span>
-            </a>
-            <a href="https://linkedin.com/in/mrkingsleyobi" target="_blank" rel="noopener noreferrer" class="cta-button linkedin" title="LinkedIn">
-              <span>Follow On LinkedIn</span>
-            </a>
+        <div class="donation-column">
+          <h4 class="column-heading">One-Time Support</h4>
+          <div class="column-divider"></div>
+          <div class="tier-list">
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
+            <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
           </div>
         </div>
-      `
-      blogPostFooter.appendChild(followSection)
+      </div>
+    `
+    blogPostFooter.appendChild(donationBox)
 
-      // Donation Box (SupportSection)
-      const donationBox = document.createElement('div')
-      donationBox.className = 'donation-box'
-      donationBox.innerHTML = `
-        <h2 class="donation-heading">supporting = loving</h2>
-        <div class="donation-divider"></div>
-        <p class="donation-intro">
-          For <strong>2 years</strong> I've been creating ad-free technical tutorials and essays here.
-          This is a one-person effort that's also my livelihood. If it makes your day easier or more pleasant in any way,
-          please consider supporting the work with a monthly or one-time donation.
-        </p>
-        <p class="donation-intro">
-          It helps me make more content, and is deeply appreciated as well. 🫶🏼
-        </p>
-        <div class="donation-columns">
-          <div class="donation-column donation-column--monthly">
-            <h4 class="column-heading">Monthly Support</h4>
-            <div class="column-divider"></div>
-            <div class="tier-list">
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
-            </div>
-          </div>
-          <div class="donation-column">
-            <h4 class="column-heading">One-Time Support</h4>
-            <div class="column-divider"></div>
-            <div class="tier-list">
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $5</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $10</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $25</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $50</a>
-              <a href="#" target="_blank" rel="noopener" class="tier-link"><span class="tier-heart">♥</span> $100</a>
-            </div>
-          </div>
+    // Search Section
+    const searchSection = document.createElement('section')
+    searchSection.className = 'search-section'
+    searchSection.innerHTML = `
+      <div class="search-wrapper">
+        <span class="section-label">Search</span>
+        <div class="search-container">
+          <span class="search-icon vp-icon"></span>
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search all 10 posts across 2.25 years and 20 tags..."
+            onkeypress="if(event.key === 'Enter') { window.location.href = '/archives/?search=' + encodeURIComponent(this.value); }"
+          />
         </div>
-      `
-      blogPostFooter.appendChild(donationBox)
+      </div>
+    `
+    blogPostFooter.appendChild(searchSection)
 
-      // Search Section
-      const searchSection = document.createElement('section')
-      searchSection.className = 'search-section'
-      searchSection.innerHTML = `
-        <div class="search-wrapper">
-          <span class="section-label">Search</span>
-          <div class="search-container">
-            <span class="search-icon vp-icon"></span>
-            <input
-              type="text"
-              class="search-input"
-              placeholder="Search all 10 posts across 2.25 years and 20 tags..."
-              onkeypress="if(event.key === 'Enter') { window.location.href = '/archives/?search=' + encodeURIComponent(this.value); }"
-            />
-          </div>
-        </div>
-      `
-      blogPostFooter.appendChild(searchSection)
-
-      // Insert at the end of the vp-doc content (right column)
-      const vpDoc = document.querySelector('.VPDoc .content .vp-doc')
-      if (vpDoc) {
-        vpDoc.appendChild(blogPostFooter)
-      }
+    // Insert at the end of the vp-doc content (right column)
+    const vpDocContent = document.querySelector('.VPDoc .content .vp-doc')
+    if (vpDocContent) {
+      vpDocContent.appendChild(blogPostFooter)
     }
   }
 
-  // Insert page-title as first child of container (for proper absolute positioning)
-  container.insertBefore(pageTitle, container.firstChild)
-  console.log('Gutter inserted into container for two-column layout')
+  console.log('Footer components injected')
+}
+
+// Function to hide H1 elements in content (since we show them in the gutter)
+const hideContentH1s = () => {
+  const vpDoc = document.querySelector('.VPDoc')
+  if (!vpDoc) return
 
   // Hide ALL h1 elements in VPDoc content EXCEPT those in .page-title
   const allH1s = vpDoc.querySelectorAll('h1')
@@ -376,43 +298,45 @@ onMounted(() => {
   setTimeout(addThemeTitleClass, 100)
   setTimeout(addFooterSocialLinks, 200)
 
-  // Try multiple approaches to inject gutter
+  // Inject footer components and hide H1s
   setTimeout(() => {
-    console.log('Attempting to inject gutter...')
-    injectPageGutter()
+    console.log('Attempting to inject footer components...')
+    injectFooterComponents()
+    hideContentH1s()
 
     // If it didn't work, try again with a longer delay
     setTimeout(() => {
-      if (!document.querySelector('.page-title')) {
+      if (!document.querySelector('.blog-post-footer') && shouldShowFooterComponents.value) {
         console.log('First attempt failed, trying again...')
-        injectPageGutter()
+        injectFooterComponents()
       }
     }, 500)
   }, 100)
 })
 
-// Watch for route changes to re-inject gutter
+// Watch for route changes to re-inject footer
 watch(() => page.value.relativePath, async (newPath, oldPath) => {
   console.log('Route changed from', oldPath, 'to', newPath)
   await nextTick()
 
-  // Remove existing gutter if present
-  const existingGutter = document.querySelector('.page-title')
-  if (existingGutter) {
-    console.log('Removing existing gutter')
-    existingGutter.remove()
+  // Remove existing footer if present
+  const existingFooter = document.querySelector('.blog-post-footer')
+  if (existingFooter) {
+    console.log('Removing existing footer')
+    existingFooter.remove()
   }
 
-  // Inject new gutter
+  // Inject new footer
   setTimeout(() => {
-    console.log('Injecting gutter for new route...')
-    injectPageGutter()
+    console.log('Injecting footer for new route...')
+    injectFooterComponents()
+    hideContentH1s()
 
     // Retry if needed
     setTimeout(() => {
-      if (!document.querySelector('.page-title')) {
-        console.log('Retry injecting gutter...')
-        injectPageGutter()
+      if (!document.querySelector('.blog-post-footer') && shouldShowFooterComponents.value) {
+        console.log('Retry injecting footer...')
+        injectFooterComponents()
       }
     }, 300)
   }, 100)
@@ -420,7 +344,11 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
 </script>
 
 <template>
-  <Layout />
+  <Layout>
+    <template #doc-top>
+      <PageTitle v-if="frontmatter.title" />
+    </template>
+  </Layout>
 </template>
 
 <style>
