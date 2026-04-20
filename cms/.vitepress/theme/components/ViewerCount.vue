@@ -1,81 +1,122 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 
-const viewerCount = ref(0)
-const displayCount = ref(0)
-
-// Generate a realistic starting count between 100-1000
-const generateInitialCount = () => Math.floor(Math.random() * 900) + 100
-
-// Fluctuate the count by -5 to +10
-const fluctuateCount = () => {
-  const change = Math.floor(Math.random() * 16) - 5
-  viewerCount.value = Math.max(50, viewerCount.value + change)
+interface Props {
+  tags?: string[]
+  createdDate?: string | null
 }
 
-// Animate count changes smoothly
-const animateCount = () => {
-  const diff = viewerCount.value - displayCount.value
-  if (Math.abs(diff) > 0) {
-    displayCount.value += diff * 0.1
-    if (Math.abs(viewerCount.value - displayCount.value) < 0.5) {
-      displayCount.value = viewerCount.value
-    }
-  }
-}
-
-let countInterval: number | null = null
-let animationFrame: number | null = null
-
-onMounted(() => {
-  viewerCount.value = generateInitialCount()
-  displayCount.value = viewerCount.value
-
-  // Update count every 3-8 seconds
-  const updateCount = () => {
-    fluctuateCount()
-    const nextUpdate = Math.random() * 5000 + 3000
-    countInterval = window.setTimeout(updateCount, nextUpdate)
-  }
-  updateCount()
-
-  // Smooth animation
-  const animate = () => {
-    animateCount()
-    animationFrame = requestAnimationFrame(animate)
-  }
-  animate()
+const props = withDefaults(defineProps<Props>(), {
+  tags: () => [],
+  createdDate: null
 })
 
-onUnmounted(() => {
-  if (countInterval !== null) {
-    clearTimeout(countInterval)
+// Reading time - calculated once on mount
+const readingTime = ref<string | null>(null)
+
+onMounted(() => {
+  // Calculate reading time (rough estimate: 200 words per minute)
+  const content = document.querySelector('.vp-doc')
+  if (!content) return
+
+  const text = content.innerText || ''
+  const words = text.split(/\s+/).length
+  const minutes = Math.ceil(words / 200)
+  readingTime.value = `${minutes} min read`
+})
+
+// Simulate view count (in real implementation, this would come from analytics)
+const viewCount = computed(() => {
+  // Generate a consistent pseudo-random view count based on the URL
+  const url = window.location.pathname
+  let hash = 0
+  for (let i = 0; i < url.length; i++) {
+    hash = ((hash << 5) - hash) + url.charCodeAt(i)
+    hash |= 0
   }
-  if (animationFrame !== null) {
-    cancelAnimationFrame(animationFrame)
-  }
+  return Math.abs(hash % 1000) + 100 // Between 100 and 1100 views
 })
 </script>
 
 <template>
   <div class="viewer-count">
-    <span class="viewer-count-number">{{ Math.round(displayCount) }}</span>
-    reading now
+    <h4 class="stats-title">Post Stats</h4>
+
+    <div class="stat-item">
+      <span class="stat-label">Views:</span>
+      <span class="stat-value">{{ viewCount.toLocaleString() }}</span>
+    </div>
+
+    <div v-if="readingTime" class="stat-item">
+      <span class="stat-label">Reading time:</span>
+      <span class="stat-value">{{ readingTime }}</span>
+    </div>
+
+    <div v-if="createdDate" class="stat-item">
+      <span class="stat-label">Published:</span>
+      <span class="stat-value">{{ createdDate }}</span>
+    </div>
+
+    <div v-if="tags && tags.length" class="stat-item">
+      <span class="stat-label">Tags:</span>
+      <span class="stat-value">{{ tags.length }}</span>
+    </div>
   </div>
 </template>
 
 <style scoped>
 .viewer-count {
-  font-size: 0.8rem;
-  color: var(--vp-c-text-2);
-  margin: 0.6rem 0;
-  font-style: italic;
-  font-weight: 500;
+  background: var(--vp-c-bg-soft);
+  border-radius: 8px;
+  padding: 16px;
 }
 
-.viewer-count-number {
+.stats-title {
+  font-size: 14px;
   font-weight: 600;
-  color: var(--vp-c-brand);
-  font-size: 1em;
+  color: var(--vp-c-text-1);
+  margin: 0 0 12px 0;
+}
+
+.stat-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--vp-c-divider);
+}
+
+.stat-item:last-child {
+  border-bottom: none;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--vp-c-text-2);
+}
+
+.stat-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+}
+
+@media (max-width: 768px) {
+  .viewer-count {
+    padding: 12px;
+  }
+
+  .stats-title {
+    font-size: 13px;
+  }
+
+  .stat-item {
+    padding: 6px 0;
+  }
+
+  .stat-label,
+  .stat-value {
+    font-size: 12px;
+  }
 }
 </style>
