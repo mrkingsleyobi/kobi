@@ -15,7 +15,7 @@ status: published
 description: "My top book recommendations from 2025 covering AI, philosophy, technology, and human flourishing"
 ---
 
-<!-- ![Books That Shaped My Thinking](/images/books-2025.jpg)  width="1200" height="630" -->
+![Books That Shaped My Thinking](/images/books-2025.jpg) <!-- width="1200" height="630" -->
 
 <!-- <caption>The books that changed how I think (click for full size)</caption> -->
 
