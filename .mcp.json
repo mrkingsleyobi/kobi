@@ -1,0 +1,31 @@
+{
+  "mcpServers": {
+    "playwright": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@executeautomation/playwright-mcp-server"
+      ]
+    },
+    "brightdata": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@brightdata/mcp-server"
+      ],
+      "env": {
+        "BRIGHTDATA_API_TOKEN": "${BRIGHTDATA_API_TOKEN}"
+      }
+    },
+    "blog-search": {
+      "command": "node",
+      "args": [
+        "/workspaces/feature-initial-vitepress-setup/scripts/blog-search-mcp.js"
+      ],
+      "env": {
+        "OPENAI_API_KEY": "${OPENAI_API_KEY}",
+        "BLOG_INDEX_PATH": "/workspaces/feature-initial-vitepress-setup/.blog-index"
+      }
+    }
+  }
+}

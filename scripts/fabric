@@ -1,0 +1,97 @@
+#!/bin/bash
+# Fabric wrapper script - calls TypeScript implementation
+# Usage: fabric [options] <pattern> [input]
+
+# Parse arguments
+PATTERN=""
+INPUT=""
+INPUT_FILE=""
+IMAGE_FILE=""
+IMAGE_SIZE="1024x1024"
+IMAGE_QUALITY="auto"
+IMAGE_BACKGROUND="transparent"
+MODEL="claude-3-5-sonnet-20241022"
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    --pattern)
+      PATTERN="$2"
+      shift 2
+      ;;
+    --image-file)
+      IMAGE_FILE="$2"
+      shift 2
+      ;;
+    --image-size)
+      IMAGE_SIZE="$2"
+      shift 2
+      ;;
+    --image-quality)
+      IMAGE_QUALITY="$2"
+      shift 2
+      ;;
+    --image-background)
+      IMAGE_BACKGROUND="$2"
+      shift 2
+      ;;
+    -m|--model)
+      MODEL="$2"
+      shift 2
+      ;;
+    -*)
+      # Unknown option, skip
+      shift
+      ;;
+    *)
+      if [[ -z "$PATTERN" ]]; then
+        PATTERN="$1"
+      elif [[ -z "$INPUT" ]]; then
+        INPUT="$1"
+        INPUT_FILE="$1"
+      fi
+      shift
+      ;;
+  esac
+done
+
+# Image generation mode
+if [[ -n "$IMAGE_FILE" ]]; then
+  echo "Error: Image generation not yet implemented. Use external image generation service." >&2
+  exit 1
+fi
+
+# Text pattern mode
+if [[ -z "$PATTERN" ]]; then
+  echo "Usage: fabric --pattern <pattern> [input]" >&2
+  echo "  or: fabric --image-file <output> <prompt> [options]" >&2
+  exit 1
+fi
+
+# Map fabric patterns to our implementation
+case "$PATTERN" in
+  sanitize_markdown)
+    PATTERN="sanitize_markdown"
+    ;;
+  enhance_content|enhance)
+    PATTERN="enhance_content"
+    ;;
+  summarize|summarize_text)
+    PATTERN="summarize_text"
+    ;;
+  extract_tags|tags)
+    PATTERN="extract_tags"
+    ;;
+  *)
+    echo "Unknown pattern: $PATTERN" >&2
+    echo "Available patterns: sanitize_markdown, enhance_content, summarize_text, extract_tags" >&2
+    exit 1
+    ;;
+esac
+
+# Set input to stdin if not specified
+if [[ -z "$INPUT_FILE" ]]; then
+  INPUT_FILE="-"
+fi
+
+# Call TypeScript implementation
+exec bun "scripts/fabric-alt.ts" "$PATTERN" "$INPUT_FILE"

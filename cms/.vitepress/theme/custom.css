@@ -1,0 +1,1417 @@
+/* Custom Fonts */
+@import '/fonts/core-fonts.css';
+@import '/fonts/valkyrie-light.css';
+@import '/fonts/concourse-light.css';
+@import '/fonts/equity-light.css';
+
+/* Tailwind CSS */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Font Family Configuration */
+:root {
+  --font-heading: 'valkyrie-text', Georgia, serif;
+  --font-body: 'equity-text', Georgia, serif;
+  --font-ui: 'concourse-text', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'triplicate-text', 'SF Mono', Monaco, monospace;
+}
+
+/* Apply custom fonts to VitePress elements */
+.VPDoc h1,
+.VPDoc h2,
+.VPDoc h3,
+.VPDoc h4,
+.VPDoc h5,
+.VPDoc h6,
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading) !important;
+}
+
+.VPDoc .content,
+.VPDoc p,
+.VPDoc li,
+.VPDoc td,
+.VPDoc th,
+body {
+  font-family: var(--font-body) !important;
+}
+
+.VPSkipLink,
+.VPNavBar,
+.VPNav,
+.VPSidebar,
+.VPLocalNav,
+button, .btn,
+.VPButton {
+  font-family: var(--font-ui) !important;
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono) !important;
+}
+
+/* Theme title styling */
+.theme-title {
+  font-family: 'advocate-c41', Georgia, serif;
+  text-transform: uppercase;
+  font-size: 25px;
+  font-weight: 100;
+}
+
+/* Global responsive fixes */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/*html,
+body {
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+}*/
+
+
+/* Prevent content overflow */
+.VPDoc,
+.VPContent,
+.container,
+.content {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Prevent images and media from causing overflow */
+img,
+video,
+iframe,
+embed,
+object {
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure code blocks don't overflow */
+pre,
+code {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+/* Prevent tables from causing overflow */
+table {
+  display: block;
+  overflow-x: auto;
+  max-width: 100%;
+}
+
+/* Daniel Miessler-inspired Theme Variables */
+
+/* Light mode colors */
+:root {
+  /* Custom theme colors for light mode */
+  --custom-c-bg: #ffffff;
+  --custom-c-bg-soft: #f8f9fa;
+  --custom-c-bg-elv: #e9ecef;
+  --custom-c-text-1: #212529;
+  --custom-c-text-2: #495057;
+  --custom-c-text-3: #6c757d;
+  --custom-c-brand-1: #3c8772;
+  --custom-c-brand-2: #2d6656;
+  --custom-c-brand-3: #1e4538;
+  --custom-c-border: rgba(0, 0, 0, 0.1);
+  --custom-c-border-light: rgba(0, 0, 0, 0.05);
+
+  /* Single-column layout - Daniel Miessler Style */
+  --content-max-width: 900px;
+  --vp-layout-max-width: 940px;
+}
+
+/* Dark mode colors */
+.dark {
+  /* Custom theme colors for dark mode */
+  --custom-c-bg: #1a1a2e;
+  --custom-c-bg-soft: #252542;
+  --custom-c-bg-elv: #2a2a4a;
+  --custom-c-text-1: #f5f5f5;
+  --custom-c-text-2: #c9c9c9;
+  --custom-c-text-3: #a0a0a0;
+  --custom-c-brand-1: #4aa38a;
+  --custom-c-brand-2: #3c8772;
+  --custom-c-brand-3: #2d6656;
+  --custom-c-border: rgba(255, 255, 255, 0.1);
+  --custom-c-border-light: rgba(255, 255, 255, 0.05);
+}
+
+/* Apply custom theme variables to VitePress variables */
+:root {
+  --vp-c-bg: var(--custom-c-bg);
+  --vp-c-bg-soft: var(--custom-c-bg-soft);
+  --vp-c-bg-elv: var(--custom-c-bg-elv);
+  --vp-c-text-1: var(--custom-c-text-1);
+  --vp-c-text-2: var(--custom-c-text-2);
+  --vp-c-text-3: var(--custom-c-text-3);
+  --vp-c-brand-1: var(--custom-c-brand-1);
+  --vp-c-brand-2: var(--custom-c-brand-2);
+  --vp-c-brand-3: var(--custom-c-brand-3);
+  --vp-c-divider: var(--custom-c-border);
+}
+
+/* Custom typography */
+.VPContent {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+}
+
+/* H1-H6 styles now match Daniel Miessler - see lines 20-96 */
+
+/* Custom components */
+.callout {
+  border-left: 4px solid var(--vp-c-brand-1);
+  padding: 1rem 1.5rem;
+  margin: 1.5rem 0;
+  background-color: var(--vp-c-bg-soft);
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+/*aside {
+  background-color: var(--vp-c-bg-soft);
+  padding: 0.75rem 1rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  font-style: italic;
+  font-size: 0.95em;
+}*/
+
+.tutorial {
+  background-color: color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
+  border-left: 3px solid var(--vp-c-brand-1);
+  padding: 1rem 1.25rem;
+  margin: 1rem 0;
+  border-radius: 4px;
+  display: block;
+  font-style: italic;
+}
+
+caption {
+  display: block;
+  text-align: center;
+  color: var(--vp-c-text-2);
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-style: italic;
+}
+
+definition {
+  display: block;
+  background-color: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-brand-1);
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 1.5rem 0;
+}
+
+definition term {
+  display: block;
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 0.5rem;
+}
+
+definition description {
+  display: block;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+definition usage {
+  display: block;
+  font-style: italic;
+  color: var(--vp-c-text-2);
+  margin-bottom: 0.5rem;
+}
+
+definition cite {
+  display: block;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-3);
+  text-align: right;
+}
+
+.bottom-note {
+  display: block;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--vp-c-divider);
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+}
+
+.bottom-note ol {
+  margin-left: 1.5rem;
+}
+
+.bottom-note li {
+  margin-bottom: 0.5rem;
+}
+
+/* Video container */
+.video-container {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  margin: 1.5rem 0;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Image improvements */
+.daniel-post-content img,
+.daniel-blog-post img {
+  border-radius: 8px;
+  box-shadow: 0 4px 12px color-mix(in srgb, var(--vp-c-text-1) 10%, transparent);
+}
+
+.daniel-post-content a img:hover,
+.daniel-blog-post a img:hover {
+  transform: scale(1.02);
+  transition: transform 0.2s ease;
+}
+
+/* Table improvements */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5rem 0;
+}
+
+table th,
+table td {
+  border: 1px solid var(--vp-c-divider);
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+table th {
+  background-color: var(--vp-c-bg-soft);
+  font-weight: 600;
+}
+
+table tr:hover {
+  background-color: var(--vp-c-bg-soft);
+}
+
+/* Code block improvements */
+div[class*='language-'] {
+  border-radius: 8px;
+  margin: 1.5rem 0;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--vp-c-bg-soft);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--vp-c-brand-1);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--vp-c-brand-2);
+}
+
+/* Daniel Miessler-inspired Layout Styles */
+
+/* Single-column content container */
+.daniel-container {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Center content for readability */
+.VPDoc .container {
+  max-width: var(--content-max-width);
+}
+
+/* Minimal navigation */
+.VPNav {
+  border-bottom: 1px solid var(--custom-c-border);
+}
+
+.VPNavBarTitle {
+  font-weight: 500;
+}
+
+/* Target the actual VitePress navbar menu links */
+.VPNavBarMenuLink {
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em;
+}
+
+/* Clean blog listing */
+.daniel-blog-list {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.daniel-blog-post {
+  margin-bottom: 40px;
+  padding-bottom: 40px;
+  border-bottom: 1px solid var(--custom-c-border);
+}
+
+.daniel-blog-post:last-child {
+  border-bottom: none;
+}
+
+.daniel-blog-post-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 0.5rem;
+}
+
+.daniel-blog-post-title a {
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+}
+
+.daniel-blog-post-title a:hover {
+  text-decoration: underline;
+}
+
+.daniel-blog-post-meta {
+  font-size: 0.875rem;
+  color: var(--vp-c-text-3);
+  margin-bottom: 1rem;
+}
+
+.daniel-blog-post-excerpt {
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+}
+
+/* Minimal hero section */
+.daniel-hero {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 120px 20px 80px;
+  text-align: center;
+}
+
+.daniel-hero h1 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  color: var(--vp-c-text-1);
+}
+
+.daniel-hero .tagline {
+  font-size: 1.125rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.daniel-hero-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.daniel-hero-actions a {
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--custom-c-border);
+  border-radius: 4px;
+  color: var(--vp-c-text-1);
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.daniel-hero-actions a:hover {
+  border-color: var(--vp-c-brand-1);
+  background: color-mix(in srgb, var(--vp-c-brand-1) 10%, transparent);
+}
+
+/* Minimal footer */
+.VPFooter {
+  border-top: 1px solid var(--custom-c-border);
+  padding: 2rem 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Custom footer social links */
+.VPFooter .footer-social-links {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  order: -1; /* Place above the message */
+}
+
+.VPFooter .footer-social-links a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--vp-c-text-2);
+  text-decoration: none;
+  transition: all 0.2s ease;
+  padding: 0.5rem;
+  border-radius: 4px;
+}
+
+.VPFooter .footer-social-links a:hover {
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  transform: translateY(-2px);
+}
+
+.VPFooter .footer-social-links a svg,
+.VPFooter .footer-social-links a iconify-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Mobile responsive footer */
+@media (max-width: 768px) {
+  .VPFooter .footer-social-links {
+    gap: 1rem;
+  }
+
+  .VPFooter .footer-social-links a svg,
+  .VPFooter .footer-social-links a iconify-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Remove feature cards on homepage */
+.VPFeatures {
+  display: none;
+}
+
+/* VPDoc styling */
+.VPDoc:not(.home) {
+  padding-top: 0;
+}
+
+/* Container for dp-doc - page-title uses absolute positioning */
+.dp-doc {
+  position: relative;
+  width: 100%;
+}
+
+/* Page Title in Left Gutter */
+.page-title {
+  position: absolute;
+  left: 1.5rem;
+  top: 60px;
+  width: 10rem;
+  text-align: right;
+  font-weight: 400;
+  border-top: solid 3px var(--vp-c-brand-1);
+  padding-top: 5px;
+  z-index: 10;
+  pointer-events: none;
+}
+
+/* dp-doc wrapper - sibling to page-title 
+.dp-doc {
+  padding-left: 13.5rem;
+  padding-right: 1.5rem;
+}*/
+
+/* Ensure .main inside dp-doc is properly styled 
+.dp-doc .main {
+  width: 100%;
+}*/
+
+/* Ensure .VPDocFooter inside dp-doc is properly styled 
+.dp-doc .VPDocFooter {
+  width: 100%;
+}*/
+/*
+.page-title h1 {
+  display: block !important;
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--vp-c-text-1);
+  margin-bottom: 0.75rem;
+}
+
+.page-title .subtitle {
+  font-size: 0.75rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.page-title .description {
+  font-size: 0.6875rem;
+  color: var(--vp-c-text-3);
+  line-height: 1.4;
+}
+*/
+/* Metadata elements within page-title 
+.page-title .meta-info {
+  font-size: 0.6875rem;
+  color: var(--vp-c-text-3);
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.page-title .meta-info time,
+.page-title .meta-info span {
+  display: inline;
+}
+
+.page-title .tags {
+  display: block;
+  margin-top: 0.75rem;
+}
+
+.page-title .tag {
+  display: block;
+  font-size: 0.625rem;
+  color: var(--vp-c-brand-1);
+  margin-bottom: 0.25rem;
+  line-height: 1.3;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.page-title .tag:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
+}*/
+
+/* VPDoc container - Daniel Miessler Style */
+.VPDoc .container {
+  max-width: 900px;
+  margin-left: 14rem;
+  margin-right: 2.5rem;
+  padding-left: 0;
+  padding-right: 0;
+  padding-top: 60px;
+}
+
+/* Hide default h1 */
+.VPDoc h1 {
+  display: none;
+}
+
+/* Mobile responsive
+@media (max-width: 768px) {
+  .page-title {
+    position: static;
+    width: auto;
+    text-align: left;
+    left: 0;
+    margin-top: 40px;
+    margin-bottom: 1.5rem;
+  }
+
+  .page-title h1 {
+    font-size: 1.125rem;
+  }
+
+  .page-title .subtitle {
+    font-size: 0.9375rem;
+  }
+
+  .VPDoc .container {
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 40px;
+  }
+} */
+
+/* Extra small mobile 
+@media (max-width: 480px) {
+  .page-title {
+    margin-top: 30px;
+  }
+
+  .VPDoc .container {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-top: 30px;
+  }
+}*/
+
+/* Enhanced Frontmatter Styling for Blog Posts */
+/* Conflicting rule - disabled for left gutter layout
+.page-title {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}*/
+
+.page-title h1 {
+  display: block !important;
+  font-family: var(--font-heading) !important;
+  font-size: 2.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0.75rem;
+  color: var(--vp-c-text-1);
+  text-transform: uppercase;
+  border-top: 2px solid var(--vp-c-brand-1);
+  padding-top: 1rem;
+}
+
+.page-title .subtitle {
+  font-family: var(--font-body);
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--vp-c-text-2);
+  margin-bottom: 1.5rem;
+  font-style: italic;
+}
+
+.page-title .meta-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-3);
+  margin-bottom: 1rem;
+  font-family: var(--font-ui);
+}
+
+.page-title .meta-info time {
+  font-weight: 500;
+  color: var(--vp-c-text-2);
+}
+
+.page-title .meta-info .updated {
+  font-size: 0.75rem;
+  color: var(--vp-c-text-3);
+}
+
+.page-title .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+}
+
+.page-title .tag {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  padding: 0.25rem 0.75rem;
+  border-radius: 1rem;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-family: var(--font-ui);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.page-title .tag:hover {
+  background: var(--vp-c-brand-1);
+  color: var(--vp-c-bg-inverse);
+  transform: translateY(-1px);
+}
+
+/* Blog Post Content Styling */
+.VPDoc .content {
+  position: relative;
+  max-width: 900px;
+  margin-left: 14rem;
+  margin-right: 2.5rem;
+  padding-left: 0;
+  padding-right: 0;
+  z-index: 5;
+}
+
+.VPDoc .content p:first-of-type {
+  font-size: .91rem;
+  line-height: 1.45;
+  font-weight: 500;
+  color: var(--vp-c-text-1);
+}
+
+.VPDoc .content img {
+  border-radius: 8px;
+  margin: 2rem 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Homepage - hide default hero and features */
+.VPHome .VPHero {
+  display: none;
+}
+
+.VPHome .VPFeatures {
+  display: none;
+}
+
+/* Hide VitePress header and footer on landing page using class */
+.VPNavBar.hide-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Also hide any scroll-triggered navbar states on homepage */
+.VPNavBar.has-sidebar.hide-navbar,
+.VPNavBar.scrolled.hide-navbar {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Hide footer on homepage */
+.VPDoc.home .VPFooter {
+  display: none !important;
+}
+
+/* Hide footer social links on homepage */
+.VPDoc.home .footer-social-links {
+  display: none !important;
+}
+
+/* Hide page-wrapper on homepage (to hide any gutters that might persist) */
+.VPDoc.home .page-wrapper {
+  display: none !important;
+}
+
+/* Ensure landing page content is visible */
+.VPDoc.home .landing-page {
+  display: block !important;
+}
+
+/* Aside styling in left gutter */
+aside {
+  font-family: heliotrope-t3;
+  font-size: .83rem;
+  line-height: 1.4;
+  color: var(--vp-c-text-3);
+  letter-spacing: .015em;
+  -webkit-hyphens: none;
+  hyphens: none;
+  font-feature-settings: "liga"
+}
+
+/* Hide asides in main content (they're moved to gutter) */
+/* DISABLED: Show asides in content like Daniel Miessler's site
+.vp-doc aside,
+.VPDoc .content aside,
+.vp-doc .custom-aside,
+.VPDoc .content .custom-aside {
+  display: none !important;
+}
+*/
+
+/* Asides inside page-title should be visible */
+.page-title aside {
+  display: block !important;
+  margin-bottom: 1rem;
+}
+
+/* Separated selector - .page-title uses left gutter positioning, aside uses this */
+/* DISABLED: Show asides inline in content like Daniel Miessler's site
+aside {
+  display: block;
+  float: left;
+  position: absolute;
+  margin-left: 0;
+  left: 2.5rem;
+  width: 7.5rem;
+  text-align: right;
+  list-style-type: none;
+  clear: both;
+  margin-bottom: 1rem;
+}
+*/
+
+/* Show asides inline in content */
+.vp-doc aside,
+.VPDoc .content aside,
+.dp-doc aside,
+.dp-doc .content aside {
+  display: block !important;
+  visibility: visible !important;
+  position: relative !important;
+  float: none !important;
+  margin: 1.5rem 0 !important;
+  padding: 1rem 1.25rem;
+  border-left: 3px solid var(--vp-c-brand-1);
+  background: var(--vp-c-bg-soft);
+  color: var(--vp-c-text-2);
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.5;
+  border-radius: 4px;
+}
+
+/* Conflicting rule - disabled for left gutter layout
+.page-title {
+  margin-bottom: 1.5rem;
+  font-weight: 400;
+  font-family: equity-text;
+  border-top: solid 3px var(--vp-c-brand);
+  padding-top: 5px
+}*/
+
+.frontmatter-subtitle {
+  font-family: valkyrie-text;
+  display: block;
+  font-size: 95%;
+  font-weight: 300;
+  font-color: #gray;
+  line-height: 1.25;
+  font-style: italic;
+  margin-bottom: .8rem;
+  -webkit-hyphens: none;
+  hyphens: none
+}
+
+/* Date styling in frontmatter */
+.frontmatter-created-at {
+  font-family: equity-text;
+  display: block;
+  font-size: .8rem;
+  font-weight: 400;
+  line-height: 1.3;
+  margin-bottom: .6rem;
+  color: var(--vp-c-text-2);
+}
+
+/* Tags container in frontmatter */
+.frontmatter-tags {
+  display: block;
+  margin-top: .5rem;
+  line-height: 1.4;
+}
+
+/* Individual tag links */
+.frontmatter-tags .tag-link {
+  display: inline-block;
+  font-size: .75rem;
+  color: var(--vp-c-brand);
+  text-decoration: none;
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+  transition: color 0.2s ease;
+  word-break: break-word;
+}
+
+.frontmatter-tags .tag-link:hover {
+  color: var(--vp-c-brand-2);
+  text-decoration: underline;
+}
+
+.frontmatter-title {
+  display: block;
+  font-family: valkyrie-text;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 1.1;
+  margin-top: 1rem;
+  margin-bottom: .8rem;
+  border-top: 1px solid var(--vp-c-divider);
+  padding-top: .02em;
+  -webkit-hyphens: none;
+  hyphens: none
+}
+
+.frontmatter-title.small {
+  font-family: inherit;
+  font-size: 170%;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  font-style: italic;
+  padding-top: .1em;
+  padding-bottom: .15em
+}
+
+@media all and (max-width: 520px) {
+  div#app {
+      margin:1.5rem;
+      padding: 0
+  }
+}
+
+.frontmatter-title.commentary {
+  font-size: 2.1rem;
+  border-top: none;
+  border-bottom: 1px solid var(--vp-c-divider);
+  padding-bottom: .75rem;
+  line-height: 1;
+  margin-bottom: .6rem
+}
+
+.page-title .frontmatter-title {
+  font-family: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  font-size: 125%;
+  line-height: 1.1;
+  border-bottom: inherit;
+  margin-top: 0rem;
+  margin-bottom: .8rem;
+  font-weight: bolder;
+  border-top: 0;
+  padding-top: 0
+}
+
+.frontmatter-title+p {
+  font-size: 115%
+}
+
+@media all and (min-width: 1000px) {
+  html {
+      font-size:24px
+  }
+
+  .page-title h1 {
+    font-size: 3rem;
+  }
+
+  .page-title .subtitle {
+    font-size: 1.5rem;
+  }
+}
+
+@media all and (max-width: 520px) {
+  html {
+      font-size:21px
+  }
+
+  .page-title h1 {
+    font-size: 1.75rem;
+    padding-top: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-title .subtitle {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-title .meta-info {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .page-title .tags {
+    gap: 0.375rem;
+  }
+
+  .page-title .tag {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.6rem;
+  }
+
+  /* Mobile content spacing */
+  .VPDoc .container {
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 40px;
+  }
+
+  /* Mobile content width optimization */
+  .VPDoc .content {
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  /* Mobile body width */
+  body {
+    max-width: 100%;
+    padding: 0 1rem;
+  }
+
+  /* Reduce image margins on mobile */
+  .VPDoc .content img {
+    margin: 1.5rem 0;
+    border-radius: 6px;
+  }
+
+  /* Mobile frontmatter spacing */
+  .frontmatter-subtitle {
+    margin-bottom: 1rem;
+  }
+
+  .frontmatter-created-at {
+    margin-bottom: 0.75rem;
+  }
+
+  /* Mobile component spacing */
+  .callout,
+  .tutorial,
+  definition {
+    margin: 1rem 0;
+    padding: 0.875rem 1rem;
+  }
+
+  /* Mobile pagination spacing */
+  .pagination {
+    margin-top: 1rem;
+    padding-top: 0.75rem;
+    gap: 0.75rem;
+  }
+
+  /* Mobile tag wrapping */
+  .frontmatter-tags {
+    gap: 0.375rem;
+  }
+
+  .frontmatter-tags .tag-link {
+    font-size: 0.6875rem;
+    padding: 0.2rem 0.6rem;
+  }
+}
+
+/* Tablet spacing optimization */
+@media all and (min-width: 521px) and (max-width: 768px) {
+  .VPDoc .container {
+    margin-left: 10rem;
+    margin-right: 2rem;
+    padding-top: 50px;
+  }
+
+  .VPDoc .content {
+    margin-left: 10rem;
+    margin-right: 2rem;
+  }
+
+  body {
+    max-width: 650px;
+  }
+}
+
+* {
+  margin: 0;
+  padding: 0
+}
+
+li {
+  column-break-inside: avoid;
+  -moz-column-break-inside: avoid;
+  break-inside: avoid-column
+}
+
+/* DISABLED: Aside positioning media queries - not needed for inline asides
+@media all and (min-width: 1200px) {
+  aside {
+      left:0;
+      width: 10rem
+  }
+}
+
+@media all and (max-width: 520px) {
+  aside {
+      float:inherit;
+      position: inherit;
+      width: 100%;
+      text-align: left
+  }
+
+  .page-title aside {
+      background: var(--vp-c-bg-soft);
+      padding: .3rem .5rem;
+      width: 90%;
+      border: 1px solid var(--vp-c-divider);
+      border-left: 3px solid var(--vp-c-divider)
+  }
+
+  .page-title aside>p:last-child {
+      margin-bottom: 0
+  }
+}
+*/
+
+.my-content {
+  padding: 3.5rem 0 18rem;
+    margin-left: 14rem;
+    margin-right: 2.5rem;
+    max-width: 900px;
+}
+
+body {
+  font-family: valkyrie-text,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif;
+  margin-left: auto!important;
+  margin-right: auto!important;
+  width: 100%;
+  max-width: 900px;
+  min-height: 100%;
+  position: relative;
+  z-index: -10000;
+  -webkit-font-smoothing: subpixel-antialiased;
+  font-weight: 500;
+  line-height: 1.45;
+  font-size: .91rem;
+  font-variant-numeric: oldstyle-nums;
+  background-color: var(--vp-c-bg, #EAE9DF);
+  color: var(--vp-c-text-1, #2c1810)
+}
+
+.post-date {
+  font-family: 'Concourse T3', sans-serif;
+  font-size: .625rem;
+  color: var(--vp-c-text-3);
+  font-weight: 400;
+  flex-shrink: 0;
+  text-transform: uppercase;
+  letter-spacing: .025em;
+}
+
+.post-subtitle {
+  font-family: 'Valkyrie A', Georgia, serif;
+  font-size: .7rem;
+  line-height: 1.3;
+  color: var(--vp-c-text-1);
+  margin: 0 0 .125rem;
+  font-weight: 400;
+  opacity: .9;
+  text-transform: none !important;
+}
+
+.post-tags {
+  margin-top: 0;
+}
+
+.post-tag {
+  display: inline-block;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, Segoe UI, Roboto, sans-serif;
+  font-size: 0.6rem;
+  font-weight: 300;
+  color: var(--vp-c-text-2);
+  margin-right: 0.625rem;
+  letter-spacing: 0.01em;
+  transition: all 0.15s ease;
+  opacity: 0.85;
+  text-decoration: none;
+}
+
+.post-link-wrapper:hover .post-tag {
+  color: var(--vp-c-brand-1);
+  opacity: 1;
+}
+
+h3 {
+  font-family: heliotrope-caps;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-size: 108%;
+  font-weight: 400;
+}
+
+.dp-doc>div>p:first-child, .dp-doc>div>h1:first-child, .dp-doc>div>*:first-child:not(.custom-block), .dp-doc p:first-of-type, .dp-doc>p:first-child, .dp-doc>p:first-of-type, .page-_ideas .dp-doc>p:first-child, .page-_ideas .dp-doc>p:first-of-type, .page-_blog .dp-doc>p:first-child, .page-_speaking .dp-doc>p:first-child, .page-_consulting.dp-doc>p:first-child, .page-_consulting .dp-doc>p:first-child {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+h2 {
+  font-family: advocate-n34;
+  margin-top: 1.25rem;
+  margin-bottom: 1.25rem;
+  padding-top: .4rem;
+  padding-bottom: .4rem;
+  text-transform: lowercase;
+  font-weight: 200;
+  font-size: 128%;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--vp-c-divider-light);
+}
+.pagination {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 90%;
+  --tw-text-opacity: 1;
+  color: rgb(85 89 95 / var(--tw-text-opacity, 1));
+}
+
+.page-btn:disabled {
+  opacity: .4; 
+  cursor: not-allowed;
+}
+.page-btn {
+  padding: .375rem .75rem;
+  font-family: -apple-system, BlinkMacSystemFont, Inter, Segoe UI, Roboto, sans-serif;
+  font-size: .6875rem;
+  font-weight: 500;
+  border: 1px solid var(--vp-c-divider);
+  background: var(--vp-c-bg);
+  cursor: pointer;
+  transition: all .15s ease;
+  border-radius: 4px;
+  color: var(--vp-c-text-1);
+}
+
+/* ========================================
+   CUSTOM THEME ARCHITECTURE - Daniel Miessler Style
+   Replaces VitePress default .VPDoc with custom .dp-doc
+   ======================================== */
+
+/* Custom doc wrapper - replaces .VPDoc */
+.dp-doc {
+  /* Copy all existing .VPDoc styles */
+  overflow-x: hidden;
+  max-width: 100%;
+  padding: 32px 24px 64px;
+  margin: 0 auto;
+}
+
+/* Custom content body wrapper - replaces .content */
+.dp-doc .content .content-body {
+  max-width: var(--content-max-width);
+  overflow-x: hidden;
+}
+
+/* Also target just .content in .dp-doc for backward compatibility */
+.dp-doc .content {
+  max-width: var(--content-max-width);
+}
+
+/* Apply custom fonts to .dp-doc elements */
+.dp-doc h1,
+.dp-doc h2,
+.dp-doc h3,
+.dp-doc h4,
+.dp-doc h5,
+.dp-doc h6 {
+  font-family: var(--font-heading) !important;
+}
+
+.dp-doc .content-body,
+.dp-doc p,
+.dp-doc li,
+.dp-doc td,
+.dp-doc th {
+  font-family: var(--font-body) !important;
+}
+
+/* Dynamic page classes - for flexible theming */
+body.page-blog {
+  /* Blog-specific styles can be added here */
+}
+
+body.page-telos {
+  /* Telos-specific styles can be added here */
+}
+
+body.page-manifesto {
+  /* Manifesto-specific styles can be added here */
+}
+
+body.page-projects {
+  /* Projects-specific styles can be added here */
+}
+
+body.page-about {
+  /* About-specific styles can be added here */
+}
+
+body.page-start-here {
+  /* Start-here-specific styles can be added here */
+}
+
+/* Enhanced post layout classes */
+.dp-doc .post-layout {
+  /* Maintain existing post layout styles */
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  align-items: flex-start;
+}
+
+.dp-doc .post-layout.alternate {
+  flex-direction: row-reverse;
+}
+
+/* Fonts loaded indicator */
+body.fonts-loaded {
+  /* Indicates custom fonts have loaded */
+}
+
+/* Responsive adjustments for .dp-doc */
+@media (max-width: 768px) {
+  .dp-doc {
+    padding: 24px 16px 48px;
+  }
+
+  .dp-doc .post-layout {
+    flex-direction: column;
+  }
+
+  .dp-doc .post-layout.alternate {
+    flex-direction: column;
+  }
+}
+
+/* Ensure consistency with existing VPDoc styles during transition */
+.dp-doc {
+  /* Inherit all VPDoc positioning and layout */
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+/* Custom content-body specific styles */
+.dp-doc .content-body > * {
+  max-width: 100%;
+}
+
+/* Page-specific body classes for theming */
+body.page-_blog {
+  /* Blog index page */
+}
+
+body.page-_blog.fonts-loaded {
+  /* Blog index with fonts loaded */
+}

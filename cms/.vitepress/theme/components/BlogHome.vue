@@ -1,0 +1,1219 @@
+<script setup lang="ts">
+import { ref, onMounted, computed, watch } from 'vue'
+import type { BlogPostData } from '../types'
+import ShareButtons from './ShareButtons.vue'
+import FollowButtons from './FollowButtons.vue'
+import ContentStats from './ContentStats.vue'
+import SupportSection from './SupportSection.vue'
+import SearchSection from './SearchSection.vue'
+
+const posts = ref<BlogPostData[]>([])
+const featuredPost = ref<BlogPostData | null>(null)
+const curatedPosts = ref<BlogPostData[]>([])
+const loading = ref(true)
+const currentPage = ref(1)
+const postsPerPage = 6
+const activeTagFilter = ref<string>('must') // Default to 'must' to match Daniel's site
+
+onMounted(async () => {
+  try {
+    // Dynamically import all blog post metadata
+    const blogModules = import.meta.glob('/blog/*.md', { as: 'raw' })
+
+    const postData: BlogPostData[] = []
+
+    for (const path in blogModules) {
+      const content = await blogModules[path]()
+      const frontmatterMatch = content.match(/^---\n([\s\S]+?)\n---/)
+
+      if (frontmatterMatch) {
+        const frontmatter: any = {}
+        const lines = frontmatterMatch[1].split('\n')
+
+        for (const line of lines) {
+          const match = line.match(/^(\w+):\s*(.+)$/)
+          if (match) {
+            const [, key, value] = match
+            frontmatter[key] = value.replace(/^["']|["']$/g, '')
+          }
+        }
+
+        // Parse slug from path
+        const slug = path.split('/').pop()?.replace('.md', '') || ''
+
+        // Skip index.md
+        if (slug === 'index') continue
+
+        // Get first image from content for thumbnail
+        const imageMatch = content.match(/!\[.*?\]\((\/images\/.+?\.(jpg|png|jpeg|gif|webp))\)/)
+        const image = imageMatch ? imageMatch[1] : null
+
+        // Get excerpt (first actual text paragraph)
+        const afterFrontmatter = content.replace(/^---[\s\S]*?---\n\n/, '')
+        const contentLines = afterFrontmatter.split('\n').filter(line =>
+          line.trim() &&
+          !line.trim().startsWith('![') &&
+          !line.trim().startsWith('<caption>') &&
+          !line.trim().startsWith('<callout>')
+        )
+        const excerpt = contentLines.length > 0 ? contentLines[0].substring(0, 150) + '...' : ''
+
+        postData.push({
+          slug,
+          title: frontmatter.title || 'Untitled',
+          subtitle: frontmatter.subtitle || '',
+          created_at: frontmatter.created_at || '',
+          tags: frontmatter.tags ? frontmatter.tags.split('|').map((t: string) => t.trim()) : [],
+          image,
+          excerpt,
+          description: frontmatter.description || excerpt,
+          curation: frontmatter.curation || undefined
+        })
+      }
+    }
+
+    // Sort by date (newest first)
+    postData.sort((a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+    )
+
+    posts.value = postData
+
+    // Set featured post as curated post if available, otherwise first post
+    const featuredCuration = postData.find(post => post.curation === 'featured')
+    if (featuredCuration) {
+      featuredPost.value = featuredCuration
+    } else if (postData.length > 0) {
+      featuredPost.value = postData[0]
+    }
+
+    // Set curated posts (featured, recommended, top)
+    curatedPosts.value = postData.filter(post =>
+      post.curation === 'featured' || post.curation === 'recommended' || post.curation === 'top'
+    )
+  } catch (error) {
+    console.error('Error loading blog posts:', error)
+  } finally {
+    loading.value = false
+  }
+})
+
+const formatDate = (dateStr: string) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  const day = String(date.getDate()).padStart(2, '0')
+  const month = String(date.getMonth() + 1).padStart(2, '0')
+  const year = date.getFullYear()
+  return `${day}/${month}/${year}` // DD/MM/YYYY format for latest posts
+}
+
+const formatDateFeatured = (dateStr: string) => {
+  if (!dateStr) return ''
+  const date = new Date(dateStr)
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+  const month = months[date.getMonth()]
+  const day = date.getDate()
+  const year = date.getFullYear()
+  return `${month} ${day}, ${year}` // MMM DD, YYYY format for featured post
+}
+
+// Tag-based filtering for recommended section (Daniel's approach)
+// IMPORTANT: Grid should be EMPTY initially, only show posts AFTER filter is clicked
+const hasInteractedWithFilters = ref(false)
+
+const recommendedPosts = computed(() => {
+  // Don't show anything until user interacts with filters
+  if (!hasInteractedWithFilters.value) {
+    return []
+  }
+
+  if (activeTagFilter.value === 'all') {
+    return posts.value.slice(0, 8) // Limit to 8 posts for grid
+  }
+
+  // Filter by tags
+  return posts.value.filter(post =>
+    post.tags.some(tag =>
+      tag.toLowerCase() === activeTagFilter.value.toLowerCase()
+    )
+  ).slice(0, 8)
+})
+
+// Shuffled recommended posts for shuffle button
+const shuffledPosts = ref<BlogPostData[]>([])
+
+const shuffleRecommended = () => {
+  hasInteractedWithFilters.value = true // Mark as interacted
+  const shuffled = [...recommendedPosts.value]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  shuffledPosts.value = shuffled
+}
+
+// Initialize shuffled posts (empty array initially)
+watch(recommendedPosts, (newPosts) => {
+  shuffledPosts.value = [...newPosts]
+}, { immediate: true })
+
+// Computed properties for main content filtering (keeping existing logic)
+const filteredPosts = computed(() => {
+  // Show all posts in main content (filters only affect recommended section)
+  return posts.value
+})
+
+// Update paginatedPosts to use filteredPosts
+const paginatedPosts = computed(() => {
+  // Exclude featured post and get posts for current page from filtered results
+  const nonFeaturedPosts = filteredPosts.value.filter((_, index) => index !== 0)
+  const startIndex = (currentPage.value - 1) * postsPerPage
+  const endIndex = startIndex + postsPerPage
+  return nonFeaturedPosts.slice(startIndex, endIndex)
+})
+
+// Update totalPages to use filteredPosts
+const totalPages = computed(() => {
+  // Exclude featured post from pagination
+  const nonFeaturedPosts = filteredPosts.value.filter((_, index) => index !== 0)
+  return Math.ceil(nonFeaturedPosts.length / postsPerPage)
+})
+
+const goToPage = (page: number) => {
+  currentPage.value = page
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const nextPage = () => {
+  if (currentPage.value < totalPages.value) {
+    goToPage(currentPage.value + 1)
+  }
+}
+
+const prevPage = () => {
+  if (currentPage.value > 1) {
+    goToPage(currentPage.value - 1)
+  }
+}
+
+const setTagFilter = (tag: string) => {
+  hasInteractedWithFilters.value = true // Mark as interacted
+  activeTagFilter.value = tag
+  // Reshuffle when filter changes
+  shuffleRecommended()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// Computed property for stats (super precise like Daniel's)
+const stats = computed(() => {
+  if (posts.value.length === 0) return { yearsActive: '0' }
+
+  const dates = posts.value
+    .map(post => new Date(post.created_at))
+    .filter(date => !isNaN(date.getTime()))
+
+  if (dates.length === 0) return { yearsActive: '0' }
+
+  const oldestDate = new Date(Math.min(...dates.map(d => d.getTime())))
+  const newestDate = new Date(Math.max(...dates.map(d => d.getTime())))
+
+  const yearsDiff = newestDate.getFullYear() - oldestDate.getFullYear()
+  const monthsDiff = newestDate.getMonth() - oldestDate.getMonth()
+  const totalMonths = yearsDiff * 12 + monthsDiff
+
+  return {
+    yearsActive: (totalMonths / 12).toFixed(10) // Super precise like Daniel
+  }
+})
+
+// Tag counts for filters
+const tagCounts = computed(() => {
+  const counts = {
+    must: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'must')).length,
+    recommended: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'recommended')).length,
+    top: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'top')).length
+  }
+  return counts
+})
+
+// Count unique tags for search section
+const uniqueTagCount = computed(() => {
+  const allTags = posts.value.flatMap(post => post.tags)
+  const uniqueTags = new Set(allTags.map(tag => tag.toLowerCase()))
+  return uniqueTags.size
+})
+</script>
+
+<template>
+  <div class="blog-home">
+    <!-- Loading State -->
+    <div v-if="loading" class="loading">
+      Loading posts...
+    </div>
+
+    <!-- Content Statistics -->
+    <ContentStats v-if="!loading" />
+
+    <!-- Content Curation Filters -->
+    <section v-if="!loading && curatedPosts.length > 0" class="curation-filters">
+      <h2 class="section-header">
+        Top/Recommended Content <span class="content-age">(across {{ stats.yearsActive }} years)</span>
+        <a href="/archives/" class="search-button-inline" title="Search all posts">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="m21 21-4.35-4.35"></path>
+          </svg>
+        </a>
+        <button class="shuffle-button-inline" title="Show different posts" @click="shuffleRecommended">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="1 4 1 10 7 10"></polyline>
+            <polyline points="23 20 23 14 17 14"></polyline>
+            <path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"></path>
+          </svg>
+        </button>
+      </h2>
+      <div class="tag-filters">
+        <button
+          v-if="tagCounts.must > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'must' }"
+          @click="setTagFilter('must')"
+        >
+          <span class="tag-name">must</span>
+          <span class="tag-count">({{ tagCounts.must }})</span>
+        </button>
+        <button
+          v-if="tagCounts.recommended > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'recommended' }"
+          @click="setTagFilter('recommended')"
+        >
+          <span class="tag-name">recommended</span>
+          <span class="tag-count">({{ tagCounts.recommended }})</span>
+        </button>
+        <button
+          v-if="tagCounts.top > 0"
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'top' }"
+          @click="setTagFilter('top')"
+        >
+          <span class="tag-name">top</span>
+          <span class="tag-count">({{ tagCounts.top }})</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Recommended Grid (Daniel's text-based layout in rows) -->
+    <section v-if="!loading && shuffledPosts.length > 0" class="recommended-grid-section">
+      <div class="recommended-grid">
+        <div
+          v-for="(_, rowIndex) in Math.ceil(shuffledPosts.length / 2)"
+          :key="`row-${rowIndex}`"
+          class="recommended-row"
+          :class="{ alternate: rowIndex % 2 === 1 }"
+        >
+          <a
+            v-for="post in shuffledPosts.slice(rowIndex * 2, (rowIndex + 1) * 2)"
+            :key="post.slug"
+            :href="`/blog/${post.slug}`"
+            class="recommended-link"
+          >
+            <h3 class="recommended-title">{{ post.title }}</h3>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Empty Grid Placeholder (Daniel's site shows empty grid initially) -->
+    <section v-if="!loading && shuffledPosts.length === 0" class="recommended-grid-section">
+      <div class="recommended-grid"></div>
+    </section>
+
+    <!-- Featured Blog -->
+    <section v-if="featuredPost && !loading" class="featured-section">
+      <h2 class="section-title">Featured Blog</h2>
+      <div class="blog-card" style="background: rgba(233, 230, 234, 0.95);">
+        <a :href="`/blog/${featuredPost.slug}`" class="blog-link" target="_blank" rel="noopener noreferrer">
+          <div class="blog-thumbnail-hero">
+            <img
+              v-if="featuredPost.image"
+              :src="featuredPost.image"
+              :alt="featuredPost.title"
+              class="blog-thumbnail"
+            />
+            <div class="blog-overlay"></div>
+            <div class="blog-ul-logo">
+              <img src="/images/favicon.png" alt="Kingsley Obi" class="ul-logo-img">
+            </div>
+          </div>
+          <div class="blog-content" style="background: rgba(233, 230, 234, 0.95);">
+            <div class="blog-content-left">
+              <h3 class="blog-title">{{ featuredPost.title }}</h3>
+              <p class="blog-subtitle">{{ featuredPost.subtitle }}</p>
+            </div>
+            <div class="blog-content-right">
+              <div class="blog-date">{{ formatDateFeatured(featuredPost.created_at) }}</div>
+              <div v-if="featuredPost.tags && featuredPost.tags.length" class="blog-tags">
+                <template v-for="(tag, index) in featuredPost.tags.slice(0, 3)" :key="tag">
+                  <span>{{ tag }}</span>
+                  <span v-if="index < featuredPost.tags.slice(0, 3).length - 1">  •  </span>
+                </template>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Latest Content -->
+    <section v-if="posts.length > 1 && !loading" class="posts-container">
+      <h2 class="section-title">Latest Content</h2>
+
+      <div class="results-section">
+        <div class="posts-list">
+          <div class="posts-grid">
+            <article
+              v-for="(post, index) in paginatedPosts"
+              :key="post.slug"
+              class="post-layout"
+              :class="{ alternate: index % 2 === 1 }"
+            >
+              <a :href="`/blog/${post.slug}`" class="post-link-wrapper">
+                <div class="post-container">
+                  <div v-if="post.image" class="post-thumbnail">
+                    <img :src="post.image" :alt="post.title" loading="lazy" />
+                  </div>
+                  <div class="post-content">
+                    <div class="post-main">
+                      <h2 class="post-title">{{ post.title }}</h2>
+                      <time class="post-date" :datetime="post.created_at">{{ formatDate(post.created_at) }}</time>
+                    </div>
+                    <p v-if="post.subtitle" class="post-subtitle">{{ post.subtitle }}</p>
+                    <div v-if="post.tags && post.tags.length" class="post-tags">
+                      <span v-for="tag in post.tags" :key="tag" class="post-tag"> #{{ tag }}</span>
+                    </div>
+                  </div>
+                </div>
+              </a>
+            </article>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pagination -->
+      <div v-if="totalPages > 1" class="pagination" data-v-813d16e3="">
+        <button
+          class="page-btn"
+          :disabled="currentPage === 1"
+          @click="prevPage"
+          data-v-813d16e3=""
+        >
+          ← Previous
+        </button>
+
+        <div class="page-info" data-v-813d16e3="">
+          <input
+            :value="currentPage"
+            type="text"
+            class="page-input"
+            data-v-813d16e3=""
+            @input="(e: any) => goToPage(parseInt(e.target.value))"
+          />
+          <span class="page-separator" data-v-813d16e3="">/</span>
+          <span class="total-pages" data-v-813d16e3="">{{ totalPages }}</span>
+        </div>
+
+        <button
+          class="page-btn"
+          :disabled="currentPage === totalPages"
+          @click="nextPage"
+          data-v-813d16e3=""
+        >
+          Next →
+        </button>
+      </div>
+    </section>
+    <div class="post-footer">
+    <div class="content-end-delimiter"></div>
+    <!-- Share and Follow Buttons -->
+    <ShareButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
+    <FollowButtons v-if="!loading" url="https://kingsleyobi.com/blog/" title="Blog" />
+
+    <!-- Support Section -->
+    <SupportSection v-if="!loading" />
+
+    <!-- Search Section -->
+    <SearchSection
+      v-if="!loading"
+      :post-count="posts.length"
+      :years-active="stats.yearsActive"
+      :tag-count="uniqueTagCount"
+    />
+    </div>
+  </div>
+</template>
+
+<style scoped>
+
+.blog-home {
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px;
+  color: var(--vp-c-text-2);
+}
+
+/* Content Curation Filters */
+.curation-filters {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 20px;
+}
+
+.section-header {
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--vp-c-text-1);
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.content-age {
+  font-size: 0.875rem;
+  font-weight: 400;
+  color: var(--vp-c-text-2);
+  font-style: italic;
+}
+
+.search-button-inline,
+.shuffle-button-inline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background: transparent;
+  border: none;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  transition: color 0.2s ease;
+  text-decoration: none;
+}
+
+.search-button-inline:hover,
+.shuffle-button-inline:hover {
+  color: var(--vp-c-brand-1);
+}
+
+.search-button-inline svg,
+.shuffle-button-inline svg {
+  width: 12px;
+  height: 12px;
+}
+
+.tag-filters {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: var(--vp-c-bg-soft);
+  padding: 16px;
+  border-radius: 8px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.tag-filter {
+  padding: 8px 16px;
+  background: transparent;
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  color: var(--vp-c-text-2);
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-transform: lowercase;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.tag-filter:hover {
+  border-color: var(--vp-c-brand-1);
+  color: var(--vp-c-brand-1);
+}
+
+.tag-filter.active {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+}
+
+.tag-name {
+  font-weight: 500;
+}
+
+.tag-count {
+  font-size: 0.75rem;
+  opacity: 0.7;
+  font-weight: 400;
+}
+
+/* Featured Section - Full Width, Large Hero Image */
+.featured-section .section-title {
+    margin-bottom: .5rem;
+}
+.section-title {
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .6875rem;
+    text-transform: uppercase;
+    letter-spacing: .1em;
+    color: var(--vp-c-text-2);
+    font-weight: 600;
+    margin: .75rem 0 .375rem;
+    display: flex;
+    align-items: center;
+    gap: .375rem;
+    flex-wrap: wrap;
+}
+
+/* Results/Posts Container Structure - Daniel's layout */
+.results-section {
+    border-top: none;
+    padding-top: 0;
+    margin-top: -.75rem;
+}
+
+.posts-list {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1rem;
+}
+
+.posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.blog-thumbnail-hero {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    line-height: 0;
+    font-size: 0;
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+    flex: 0 0 auto;
+    border-radius: 14px 14px 0 0;
+}
+
+.blog-thumbnail {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.blog-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.3) 100%);
+  pointer-events: none;
+}
+
+.blog-ul-logo {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  width: 60px;
+  height: 60px;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  pointer-events: none;
+}
+
+.ul-logo-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.blog-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.25rem 1.25rem;
+    -webkit-backdrop-filter: blur(3px) saturate(1.2);
+    backdrop-filter: blur(3px) saturate(1.2);
+    position: relative;
+    transition: background .3s ease;
+    border-radius: 0 0 14px 14px;
+}
+
+.blog-content-left {
+    flex: 0 0 80%;
+    max-width: 80%;
+    padding-right: 1rem;
+}
+
+.blog-title {
+  margin: 0 0 .25rem;
+  font-family: valkyrie-text, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--vp-c-text-1);
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  letter-spacing: 0;
+  text-transform: none;
+  word-wrap: break-word;
+}
+
+.vp-doc a {
+  text-decoration: none!important;
+}
+
+.blog-subtitle {
+    margin: 0;
+    font-family: valkyrie-text, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .85rem;
+    font-weight: 300;
+    color: var(--vp-c-text-2);
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    font-style: italic;
+    text-transform: none !important;
+}
+
+.blog-content-right {
+    flex: 0 0 20%;
+    max-width: 20%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    text-align: right;
+}
+
+.blog-date {
+    font-family: heliotrope-t3, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .75rem;
+    font-weight: 400;
+    color: var(--vp-c-text-3);
+    line-height: 1.3;
+    text-transform: none !important;
+    margin-bottom: .25rem;
+}
+
+.blog-tags {
+    font-family: heliotrope-t3, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+    font-size: .65rem;
+    font-weight: 400;
+    color: var(--vp-c-text-3);
+    line-height: 1.3;
+    opacity: .75;
+    text-transform: none !important;
+}
+
+/* Posts Container - Main wrapper for blog index */
+.posts-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px 60px;
+}
+
+.section-title {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--vp-c-text-2);
+  font-weight: 600;
+  margin: 0.75rem 0 0.375rem;
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+/* Posts Container - Alternating Layout (Daniel's structure) */
+.posts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.post-link-wrapper {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.post-layout {
+    display: block;
+    transition: all 0.15s ease;
+    padding: 0.25rem 0.5rem;
+    border-radius: 8px;
+}
+
+.post-layout.alternate {
+    background: #00000008;
+    border-radius: 8px;
+}
+
+.post-layout:hover {
+  background: rgba(0, 0, 0, 0.02);
+  border-radius: 12px;
+}
+
+.post-link-wrapper {
+  display: block;
+  text-decoration: none !important;
+  color: inherit;
+}
+
+.posts-container .section-title {
+    margin-bottom: 0;
+    margin-top: .25rem;
+    color: var(--vp-c-text-2);
+}
+
+.post-link-wrapper, .dp-doc .post-link-wrapper, .dp-doc .post-link-wrapper:hover {
+    text-decoration: none !important;
+    color: inherit;
+    display: block;
+}
+
+.post-link-wrapper *, .dp-doc .post-link-wrapper * {
+    text-decoration: none !important;
+}
+
+.post-container {
+    padding: .1rem 0;
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+/* Small square thumbnail - Daniel's 100px design */
+.post-thumbnail {
+    flex-shrink: 0;
+    width: 100px !important;
+    height: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+    aspect-ratio: 1 / 1 !important;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.post-thumbnail img {
+    width: 100px !important;
+    height: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    min-height: 100px !important;
+    max-height: 100px !important;
+    aspect-ratio: 1 / 1 !important;
+    -o-object-fit: cover;
+    object-fit: cover;
+    -o-object-position: center;
+    object-position: center;
+    transition: transform .2s ease;
+    border-radius: 8px;
+    margin: 0 !important;
+}
+
+.post-link-wrapper:hover .post-thumbnail img {
+  transform: scale(1.05);
+}
+
+.post-main {
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+    margin-bottom: 0;
+}
+.post-content h2 {
+    font-size: .75rem;
+    font-weight: 300;
+    margin: 0;
+    line-height: 1.2;
+    display: flex;
+    align-items: baseline;
+    gap: .5rem;
+}
+
+.post-title {
+    font-family: heliotrope-caps, sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    flex: 1;
+    color: #000;
+    transition: color .15s ease;
+}
+
+.post-link-wrapper:hover .post-title {
+  color: var(--vp-c-brand-1);
+}
+
+/* Pagination - Daniel's style */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--vp-c-divider-light);
+}
+
+.page-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+    color: var(--vp-c-text-3);
+}
+.page-btn {
+    padding: .375rem .75rem;
+    font-family: concourse-t3, -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: .6875rem;
+    font-weight: 500;
+    border: 1px solid var(--vp-c-divider);
+    background: var(--vp-c-bg);
+    cursor: pointer;
+    transition: all .15s ease;
+    border-radius: 4px;
+    color: var(--vp-c-text-2);
+}
+
+.page-btn:hover:not(:disabled) {
+  background: var(--vp-c-brand-1);
+  border-color: var(--vp-c-brand-1);
+  color: white;
+}
+
+.page-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  color: var(--vp-c-text-2);
+}
+
+.page-input {
+  width: 48px;
+  height: 32px;
+  padding: 0 8px;
+  background: var(--vp-c-bg-soft);
+  border: 1px solid var(--vp-c-divider);
+  border-radius: 4px;
+  color: var(--vp-c-text-1);
+  text-align: center;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.page-input:focus {
+  outline: none;
+  border-color: var(--vp-c-brand-1);
+  background: var(--vp-c-bg);
+}
+
+.page-separator {
+  color: var(--vp-c-text-3);
+}
+
+.total-pages {
+  color: var(--vp-c-text-2);
+  font-weight: 500;
+}
+
+/* Recommended Grid Section (Daniel's text-based layout) */
+.recommended-grid-section {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto 32px;
+  padding: 0 20px;
+}
+
+.recommended-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.recommended-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.recommended-row.alternate {
+  background: var(--vp-c-bg-soft);
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.recommended-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+
+.recommended-link:hover {
+  background: rgba(var(--vp-c-brand-rgb), 0.1);
+}
+
+.recommended-title {
+  font-size: 1rem;
+  font-weight: 500;
+  margin: 0;
+  color: var(--vp-c-text-1);
+  line-height: 1.4;
+}
+
+
+.post-content {
+    flex: 1;
+    min-width: 0;
+}
+.post-content {
+    width: 100%;
+}
+
+/* Tablet - 768px to 1279px */
+@media (min-width: 768px) and (max-width: 1279px) {
+  .featured-image-wrapper {
+    height: 450px;
+  }
+
+  .post-thumbnail {
+    flex: 0 0 38%;
+  }
+
+  .post-content {
+    padding: 20px 28px;
+  }
+
+  .featured-content {
+    flex-direction: column;
+  }
+
+  .featured-content-right {
+    align-items: flex-start;
+  }
+
+  .featured-tags {
+    justify-content: flex-start;
+  }
+}
+
+/* Mobile - up to 767px */
+@media (max-width: 767px) {
+  .blog-home {
+    padding: 0;
+  }
+
+  .section-header {
+    font-size: 1rem;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .featured-image-wrapper {
+    height: 280px;
+  }
+
+  .featured-content {
+    padding: 20px 20px 24px;
+    flex-direction: column;
+  }
+
+  .featured-content-right {
+    align-items: flex-start;
+  }
+
+  .featured-tags {
+    justify-content: flex-start;
+  }
+
+  .featured-title {
+    font-size: 1.5rem;
+  }
+
+  .featured-subtitle {
+    font-size: 1rem;
+  }
+
+  .latest-section {
+    padding: 0 16px 40px;
+  }
+
+  .section-title {
+    font-size: 1.25rem;
+  }
+
+  .section-title-featured {
+    font-size: 1.25rem;
+    padding: 0 16px;
+  }
+
+  /* Stack vertically on mobile */
+  .post-layout {
+    flex-direction: column !important;
+  }
+
+  .post-thumbnail {
+    flex: none;
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+  }
+
+  .post-layout.alternate .post-thumbnail {
+    order: 0;
+  }
+
+  .post-content {
+    padding: 20px;
+  }
+
+  .post-title {
+    font-size: 1.1875rem;
+  }
+
+  .post-subtitle {
+    font-size: 0.875rem;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .pagination-pages {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .recommended-grid-section {
+    padding: 0 16px;
+  }
+
+  .recommended-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tag-filters {
+    padding: 12px;
+  }
+
+  .recommended-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Small Mobile - up to 480px */
+@media (max-width: 480px) {
+  .featured-image-wrapper {
+    height: 220px;
+  }
+
+  .featured-content {
+    padding: 16px 16px 20px;
+  }
+
+  .latest-section {
+    padding: 0 12px 32px;
+  }
+
+  .section-title-featured {
+    padding: 0 12px;
+  }
+
+  .post-thumbnail {
+    height: 180px;
+  }
+
+  .post-content {
+    padding: 16px;
+  }
+
+  .post-title {
+    font-size: 1.125rem;
+  }
+
+  .pagination {
+    padding-top: 20px;
+  }
+
+  .recommended-grid-section {
+    padding: 0 12px;
+  }
+
+  .recommended-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vp-doc p {
+  line-height: 24px !important;
+}
+
+.vp-doc p, .vp-doc summary {
+  margin: 0px !important;
+}
+
+.vp-doc h2 {
+  border-top: none !important;
+}
+.post-footer {
+    margin-top: 1.5rem;
+    padding-top: 0;
+}
+
+.content-end-delimiter {
+    width: 100%;
+    height: 1px;
+    background: var(--vp-c-divider);
+    margin-bottom: 1.5rem;
+    opacity: .8;
+}
+
+</style>
+
