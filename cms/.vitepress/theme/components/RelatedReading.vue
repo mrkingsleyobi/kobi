@@ -35,89 +35,18 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="related.length" class="related-reading">
-    <h2 class="related-reading-heading">Related Reading</h2>
-    <ul class="related-reading-list">
-      <li v-for="post in related" :key="post.slug" class="related-reading-item">
-        <a :href="`/blog/${post.slug}`" class="related-reading-link">
-          <span class="related-reading-title">{{ post.title }}</span>
-          <span class="related-reading-arrow" aria-hidden="true">&rarr;</span>
-        </a>
-      </li>
-    </ul>
+  <div v-if="related.length" class="related-reading-card">
+    <div class="related-reading-heading">Related Reading</div>
+    <div class="related-reading-list">
+      <a
+        v-for="post in related"
+        :key="post.slug"
+        class="related-reading-row"
+        :href="`/blog/${post.slug}`"
+      >
+        <span class="related-reading-title">{{ post.title }}</span>
+        <span class="related-reading-arrow" aria-hidden="true">&rarr;</span>
+      </a>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.related-reading {
-  margin: 3rem 0 2rem;
-  padding: 1.75rem 2rem;
-  background: var(--custom-c-bg-soft);
-  border-radius: 12px;
-}
-
-.related-reading-heading {
-  font-size: 0.8rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  color: var(--vp-c-text-2);
-  margin: 0 0 1rem;
-  border: none;
-  padding: 0;
-}
-
-.related-reading-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.related-reading-item {
-  border-bottom: 1px solid var(--custom-c-border);
-}
-
-.related-reading-item:last-child {
-  border-bottom: none;
-}
-
-.related-reading-link {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 1rem;
-  padding: 0.85rem 0;
-  color: var(--vp-c-text-1);
-  text-decoration: none;
-  font-size: 1rem;
-}
-
-.related-reading-link:hover .related-reading-title {
-  color: var(--vp-c-brand-1);
-}
-
-.related-reading-link:hover .related-reading-arrow {
-  transform: translateX(4px);
-}
-
-.related-reading-title {
-  transition: color 0.2s ease;
-}
-
-.related-reading-arrow {
-  flex-shrink: 0;
-  color: var(--vp-c-brand-1);
-  transition: transform 0.2s ease;
-}
-
-@media (max-width: 520px) {
-  .related-reading {
-    padding: 1.25rem 1.25rem;
-    margin: 2rem 0 1.5rem;
-  }
-
-  .related-reading-link {
-    font-size: 0.9rem;
-  }
-}
-</style>

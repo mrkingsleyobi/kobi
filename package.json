@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev cms",
-    "build": "vitepress build cms",
+    "build": "vitepress build cms && bun run scripts/generate-sitemap.ts",
     "preview": "vitepress preview cms"
   },
   "dependencies": {

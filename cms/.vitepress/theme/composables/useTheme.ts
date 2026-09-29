@@ -9,11 +9,12 @@ const THEMES: SiteTheme[] = ['normal', 'sepia', 'dusk']
 const currentTheme = ref<SiteTheme>('normal')
 let initialized = false
 
-function applyThemeClass(theme: SiteTheme) {
+function applyTheme(theme: SiteTheme) {
   if (typeof document === 'undefined') return
   const root = document.documentElement
-  THEMES.forEach((t) => root.classList.remove(`theme-${t}`))
-  root.classList.add(`theme-${theme}`)
+  // Matches the approved Lavish prototype exactly: html[data-theme="..."]
+  // drives every design token (see cms/.vitepress/theme/custom.css).
+  root.setAttribute('data-theme', theme)
   // Keep VitePress's own `.dark` class in sync so any default-theme
   // components that key off it (e.g. code block themes) still work.
   root.classList.toggle('dark', theme === 'dusk')
@@ -36,10 +37,10 @@ export function useTheme() {
   if (!initialized && typeof window !== 'undefined') {
     initialized = true
     currentTheme.value = readStoredTheme()
-    applyThemeClass(currentTheme.value)
+    applyTheme(currentTheme.value)
 
     watch(currentTheme, (theme) => {
-      applyThemeClass(theme)
+      applyTheme(theme)
       try {
         window.localStorage.setItem(STORAGE_KEY, theme)
       } catch {

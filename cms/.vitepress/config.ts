@@ -6,7 +6,8 @@ export default defineConfig({
   lang: 'en-US',
   base: '/',
   head: [
-    ['link', { rel: 'icon', type: 'image/svg+xml', href: '/logo.svg' }],
+    ['link', { rel: 'icon', type: 'image/png', href: '/favicon.png' }],
+    ['link', { rel: 'shortcut icon', href: '/favicon.ico' }],
     ['meta', { name: 'theme-color', content: '#3c8772' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:locale', content: 'en_US' }],
@@ -20,7 +21,7 @@ export default defineConfig({
     [
       'script',
       {},
-      "(function(){try{var t=localStorage.getItem('kobi-theme');if(t!=='sepia'&&t!=='dusk'&&t!=='normal'){t='normal'}var r=document.documentElement;r.classList.add('theme-'+t);if(t==='dusk'){r.classList.add('dark')}}catch(e){}})();"
+      "(function(){try{var t=localStorage.getItem('kobi-theme');if(t!=='sepia'&&t!=='dusk'&&t!=='normal'){t='normal'}var r=document.documentElement;r.setAttribute('data-theme',t);if(t==='dusk'){r.classList.add('dark')}}catch(e){}})();"
     ]
   ],
 
@@ -36,34 +37,11 @@ export default defineConfig({
   // The redesign's header search icon opens a custom CommandPalette (⌘K)
   // component instead - see cms/.vitepress/theme/components/CommandPalette.vue.
 
-  themeConfig: {
-    nav: [
-      { text: 'Home', link: '/' },
-      { text: 'Blog', link: '/blog/' },
-      { text: 'Telos', link: '/telos/' },
-      { text: 'Ideas', link: '/ideas/' },
-      { text: 'Projects', link: '/projects/' },
-      { text: 'Predictions', link: '/predictions/' },
-      { text: 'About', link: '/about/' },
-      { text: 'Members', link: '/members/' }
-    ],
-
-    aside: false,
-    sidebars: false,
-    returnToTopLabel: false,
-
-    // Social links intentionally omitted from themeConfig: per the redesign,
-    // the social icon row lives only in the header overflow (three-dot) menu,
-    // the mobile drawer, and the global footer - not inline in the nav bar.
-
-    footer: {
-      message: 'Mission Possible to Build 10,000 AI Agents to Serve 1,000,000+ people',
-      copyright: '© 2026 Kingsley Obi, All rights reserved.'
-    },
-
-    editLink: false,
-    outline: false
-  },
+  // NOTE: themeConfig/nav/footer/sidebar options are intentionally omitted.
+  // Layout.vue no longer extends VitePress's DefaultTheme - the header, nav,
+  // and footer are fully custom components (Header.vue/Footer.vue) rendered
+  // directly from the approved Lavish prototype markup, so VitePress's own
+  // themeConfig-driven chrome is never mounted.
 
   markdown: {
     lineNumbers: true,
@@ -90,7 +68,9 @@ export default defineConfig({
     const path = await import('path')
 
     const rssItems = []
-    const blogDir = path.join(siteConfig.root, 'cms/blog')
+    // siteConfig.root is already the VitePress source dir (cms/), so the
+    // blog directory lives directly under it - not cms/cms/blog.
+    const blogDir = path.join(siteConfig.root, 'blog')
 
     if (fs.existsSync(blogDir)) {
       const files = fs.readdirSync(blogDir).filter(f => f.endsWith('.md'))

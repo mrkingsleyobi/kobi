@@ -1,26 +1,13 @@
 ---
 title: "Predictions"
-subtitle: "A dated list of forecasts"
-description: "A dated list of forecasts"
+subtitle: "Specific, dated, falsifiable calls about where agentic AI is headed."
+description: "Specific, dated, falsifiable calls about where agentic AI and security are headed - kept public so I can be wrong in the open."
 ---
 
-*This page is a placeholder for future content. The Predictions section will contain a dated list of forecasts.*
+Specific, dated, falsifiable calls about where agentic AI and security are headed — kept public so I can be wrong in the open.
 
-<div class="predictions-list">
-  <div class="prediction-item">
-    <time datetime="2026-01-01">January 2026</time>
-    <p>Example prediction 1: A brief description of the forecast.</p>
-  </div>
-  <div class="prediction-item">
-    <time datetime="2026-06-01">June 2026</time>
-    <p>Example prediction 2: Another brief description of the forecast.</p>
-  </div>
-  <div class="prediction-item">
-    <time datetime="2027-01-01">January 2027</time>
-    <p>Example prediction 3: Yet another brief description of the forecast.</p>
-  </div>
+<div class="telos-block" style="margin-top:10px;">
+  <div class="telos-item"><div class="telos-id">2027</div><div class="telos-text"><strong>Most "AI features" ship as named, bounded agent teams, not single model calls.</strong><span>Orchestration becomes the default architecture, not the advanced option.</span></div></div>
+  <div class="telos-item"><div class="telos-id">2027</div><div class="telos-text"><strong>Fraud-detection swarms become table stakes for anything on-chain.</strong><span>Sub-2-second, multi-agent detection like trustswarm's moves from differentiator to baseline expectation.</span></div></div>
+  <div class="telos-item"><div class="telos-id">2028</div><div class="telos-text"><strong>"Agent headcount" becomes a real budget line for engineering orgs.</strong><span>Teams will provision and cost-account agents the way they provision compute today.</span></div></div>
 </div>
-
-<p class="placeholder-note">
-  Replace this placeholder content with the actual dated list of forecasts when ready.
-</p>

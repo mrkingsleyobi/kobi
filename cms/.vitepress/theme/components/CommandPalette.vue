@@ -2,6 +2,8 @@
 import { ref, computed, onMounted, onUnmounted, nextTick, watch } from 'vue'
 import { useRouter } from 'vitepress'
 import { loadAllPosts } from '../utils/posts'
+import { searchIcon } from '../utils/icons'
+import { formatDate } from '../utils/format'
 import type { BlogPostData } from '../types'
 
 const isOpen = ref(false)
@@ -37,13 +39,23 @@ async function ensurePostsLoaded() {
   }
 }
 
+// Matches the prototype's "Continue reading" / "On this day in the archive"
+// sections when the query is empty; a flat filtered row list once the user
+// starts typing (search-modal-body -> sm-section-label / sm-row).
+const emptyStateSections = computed(() => {
+  const continueReading = posts.value.slice(0, 3)
+  const onThisDay = posts.value.slice(3, 7).length ? posts.value.slice(3, 7) : posts.value.slice(0, 4)
+  return [
+    { label: 'Continue reading', items: continueReading },
+    { label: 'On this day in the archive', items: onThisDay }
+  ]
+})
+
 const results = computed(() => {
   const q = query.value.trim().toLowerCase()
-
   const pageMatches = staticPages
     .filter((p) => !q || p.title.toLowerCase().includes(q))
-    .map((p) => ({ kind: 'page' as const, title: p.title, link: p.link, subtitle: 'Page' }))
-
+    .map((p) => ({ title: p.title, link: p.link, age: 'Page' }))
   const postMatches = posts.value
     .filter((p) => {
       if (!q) return false
@@ -54,9 +66,7 @@ const results = computed(() => {
       )
     })
     .slice(0, 8)
-    .map((p) => ({ kind: 'post' as const, title: p.title, link: `/blog/${p.slug}`, subtitle: p.subtitle || 'Blog post' }))
-
-  if (!q) return pageMatches
+    .map((p) => ({ title: p.title, link: `/blog/${p.slug}`, age: formatDate(p.created_at) }))
   return [...pageMatches, ...postMatches]
 })
 
@@ -83,13 +93,10 @@ function navigate(link: string) {
 }
 
 function onKeydown(event: KeyboardEvent) {
-  if ((event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey))) {
+  if (event.key.toLowerCase() === 'k' && (event.metaKey || event.ctrlKey)) {
     event.preventDefault()
-    if (isOpen.value) {
-      close()
-    } else {
-      open()
-    }
+    if (isOpen.value) close()
+    else open()
     return
   }
   if (!isOpen.value) return
@@ -97,13 +104,13 @@ function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
     event.preventDefault()
     close()
-  } else if (event.key === 'ArrowDown') {
+  } else if (event.key === 'ArrowDown' && query.value) {
     event.preventDefault()
     activeIndex.value = Math.min(activeIndex.value + 1, results.value.length - 1)
-  } else if (event.key === 'ArrowUp') {
+  } else if (event.key === 'ArrowUp' && query.value) {
     event.preventDefault()
     activeIndex.value = Math.max(activeIndex.value - 1, 0)
-  } else if (event.key === 'Enter') {
+  } else if (event.key === 'Enter' && query.value) {
     event.preventDefault()
     const item = results.value[activeIndex.value]
     if (item) navigate(item.link)
@@ -124,182 +131,65 @@ defineExpose({ open })
 <template>
   <button
     type="button"
-    class="command-palette-trigger"
-    aria-label="Open search (Command K)"
+    class="icon-btn"
+    id="searchTrigger"
     title="Search (\u2318K)"
+    aria-label="Open search"
+    v-html="searchIcon"
     @click="open"
-  >
-    <span class="cp-search-icon" aria-hidden="true">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
-    </span>
-  </button>
+  />
 
   <Teleport to="body">
-    <div v-if="isOpen" class="command-palette-overlay" @click.self="close">
-      <div class="command-palette-modal" role="dialog" aria-modal="true" aria-label="Command palette">
-        <div class="command-palette-input-row">
-          <span class="cp-search-icon" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <circle cx="11" cy="11" r="8"></circle>
-              <path d="m21 21-4.35-4.35"></path>
-            </svg>
-          </span>
+    <div class="search-modal-overlay" :class="{ open: isOpen }" @click.self="close">
+      <div class="search-modal ui-face" role="dialog" aria-modal="true" aria-label="Search">
+        <div class="search-box">
+          <span v-html="searchIcon" />
           <input
             ref="inputRef"
             v-model="query"
             type="text"
-            class="command-palette-input"
-            placeholder="Search posts and pages..."
+            placeholder="Search posts, or jump anywhere…"
             @keydown.stop
           />
-          <kbd class="cp-esc-hint">ESC</kbd>
         </div>
-
-        <div class="command-palette-results">
-          <div v-if="results.length === 0" class="command-palette-empty">
-            {{ query ? 'No results found.' : 'Type to search, or jump to a page below.' }}
-          </div>
-          <ul v-else class="command-palette-list">
-            <li
+        <div class="search-modal-body">
+          <template v-if="query">
+            <div class="sm-section-label">Results</div>
+            <div v-if="results.length === 0" class="sm-row"><span class="sm-row-title">No results found.</span></div>
+            <div
               v-for="(item, index) in results"
-              :key="`${item.kind}-${item.link}`"
-              class="command-palette-item"
+              :key="item.link"
+              class="sm-row"
               :class="{ active: index === activeIndex }"
               @mouseenter="activeIndex = index"
               @click="navigate(item.link)"
             >
-              <span class="cp-item-title">{{ item.title }}</span>
-              <span class="cp-item-subtitle">{{ item.subtitle }}</span>
-            </li>
-          </ul>
+              <span class="sm-row-title">{{ item.title }}</span>
+              <span class="sm-row-age">{{ item.age }}</span>
+            </div>
+          </template>
+          <template v-else>
+            <template v-for="section in emptyStateSections" :key="section.label">
+              <div class="sm-section-label">{{ section.label }}</div>
+              <div
+                v-for="p in section.items"
+                :key="p.slug"
+                class="sm-row"
+                @click="navigate(`/blog/${p.slug}`)"
+              >
+                <span class="sm-row-title">{{ p.title }}</span>
+                <span class="sm-row-age">{{ formatDate(p.created_at) }}</span>
+              </div>
+            </template>
+          </template>
+        </div>
+        <div class="search-modal-footer">
+          <span class="sm-kbd"><kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</span>
+          <span class="sm-kbd"><kbd>&crarr;</kbd> open</span>
+          <span class="sm-kbd"><kbd>esc</kbd> close</span>
+          <span class="sm-total">{{ posts.length }} posts</span>
         </div>
       </div>
     </div>
   </Teleport>
 </template>
-
-<style scoped>
-.command-palette-trigger {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  border: none;
-  background: transparent;
-  color: var(--vp-c-text-2);
-  cursor: pointer;
-  border-radius: 6px;
-  transition: color 0.2s ease, background 0.2s ease;
-}
-
-.command-palette-trigger:hover {
-  color: var(--vp-c-brand-1);
-  background: var(--custom-c-bg-soft);
-}
-
-.cp-search-icon {
-  display: inline-flex;
-}
-
-.command-palette-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  display: flex;
-  align-items: flex-start;
-  justify-content: center;
-  padding-top: 12vh;
-  z-index: 1000;
-}
-
-.command-palette-modal {
-  width: 90%;
-  max-width: 560px;
-  background: var(--vp-c-bg);
-  border-radius: 10px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-  overflow: hidden;
-  border: 1px solid var(--custom-c-border);
-}
-
-.command-palette-input-row {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.9rem 1rem;
-  border-bottom: 1px solid var(--custom-c-border);
-  color: var(--vp-c-text-2);
-}
-
-.command-palette-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  background: transparent;
-  font-size: 1rem;
-  color: var(--vp-c-text-1);
-}
-
-.cp-esc-hint {
-  font-size: 0.7rem;
-  color: var(--vp-c-text-3);
-  border: 1px solid var(--custom-c-border);
-  border-radius: 4px;
-  padding: 0.1rem 0.4rem;
-}
-
-.command-palette-results {
-  max-height: 50vh;
-  overflow-y: auto;
-}
-
-.command-palette-empty {
-  padding: 1.5rem 1rem;
-  color: var(--vp-c-text-3);
-  font-size: 0.875rem;
-  text-align: center;
-}
-
-.command-palette-list {
-  list-style: none;
-  margin: 0;
-  padding: 0.5rem;
-}
-
-.command-palette-item {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  padding: 0.65rem 0.75rem;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-.command-palette-item.active,
-.command-palette-item:hover {
-  background: var(--custom-c-bg-soft);
-}
-
-.cp-item-title {
-  font-size: 0.9rem;
-  color: var(--vp-c-text-1);
-  font-weight: 500;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.cp-item-subtitle {
-  font-size: 0.75rem;
-  color: var(--vp-c-text-3);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  flex-shrink: 1;
-}
-</style>

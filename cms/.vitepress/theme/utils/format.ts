@@ -10,10 +10,12 @@ export function formatDate(date: string): string {
       console.warn('Invalid date format:', date)
       return date
     }
-    return parsed.toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+    // Short "24 Sep 2026" form, matching the prototype's post-list/sidebar
+    // date formatting exactly (fm-date / bsl-fm-created / sm-row-age).
+    return parsed.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
     })
   } catch (error) {
     console.warn('Error formatting date:', date, error)

@@ -1,24 +1,17 @@
 ---
-title: "About"
-subtitle: "Bio, background, and how to reach me"
-description: "About Kingsley Obi"
+title: "Kingsley Obi"
+subtitle: "Slayer of bugs and legacy code."
+description: "Slayer of bugs and legacy code. I build agentic AI systems and write about what it takes to get them into production."
 ---
 
-I'm a cybersecurity professional, AI researcher, and technology enthusiast focused on the intersection of security, intelligence, and human potential.
+I work at the intersection of AI engineering and systems design: high-performance infrastructure (a production HFT platform doing 500K orders/sec), multi-agent orchestration (a 66-agent research swarm, an enterprise content-verification platform), and applied trust/security systems (real-time blockchain fraud detection).
 
-## Background
+The thread through all of it is the same: single-model demos don't survive production, and the fix is almost always architectural — naming your agents, giving each one a bounded job, and building the accountability trail between them — not a bigger model.
 
-[Background information will be added here]
+## Elsewhere
 
-## Interests
-
-- **Cybersecurity**: Information security, vulnerability research, digital defense
-- **Artificial Intelligence**: Machine learning, automation, intelligent systems
-- **Philosophy**: Ethics, meaning, technology's impact on humanity
-- **Technology**: Innovation, tools, systems, and the future
-
-## Contact
-
-- Twitter: [@kingsleyobi](https://twitter.com/kingsleyobi)
-- GitHub: [kingsleyobi](https://github.com/kingsleyobi)
-- LinkedIn: [kingsleyobi](https://linkedin.com/in/kingsleyobi)
+<div class="tag-row">
+  <span class="tag">GitHub — mrkingsleyobi</span>
+  <span class="tag">Twitter — @kingsleyobi</span>
+  <span class="tag">LinkedIn — kingsleyobi</span>
+</div>
