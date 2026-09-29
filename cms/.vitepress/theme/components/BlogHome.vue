@@ -18,7 +18,7 @@ const activeTagFilter = ref<string>('must') // Default to 'must' to match Daniel
 onMounted(async () => {
   try {
     // Dynamically import all blog post metadata
-    const blogModules = import.meta.glob('/blog/*.md', { as: 'raw' })
+    const blogModules = import.meta.glob('/blog/*.md', { query: '?raw', import: 'default' })
 
     const postData: BlogPostData[] = []
 
@@ -229,6 +229,7 @@ const stats = computed(() => {
 // Tag counts for filters
 const tagCounts = computed(() => {
   const counts = {
+    all: posts.value.length,
     must: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'must')).length,
     recommended: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'recommended')).length,
     top: posts.value.filter(p => p.tags.some(t => t.toLowerCase() === 'top')).length
@@ -273,6 +274,14 @@ const uniqueTagCount = computed(() => {
         </button>
       </h2>
       <div class="tag-filters">
+        <button
+          class="tag-filter"
+          :class="{ active: activeTagFilter === 'all' }"
+          @click="setTagFilter('all')"
+        >
+          <span class="tag-name">all</span>
+          <span class="tag-count">({{ tagCounts.all }})</span>
+        </button>
         <button
           v-if="tagCounts.must > 0"
           class="tag-filter"

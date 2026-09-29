@@ -17,7 +17,7 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     // Dynamically import all blog post metadata
-    const blogModules = import.meta.glob('/blog/*.md', { as: 'raw' })
+    const blogModules = import.meta.glob('/blog/*.md', { query: '?raw', import: 'default' })
 
     const dates: Date[] = []
 

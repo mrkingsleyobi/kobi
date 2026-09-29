@@ -1,9 +1,8 @@
 ---
 title: "Telos"
+subtitle: "Goals, projects, dependencies, beliefs, and wisdom"
 description: "Life Operating System and project tracking"
 ---
-
-# Telos
 
 My Life Operating System — goals, projects, dependencies, beliefs, and wisdom.
 

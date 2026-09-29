@@ -109,9 +109,8 @@ table {
 
 /* Daniel Miessler-inspired Theme Variables */
 
-/* Light mode colors */
+/* Base defaults (used before theme-* class resolves / as fallback) */
 :root {
-  /* Custom theme colors for light mode */
   --custom-c-bg: #ffffff;
   --custom-c-bg-soft: #f8f9fa;
   --custom-c-bg-elv: #e9ecef;
@@ -127,11 +126,46 @@ table {
   /* Single-column layout - Daniel Miessler Style */
   --content-max-width: 900px;
   --vp-layout-max-width: 940px;
+
+  /* Theme switcher swatch colors (used by the footer color-dots) */
+  --theme-dot-normal: #ffffff;
+  --theme-dot-sepia: #f4ecd8;
+  --theme-dot-dusk: #1a1a2e;
 }
 
-/* Dark mode colors */
+/* Theme: Normal (light) — explicit class, same palette as :root defaults */
+.theme-normal {
+  --custom-c-bg: #ffffff;
+  --custom-c-bg-soft: #f8f9fa;
+  --custom-c-bg-elv: #e9ecef;
+  --custom-c-text-1: #212529;
+  --custom-c-text-2: #495057;
+  --custom-c-text-3: #6c757d;
+  --custom-c-brand-1: #3c8772;
+  --custom-c-brand-2: #2d6656;
+  --custom-c-brand-3: #1e4538;
+  --custom-c-border: rgba(0, 0, 0, 0.1);
+  --custom-c-border-light: rgba(0, 0, 0, 0.05);
+}
+
+/* Theme: Sepia — warm, paper-like reading theme */
+.theme-sepia {
+  --custom-c-bg: #f4ecd8;
+  --custom-c-bg-soft: #ece0c4;
+  --custom-c-bg-elv: #e3d4b0;
+  --custom-c-text-1: #3a2f22;
+  --custom-c-text-2: #5b4c37;
+  --custom-c-text-3: #7a6a4f;
+  --custom-c-brand-1: #8a5a2e;
+  --custom-c-brand-2: #6e4623;
+  --custom-c-brand-3: #513319;
+  --custom-c-border: rgba(58, 47, 34, 0.15);
+  --custom-c-border-light: rgba(58, 47, 34, 0.08);
+}
+
+/* Theme: Dusk (dark mode) */
+.theme-dusk,
 .dark {
-  /* Custom theme colors for dark mode */
   --custom-c-bg: #1a1a2e;
   --custom-c-bg-soft: #252542;
   --custom-c-bg-elv: #2a2a4a;
@@ -143,6 +177,14 @@ table {
   --custom-c-brand-3: #2d6656;
   --custom-c-border: rgba(255, 255, 255, 0.1);
   --custom-c-border-light: rgba(255, 255, 255, 0.05);
+}
+
+/* Smooth theme transitions */
+body,
+.VPNav,
+.VPFooter,
+.VPContent {
+  transition: background-color 0.25s ease, color 0.25s ease, border-color 0.25s ease;
 }
 
 /* Apply custom theme variables to VitePress variables */

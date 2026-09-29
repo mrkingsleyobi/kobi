@@ -2,6 +2,7 @@
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRouter, useRoute } from 'vitepress'
 import { useData } from 'vitepress'
+import { OFFICIAL_TAGS } from '../types'
 
 interface BlogPostData {
   slug: string
@@ -34,13 +35,8 @@ const filters = ref<FilterState>({
 const currentPage = ref(1)
 const postsPerPage = 8
 
-// Official blog tags from CLAUDE.md
-const officialTags = [
-  'top', 'future', 'politics', 'cybersecurity', 'reading', 'society',
-  'science', 'philosophy', 'nationalsecurity', 'ai', 'culture', 'personal',
-  'innovation', 'business', 'meaning', 'technology', 'ethics', 'productivity',
-  'writing', 'creativity', 'tutorial', 'apple', 'recommended'
-]
+// Official blog tags - single source of truth in theme/types/index.ts
+const officialTags: string[] = [...OFFICIAL_TAGS]
 
 onMounted(async () => {
   await loadPosts()
@@ -49,7 +45,7 @@ onMounted(async () => {
 
 const loadPosts = async () => {
   try {
-    const blogModules = import.meta.glob('/blog/*.md', { as: 'raw' })
+    const blogModules = import.meta.glob('/blog/*.md', { query: '?raw', import: 'default' })
     const postData: BlogPostData[] = []
 
     for (const path in blogModules) {

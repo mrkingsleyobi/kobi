@@ -1,36 +1,76 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useData } from 'vitepress'
 import type { Frontmatter } from '../types'
 import { formatDate, parseTags } from '../utils/format'
+import { loadAllPosts } from '../utils/posts'
 import SpinnerVerbs from './SpinnerVerbs.vue'
 import ViewerCount from './ViewerCount.vue'
+import AilBadge from './AilBadge.vue'
 
-const { frontmatter } = useData<Frontmatter>()
+const { frontmatter, page } = useData<Frontmatter>()
 
 const tags = computed(() => parseTags(frontmatter.value.tags))
 const createdDate = computed(() =>
   frontmatter.value.created_at ? formatDate(frontmatter.value.created_at) : null
 )
 
-// Check if this is a blog post
+// blog-split sidebar field sets vary by page type - see README
+// "Two-column sidebar layout pattern".
+const relativePath = computed(() => page.value.relativePath)
+
 const isBlogPost = computed(() => !!frontmatter.value.created_at)
+const isBlogIndex = computed(() => relativePath.value === 'blog/index.md')
+const isProjects = computed(() => relativePath.value.startsWith('projects/'))
+
+// Live subtitle for the blog index: post count + date range.
+const blogIndexSubtitle = ref<string | null>(null)
+
+onMounted(async () => {
+  if (!isBlogIndex.value) return
+  try {
+    const posts = await loadAllPosts()
+    if (!posts.length) return
+    const dates = posts
+      .map((p) => new Date(p.created_at))
+      .filter((d) => !isNaN(d.getTime()))
+    if (!dates.length) {
+      blogIndexSubtitle.value = `${posts.length} posts`
+      return
+    }
+    const oldest = new Date(Math.min(...dates.map((d) => d.getTime())))
+    const newest = new Date(Math.max(...dates.map((d) => d.getTime())))
+    const oldestYear = oldest.getFullYear()
+    const newestYear = newest.getFullYear()
+    const range = oldestYear === newestYear ? `${oldestYear}` : `${oldestYear}\u2013${newestYear}`
+    blogIndexSubtitle.value = `${posts.length} posts \u00b7 ${range}`
+  } catch (error) {
+    console.error('Error loading post stats for sidebar subtitle:', error)
+  }
+})
 </script>
 
 <template>
-  <div class="page-title">
+  <div class="page-title blog-split-sidebar">
     <h1 v-if="frontmatter.title" class="frontmatter-title text-pretcty">
       {{ frontmatter.title }}
     </h1>
 
-    <div v-if="frontmatter.subtitle" class="frontmatter-subtitle">
+    <!-- Blog index: live subtitle (post count / date range) overrides static subtitle -->
+    <div v-if="isBlogIndex && blogIndexSubtitle" class="frontmatter-subtitle">
+      {{ blogIndexSubtitle }}
+    </div>
+    <div v-else-if="frontmatter.subtitle" class="frontmatter-subtitle">
       {{ frontmatter.subtitle }}
     </div>
 
-    <div v-if="frontmatter.description && !isBlogPost" class="description">
-      {{ frontmatter.description }}
-    </div>
+    <!--
+      Per README "Two-column sidebar layout pattern": static pages and
+      Archives show ONLY title + italic subtitle in the sidebar - no
+      description line, no live elements, no duplicated H1 in the body.
+    -->
 
+    <!-- Blog post: date, tags, author, AIL badge, spinner verb, reading-now -->
     <template v-if="isBlogPost">
       <div v-if="createdDate" class="frontmatter-created-at">
         {{ createdDate }}
@@ -47,9 +87,45 @@ const isBlogPost = computed(() => !!frontmatter.value.created_at)
         </a>
       </div>
 
+      <div v-if="frontmatter.author" class="frontmatter-author">
+        {{ frontmatter.author }}
+      </div>
+
+      <AilBadge v-if="frontmatter.ail !== undefined" :level="frontmatter.ail" />
+
       <SpinnerVerbs />
       <ViewerCount />
     </template>
+
+    <!-- Blog index: spinner verb + reading-now, no author/tags/AIL -->
+    <template v-else-if="isBlogIndex">
+      <SpinnerVerbs />
+      <ViewerCount />
+    </template>
+
+    <!-- Projects: date, tags, author - no reading-now -->
+    <template v-else-if="isProjects">
+      <div v-if="createdDate" class="frontmatter-created-at">
+        {{ createdDate }}
+      </div>
+
+      <div v-if="tags.length" class="frontmatter-tags">
+        <a
+          v-for="tag in tags"
+          :key="tag"
+          :href="`/archives/?tag=${tag.toLowerCase()}`"
+          class="tag-link"
+        >
+          #{{ tag }}
+        </a>
+      </div>
+
+      <div v-if="frontmatter.author" class="frontmatter-author">
+        {{ frontmatter.author }}
+      </div>
+    </template>
+
+    <!-- Archives / static pages: title + subtitle only, nothing else -->
   </div>
 </template>
 
@@ -127,6 +203,14 @@ const isBlogPost = computed(() => !!frontmatter.value.created_at)
   text-decoration: underline !important;
 }
 
+.frontmatter-author {
+  display: block !important;
+  font-size: .75rem !important;
+  color: var(--vp-c-text-3) !important;
+  margin-top: .4rem !important;
+  font-style: italic;
+}
+
 .description {
   font-size: .6875rem !important;
   color: var(--vp-c-text-3) !important;
@@ -134,30 +218,9 @@ const isBlogPost = computed(() => !!frontmatter.value.created_at)
   margin: 0 !important;
 }
 
-/* Responsive Design */
-@media (max-width: 960px) {
-  .page-title {
-    position: static !important;
-    width: auto !important;
-    text-align: left !important;
-    left: 0 !important;
-    margin-top: 40px !important;
-    margin-bottom: 1.5rem !important;
-    border: none !important;
-    padding: 0 !important;
-  }
-
-  .frontmatter-title {
-    font-size: 1.125rem !important;
-  }
-
-  .frontmatter-subtitle {
-    font-size: 0.9375rem !important;
-  }
-
-  .frontmatter-tags {
-    flex-wrap: wrap;
-    flex-direction: row;
-  }
-}
+/*
+  Downstream rules (positioning, responsive breakpoints, dark-mode overrides)
+  live in custom.css and target .page-title / .frontmatter-* selectors, so
+  markup/class names here are kept stable.
+*/
 </style>

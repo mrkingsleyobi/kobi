@@ -17,7 +17,7 @@ const loading = ref(true)
 onMounted(async () => {
   try {
     // Calculate years active from blog posts
-    const blogModules = import.meta.glob('/blog/*.md', { as: 'raw' })
+    const blogModules = import.meta.glob('/blog/*.md', { query: '?raw', import: 'default' })
     const dates: Date[] = []
 
     for (const path in blogModules) {

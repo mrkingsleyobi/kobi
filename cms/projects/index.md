@@ -1,9 +1,8 @@
 ---
 title: "Projects"
+subtitle: "Current and past work, in progress and shipped"
 description: "Current and past projects"
 ---
-
-# Projects
 
 A collection of projects I'm working on or have completed.
 

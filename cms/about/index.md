@@ -1,9 +1,8 @@
 ---
 title: "About"
+subtitle: "Bio, background, and how to reach me"
 description: "About Kingsley Obi"
 ---
-
-# About Kingsley Obi
 
 I'm a cybersecurity professional, AI researcher, and technology enthusiast focused on the intersection of security, intelligence, and human potential.
 

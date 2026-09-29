@@ -1,10 +1,15 @@
 <script setup lang="ts">
-import { onMounted, watch, nextTick, computed } from 'vue'
+import { onMounted, watch, nextTick, computed, createApp, h } from 'vue'
 import DefaultTheme from 'vitepress/theme'
 import { useData } from 'vitepress'
 import type { Frontmatter } from './types'
 import { formatDate, parseTags } from './utils/format'
 import PageTitle from './components/PageTitle.vue'
+import CommandPalette from './components/CommandPalette.vue'
+import MobileDrawer from './components/MobileDrawer.vue'
+import OverflowMenu from './components/OverflowMenu.vue'
+import ThemeSwitcher from './components/ThemeSwitcher.vue'
+import RelatedReading from './components/RelatedReading.vue'
 
 const { Layout } = DefaultTheme
 const { frontmatter, page } = useData<Frontmatter>()
@@ -116,6 +121,9 @@ const injectFooterComponents = () => {
           </a>
           <a href="https://www.reddit.com/submit?url=${encodedUrl}&title=${encodedTitle}" target="_blank" rel="noopener noreferrer" class="share-button reddit-share" title="Reddit">
             <span>Reddit</span>
+          </a>
+          <a href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer" class="share-button facebook-share" title="Facebook">
+            <span>Facebook</span>
           </a>
           <a href="mailto:?subject=${encodedTitle}&body=${encodedUrl}" class="share-button email-share" title="Forward">
             <span>Forward</span>
@@ -282,6 +290,22 @@ const addFooterSocialLinks = () => {
   footer.insertBefore(socialLinks, footer.firstChild)
 }
 
+// Function to mount the theme switcher (color-dot swatches) at the bottom
+// of the global footer, per README "Theme system" / "Global footer":
+// copyright, social icon row, then the Normal/Sepia/Dusk theme switcher.
+const mountThemeSwitcher = () => {
+  const footer = document.querySelector('.VPFooter .container')
+  if (!footer) return
+  if (footer.querySelector('.theme-switcher-mount')) return
+
+  const mountPoint = document.createElement('div')
+  mountPoint.className = 'theme-switcher-mount'
+  footer.appendChild(mountPoint)
+
+  const app = createApp({ render: () => h(ThemeSwitcher) })
+  app.mount(mountPoint)
+}
+
 // Function to add theme-title class to navbar title
 const addThemeTitleClass = () => {
   const navbarTitle = document.querySelector('.VPNavBarTitle .title')
@@ -297,6 +321,7 @@ onMounted(() => {
   console.log('Layout onMounted fired')
   setTimeout(addThemeTitleClass, 100)
   setTimeout(addFooterSocialLinks, 200)
+  setTimeout(mountThemeSwitcher, 200)
 
   // Inject footer components and hide H1s
   setTimeout(() => {
@@ -347,6 +372,17 @@ watch(() => page.value.relativePath, async (newPath, oldPath) => {
   <Layout>
     <template #doc-top>
       <PageTitle v-if="frontmatter.title" />
+    </template>
+    <template #nav-bar-content-after>
+      <CommandPalette />
+      <OverflowMenu />
+      <MobileDrawer />
+    </template>
+    <template #doc-after>
+      <!-- Related Reading only applies to individual blog posts, not the
+           blog index/archives listing pages (those build their own
+           footer sections separately). -->
+      <RelatedReading v-if="isBlogPost" />
     </template>
   </Layout>
 </template>

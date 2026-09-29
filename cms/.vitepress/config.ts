@@ -16,58 +16,45 @@ export default defineConfig({
     ['meta', { property: 'og:url', content: 'https://kingsleyobi.com/' }],
     ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { name: 'twitter:site', content: '@mrkingsleyobi' }],
-    ['script', { src: 'https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js', defer: true }]
+    ['script', { src: 'https://code.iconify.design/iconify-icon/1.0.8/iconify-icon.min.js', defer: true }],
+    [
+      'script',
+      {},
+      "(function(){try{var t=localStorage.getItem('kobi-theme');if(t!=='sepia'&&t!=='dusk'&&t!=='normal'){t='normal'}var r=document.documentElement;r.classList.add('theme-'+t);if(t==='dusk'){r.classList.add('dark')}}catch(e){}})();"
+    ]
   ],
 
   lastUpdated: false,
   cleanUrls: true,
 
-  search: {
-    provider: 'local',
-    options: {
-      locales: {
-        root: {
-          translations: {
-            button: {
-              buttonText: 'Search',
-              buttonAriaLabel: 'Search'
-            },
-            modal: {
-              noResultsText: 'No results for',
-              resetButtonTitle: 'Clear search query',
-              footer: {
-                selectText: 'to select',
-                navigateText: 'to navigate',
-                closeText: 'to close'
-              }
-            }
-          }
-        }
-      }
-    }
-  },
+  // Disable VitePress's own light/dark toggle - the redesign has its own
+  // persisted three-way (Normal/Sepia/Dusk) theme switcher in the footer,
+  // see cms/.vitepress/theme/components/ThemeSwitcher.vue.
+  appearance: false,
+
+  // NOTE: VitePress's built-in local search is intentionally disabled.
+  // The redesign's header search icon opens a custom CommandPalette (⌘K)
+  // component instead - see cms/.vitepress/theme/components/CommandPalette.vue.
 
   themeConfig: {
     nav: [
       { text: 'Home', link: '/' },
-      { text: 'Start Here', link: '/start-here/' },
       { text: 'Blog', link: '/blog/' },
       { text: 'Telos', link: '/telos/' },
-      { text: 'Manifesto', link: '/manifesto/' },
+      { text: 'Ideas', link: '/ideas/' },
       { text: 'Projects', link: '/projects/' },
-      { text: 'About', link: '/about/' }
+      { text: 'Predictions', link: '/predictions/' },
+      { text: 'About', link: '/about/' },
+      { text: 'Members', link: '/members/' }
     ],
 
     aside: false,
     sidebars: false,
     returnToTopLabel: false,
 
-    socialLinks: [
-      { icon: 'github', link: 'https://github.com/mrkingsleyobi' },
-      { icon: 'twitter', link: 'https://x.com/kingsleyobi' },
-      { icon: 'linkedin', link: 'https://linkedin.com/in/kingsleyobi' },
-      { icon: 'youtube', link: 'https://youtube.com/@kingsleyobi' }
-    ],
+    // Social links intentionally omitted from themeConfig: per the redesign,
+    // the social icon row lives only in the header overflow (three-dot) menu,
+    // the mobile drawer, and the global footer - not inline in the nav bar.
 
     footer: {
       message: 'Mission Possible to Build 10,000 AI Agents to Serve 1,000,000+ people',
@@ -83,6 +70,17 @@ export default defineConfig({
     config: (md) => {
       // Allow HTML tags in markdown (required for <aside> elements)
       md.set({ html: true })
+    }
+  },
+
+  vue: {
+    template: {
+      compilerOptions: {
+        // <iconify-icon> is a web component loaded via the Iconify CDN script
+        // in head - tell Vue's compiler not to try to resolve it as a Vue
+        // component (used in MobileDrawer.vue / OverflowMenu.vue).
+        isCustomElement: (tag) => tag === 'iconify-icon'
+      }
     }
   },
 
