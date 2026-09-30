@@ -20,14 +20,16 @@ function openSearch() {
 </script>
 <template>
   <header class="site-header">
-    <a href="/" class="wordmark">KINGSLEY OBI</a>
-    <nav class="primary-nav nav-face" aria-label="Primary">
-      <a v-for="item in primaryNav" :key="item.nav" :href="item.nav" :class="{ on: isActive(item.nav) }">{{ item.label }}</a>
-    </nav>
-    <div class="nav-right">
-      <CommandPalette ref="commandPaletteRef" />
-      <OverflowMenu />
-      <MobileDrawer :open-search="openSearch" />
+    <div class="site-header-inner">
+      <a href="/" class="wordmark">KINGSLEY OBI</a>
+      <nav class="primary-nav nav-face" aria-label="Primary">
+        <a v-for="item in primaryNav" :key="item.nav" :href="item.nav" :class="{ on: isActive(item.nav) }">{{ item.label }}</a>
+      </nav>
+      <div class="nav-right">
+        <CommandPalette ref="commandPaletteRef" />
+        <OverflowMenu />
+        <MobileDrawer :open-search="openSearch" />
+      </div>
     </div>
   </header>
 </template>

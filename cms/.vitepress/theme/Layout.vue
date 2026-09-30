@@ -64,6 +64,5 @@ const showPostFooterBlock = computed(() => isBlogPost.value)
 <style>
 .page-narrow--centered {
   text-align: center;
-  max-width: 560px;
 }
 </style>
