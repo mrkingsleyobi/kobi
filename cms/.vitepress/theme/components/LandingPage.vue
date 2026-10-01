@@ -33,7 +33,7 @@ function linktreeHtml(item: (typeof linktree)[number]): string {
           teams trying to move past prototype-stage AI.
         </p>
       </div>
-      <aside class="linktree">
+      <div class="linktree">
         <div class="linktree-grid">
           <a
             v-for="item in linktree"
@@ -45,7 +45,7 @@ function linktreeHtml(item: (typeof linktree)[number]): string {
             v-html="linktreeHtml(item)"
           />
         </div>
-      </aside>
+      </div>
     </div>
   </main>
 </template>
