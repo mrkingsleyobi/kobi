@@ -5,6 +5,7 @@ subtitle: "How to build the learning systems that will keep you relevant"
 created_at: 2025-09-08T14:00:00
 updated_at: 2025-09-08T14:00:00
 tags: learning | productivity | skills | ai | must | recommended
+ail: 3
 meta_default_title: "Learning to Learn: The Most Valuable Skill in the AI Age"
 meta_default_description: "Strategies for effective learning and skill development in a rapidly changing world"
 meta_og_title: "Learning to Learn: The Most Valuable Skill in the AI Age"
@@ -272,9 +273,6 @@ The return on investment is infinite.
 1. Learning to learn is a meta-skill — it improves everything else you do.
 1. The best time to start building your learning system was yesterday. The second best time is now.
 1. You don't need more time to learn — you need better systems and strategies.
+1. AIL-3 (human-guided AI assistance with review and approval) — learning framework and techniques are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
 
 </bottomNote>
-
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
-
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Learning framework and techniques are my own. Zoey helped with structure and formatting.

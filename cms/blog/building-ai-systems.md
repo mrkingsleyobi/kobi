@@ -5,6 +5,7 @@ subtitle: "Lessons from shipping production ML systems at scale"
 created_at: 2026-02-20T09:00:00
 updated_at: 2026-02-20T09:00:00
 tags: ai | engineering | technology | tutorial | top
+ail: 3
 meta_default_title: "Building AI Systems That Actually Work"
 meta_default_description: "Practical lessons from building and deploying production machine learning systems"
 meta_og_title: "Building AI Systems That Actually Work"
@@ -180,6 +181,8 @@ The organizations winning with AI aren't doing the most sophisticated ML. They'r
 
 Start there. Everything else is optimization.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Technical insights and lessons learned are my own. Zoey helped with structure and formatting.
+1. AIL-3 (human-guided AI assistance with review and approval) — technical insights and lessons learned are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+
+</bottomNote>

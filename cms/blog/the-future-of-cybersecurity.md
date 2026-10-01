@@ -5,6 +5,7 @@ subtitle: "How artificial intelligence is transforming security operations and t
 created_at: 2026-03-28T10:00:00
 updated_at: 2026-03-28T10:00:00
 tags: cybersecurity | ai | security | technology
+ail: 3
 meta_default_title: "The Future of Cybersecurity: AI-Powered Defense"
 meta_default_description: "Exploring how AI is revolutionizing cybersecurity operations, threat detection, and incident response"
 meta_og_title: "The Future of Cybersecurity: AI-Powered Defense"
@@ -159,6 +160,8 @@ We're not heading toward AI replacing security professionals — we're heading t
 
 The future of cybersecurity isn't human OR artificial intelligence — it's human AND artificial intelligence, working together.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Core concepts, analysis, and recommendations are my own. Zoey helped with structure, formatting, and refinement.
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, analysis, and recommendations are my own; Zoey helped with structure, formatting, and refinement. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+
+</bottomNote>

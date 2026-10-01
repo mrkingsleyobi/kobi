@@ -5,6 +5,7 @@ subtitle: "How to do meaningful work when algorithms compete for your attention"
 created_at: 2025-12-05T13:00:00
 updated_at: 2025-12-05T13:00:00
 tags: productivity | philosophy | technology | meaning | recommended
+ail: 3
 meta_default_title: "Deep Work in the Age of AI Distraction"
 meta_default_description: "Strategies for maintaining focus and doing deep work in an age of AI-driven distraction"
 meta_og_title: "Deep Work in the Age of AI Distraction"
@@ -200,6 +201,8 @@ But focus is a skill you can develop. And the more the world fragments into dist
 
 The choice is yours: Let algorithms control your attention, or control it yourself.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Core concepts and strategies are my own. Zoey helped with structure and formatting.
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts and strategies are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+
+</bottomNote>

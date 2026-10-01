@@ -5,6 +5,7 @@ subtitle: "A new space for exploring cybersecurity, AI, technology, and philosop
 created_at: 2024-01-15T10:00:00
 updated_at: 2024-01-15T10:00:00
 tags: technology | personal | ai
+ail: 3
 meta_default_title: "Welcome to kingsleyobi.com"
 meta_default_description: "Welcome to my new website where I'll be writing about cybersecurity, AI, technology, and philosophy."
 meta_og_title: "Welcome to kingsleyobi.com"
@@ -40,16 +41,11 @@ I'm excited to have a space to share my ideas and engage with thoughtful discuss
 
 <tutorial>Check back soon for more content on AI, security, and the future of technology.</tutorial>
 
----
-
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
-
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction.
-
 <bottomNote>
 
 1. This site is currently under active development.
 1. More content will be added regularly.
 1. Comments and feedback are always welcome.
+1. AIL-3 (human-guided AI assistance with review and approval). See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
 
 </bottomNote>
