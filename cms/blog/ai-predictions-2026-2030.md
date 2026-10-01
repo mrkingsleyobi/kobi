@@ -211,9 +211,11 @@ The people who thrive will be the ones who understand that shift and position th
 **The future isn't about competing with AI — it's about becoming the person who knows what to ask it to do.**
 
 <bottomNote>
+
 1. All predictions are wrong — these are directional bets about trends already in motion.
 1. The timeline could accelerate or delay by 1-2 years in either direction.
 1. The best strategy is to build skills that remain valuable across multiple scenarios.
+
 </bottomNote>
 
 ---

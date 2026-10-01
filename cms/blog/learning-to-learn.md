@@ -268,9 +268,11 @@ Build your learning machine. Use it daily. Iterate and improve it.
 The return on investment is infinite.
 
 <bottomNote>
+
 1. Learning to learn is a meta-skill — it improves everything else you do.
 1. The best time to start building your learning system was yesterday. The second best time is now.
 1. You don't need more time to learn — you need better systems and strategies.
+
 </bottomNote>
 
 **AIL Level**: AIL-3 - Human-guided AI assistance with review and approval

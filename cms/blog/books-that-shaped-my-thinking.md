@@ -147,9 +147,11 @@ The goal isn't to read more — it's to read better and let what you read change
 - **The Psychology of AI** by various authors (human-AI interaction)
 
 <bottomNote>
+
 1. These aren't affiliate links — just books I genuinely found valuable.
 1. Your mileage may vary — what resonates depends on where you are in your journey.
 1. I'd love to hear what books changed your thinking this year.
+
 </bottomNote>
 
 **AIL Level**: AIL-2 - Human-guided AI assistance with light edits

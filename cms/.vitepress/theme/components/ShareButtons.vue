@@ -36,6 +36,6 @@ const shareLinks = computed(() => [
       rel="noopener noreferrer"
       class="share-btn"
       :title="link.name"
-    ><template v-if="link.glyph">{{ link.glyph }} </template>{{ link.name }}</a>
+    ><span v-if="link.glyph" class="share-ic-text">{{ link.glyph }}</span>{{ link.name }}</a>
   </div>
 </template>

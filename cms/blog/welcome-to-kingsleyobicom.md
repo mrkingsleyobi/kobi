@@ -47,7 +47,9 @@ I'm excited to have a space to share my ideas and engage with thoughtful discuss
 **AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction.
 
 <bottomNote>
+
 1. This site is currently under active development.
 1. More content will be added regularly.
 1. Comments and feedback are always welcome.
+
 </bottomNote>

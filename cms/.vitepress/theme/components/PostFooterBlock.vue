@@ -11,11 +11,17 @@ defineProps<{
 </script>
 <template>
   <div class="post-footer-block">
-    <div class="footer-row-label">Share</div>
-    <ShareButtons />
-    <div class="footer-row-label">Follow</div>
-    <FollowButtons />
-    <div class="footer-row-label">Search</div>
-    <SearchSection :post-count="postCount" :years-active="yearsActive" :tag-count="tagCount" />
+    <div class="footer-row">
+      <span class="footer-row-label">Share</span>
+      <ShareButtons />
+    </div>
+    <div class="footer-row">
+      <span class="footer-row-label">Follow</span>
+      <FollowButtons />
+    </div>
+    <div class="footer-row">
+      <span class="footer-row-label">Search</span>
+      <SearchSection :post-count="postCount" :years-active="yearsActive" :tag-count="tagCount" />
+    </div>
   </div>
 </template>
