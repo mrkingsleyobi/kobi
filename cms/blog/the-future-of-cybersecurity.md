@@ -162,6 +162,6 @@ The future of cybersecurity isn't human OR artificial intelligence — it's huma
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, analysis, and recommendations are my own; Zoey helped with structure, formatting, and refinement. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, analysis, and recommendations are my own; Zoey helped with structure, formatting, and refinement.
 
 </bottomNote>

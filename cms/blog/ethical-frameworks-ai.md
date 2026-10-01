@@ -228,6 +228,6 @@ The organizations that get AI right will be the ones that take ethics seriously 
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — ethical framework and principles are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — ethical framework and principles are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

@@ -46,6 +46,6 @@ I'm excited to have a space to share my ideas and engage with thoughtful discuss
 1. This site is currently under active development.
 1. More content will be added regularly.
 1. Comments and feedback are always welcome.
-1. AIL-3 (human-guided AI assistance with review and approval). See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval).
 
 </bottomNote>

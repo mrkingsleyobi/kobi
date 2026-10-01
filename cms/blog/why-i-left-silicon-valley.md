@@ -147,6 +147,6 @@ The goal isn't to be in the right place. The goal is to be in the place that's r
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — personal reflections and insights are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — personal reflections and insights are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

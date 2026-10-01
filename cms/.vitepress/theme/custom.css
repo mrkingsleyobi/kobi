@@ -225,7 +225,7 @@ h1.page-title{ font-size:44px; line-height:1.12; margin-bottom:18px; letter-spac
 }
 .linktree-item:hover{ border-color:var(--accent-1); color:var(--accent-1); background:var(--accent-soft); }
 .linktree-item svg{ width:14px; height:14px; flex:none; }
-.linktree-item span{ min-width:0; white-space:normal; word-break:break-word; text-align:center; }
+.linktree-item span{ min-width:0; white-space:normal; word-break:break-word; text-align:center; text-decoration:underline; text-underline-offset:2px; }
 
 /* stat strip */
 .stat-strip{ display:flex; gap:0; border:1px solid var(--border); border-radius:10px; overflow:hidden; margin: 34px 0 40px; }

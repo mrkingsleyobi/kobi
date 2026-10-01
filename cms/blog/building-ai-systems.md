@@ -183,6 +183,6 @@ Start there. Everything else is optimization.
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — technical insights and lessons learned are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — technical insights and lessons learned are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

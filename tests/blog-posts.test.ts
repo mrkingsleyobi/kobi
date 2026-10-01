@@ -53,7 +53,6 @@ describe('Blog Posts', () => {
           const noteMatch = content.match(/<bottomNote>([\s\S]+?)<\/bottomNote>/)
           expect(noteMatch).toBeTruthy()
           expect(noteMatch![1]).toMatch(/AIL-\d/)
-          expect(noteMatch![1]).toContain('ai-influence-level-ail')
         })
       }
     })

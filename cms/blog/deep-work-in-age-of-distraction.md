@@ -203,6 +203,6 @@ The choice is yours: Let algorithms control your attention, or control it yourse
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — core concepts and strategies are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts and strategies are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

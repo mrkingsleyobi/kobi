@@ -152,6 +152,6 @@ The goal isn't to read more — it's to read better and let what you read change
 1. These aren't affiliate links — just books I genuinely found valuable.
 1. Your mileage may vary — what resonates depends on where you are in your journey.
 1. I'd love to hear what books changed your thinking this year.
-1. AIL-2 (human-guided AI assistance with light edits) — book selections and insights are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-2 (human-guided AI assistance with light edits) — book selections and insights are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

@@ -209,6 +209,6 @@ The future isn't about AI vs. humans — it's about humans figuring out what mat
 
 <bottomNote>
 
-1. AIL-3 (human-guided AI assistance with review and approval) — philosophical reflections and analysis are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — philosophical reflections and analysis are my own; Zoey helped with structure and formatting.
 
 </bottomNote>

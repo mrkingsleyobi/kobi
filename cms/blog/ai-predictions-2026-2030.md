@@ -216,6 +216,6 @@ The people who thrive will be the ones who understand that shift and position th
 1. All predictions are wrong — these are directional bets about trends already in motion.
 1. The timeline could accelerate or delay by 1-2 years in either direction.
 1. The best strategy is to build skills that remain valuable across multiple scenarios.
-1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, predictions, and arguments are my own; Zoey helped with structure, formatting, and refinement. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, predictions, and arguments are my own; Zoey helped with structure, formatting, and refinement.
 
 </bottomNote>

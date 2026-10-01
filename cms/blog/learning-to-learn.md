@@ -273,6 +273,6 @@ The return on investment is infinite.
 1. Learning to learn is a meta-skill — it improves everything else you do.
 1. The best time to start building your learning system was yesterday. The second best time is now.
 1. You don't need more time to learn — you need better systems and strategies.
-1. AIL-3 (human-guided AI assistance with review and approval) — learning framework and techniques are my own; Zoey helped with structure and formatting. See [AI Influence Level](https://kingsleyobi.com/blog/ai-influence-level-ail).
+1. AIL-3 (human-guided AI assistance with review and approval) — learning framework and techniques are my own; Zoey helped with structure and formatting.
 
 </bottomNote>
