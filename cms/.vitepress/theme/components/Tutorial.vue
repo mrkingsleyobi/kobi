@@ -11,11 +11,20 @@
 <style scoped>
 .tutorial {
   display: block;
-  background-color: rgba(60, 135, 114, 0.1);
-  border-left: 3px solid var(--vp-c-brand-1);
-  padding: 1rem 1.25rem;
-  margin: 1rem 0;
-  border-radius: 4px;
-  font-style: italic;
+  margin: 1.5rem 0;
+  background: var(--bg-soft);
+  font-size: 90%;
+  font-family: 'concourse-t3', -apple-system, sans-serif;
+  padding: 1rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+.tutorial :deep(title) {
+  display: block;
+  text-transform: lowercase;
+  font-family: 'concourse-c3', -apple-system, sans-serif;
+  font-size: 120%;
+  margin-bottom: 1rem;
+  color: var(--text-1);
 }
 </style>

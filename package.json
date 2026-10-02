@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vitepress dev cms",
-    "build": "vitepress build cms",
+    "build": "vitepress build cms && bun run scripts/generate-sitemap.ts",
     "preview": "vitepress preview cms"
   },
   "dependencies": {
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "@types/node": "^20.0.0",
+    "@vue/test-utils": "^2.5.1",
     "autoprefixer": "^10.4.0",
     "playwright": "^1.59.1",
     "postcss": "^8.4.0",

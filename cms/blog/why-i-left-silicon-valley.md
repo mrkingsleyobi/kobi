@@ -5,6 +5,7 @@ subtitle: "Sometimes the most important career move is stepping away from the ce
 created_at: 2026-03-15T14:30:00
 updated_at: 2026-03-15T14:30:00
 tags: personal | career | philosophy | technology
+ail: 3
 meta_default_title: "Why I Left Silicon Valley: Finding Meaning Beyond the Bubble"
 meta_default_description: "Reflections on leaving Silicon Valley and finding deeper purpose outside the tech bubble"
 meta_og_title: "Why I Left Silicon Valley: Finding Meaning Beyond the Bubble"
@@ -144,6 +145,8 @@ Not because where I am is objectively better — but because it's better *for me
 
 The goal isn't to be in the right place. The goal is to be in the place that's right for you.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Personal reflections and insights are my own. Zoey helped with structure and formatting.
+1. AIL-3 (human-guided AI assistance with review and approval) — personal reflections and insights are my own; Zoey helped with structure and formatting.
+
+</bottomNote>

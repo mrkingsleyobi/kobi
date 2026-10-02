@@ -13,8 +13,11 @@ defineProps<{
 <style scoped>
 .usage {
   display: block;
+  font-family: 'equity-text-b', Georgia, serif;
   font-style: italic;
-  color: var(--vp-c-text-2);
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.75rem;
+  padding-left: 1rem;
+  border-left: 2px solid var(--border);
+  color: var(--text-2);
 }
 </style>

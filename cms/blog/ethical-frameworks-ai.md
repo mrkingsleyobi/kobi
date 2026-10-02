@@ -5,6 +5,7 @@ subtitle: "How to build AI systems that align with human values"
 created_at: 2025-11-15T10:30:00
 updated_at: 2025-11-15T10:30:00
 tags: ethics | ai | philosophy | technology | top
+ail: 3
 meta_default_title: "Ethical Frameworks for AI Development"
 meta_default_description: "A practical guide to ethical considerations when building and deploying AI systems"
 meta_og_title: "Ethical Frameworks for AI Development"
@@ -225,6 +226,8 @@ AI ethics is hard. The questions don't have easy answers. But that doesn't mean 
 
 The organizations that get AI right will be the ones that take ethics seriously from the start, build diverse teams with the power to challenge assumptions, and create cultures where ethical concerns are welcomed, not dismissed.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Ethical framework and principles are my own. Zoey helped with structure and formatting.
+1. AIL-3 (human-guided AI assistance with review and approval) — ethical framework and principles are my own; Zoey helped with structure and formatting.
+
+</bottomNote>

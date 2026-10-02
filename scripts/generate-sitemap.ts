@@ -22,9 +22,13 @@ const entries: SitemapEntry[] = [
   { url: '', changefreq: 'daily', priority: 1.0 },
   { url: '/blog/', changefreq: 'daily', priority: 0.9 },
   { url: '/telos/', changefreq: 'weekly', priority: 0.8 },
-  { url: '/manifesto/', changefreq: 'weekly', priority: 0.7 },
   { url: '/projects/', changefreq: 'weekly', priority: 0.7 },
-  { url: '/about/', changefreq: 'monthly', priority: 0.6 }
+  { url: '/about/', changefreq: 'monthly', priority: 0.6 },
+  { url: '/ideas/', changefreq: 'weekly', priority: 0.6 },
+  { url: '/predictions/', changefreq: 'weekly', priority: 0.6 },
+  { url: '/archives/', changefreq: 'weekly', priority: 0.5 },
+  { url: '/members/', changefreq: 'monthly', priority: 0.4 },
+  { url: '/consulting/', changefreq: 'monthly', priority: 0.5 }
 ]
 
 // Add blog posts

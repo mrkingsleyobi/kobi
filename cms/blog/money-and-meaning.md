@@ -5,6 +5,7 @@ subtitle: "When intelligence becomes cheap, what becomes valuable?"
 created_at: 2025-10-22T09:00:00
 updated_at: 2025-10-22T09:00:00
 tags: philosophy | economics | ai | meaning
+ail: 3
 meta_default_title: "Money and Meaning: Rethinking Success in the AI Age"
 meta_default_description: "How AI is changing the relationship between money, meaning, and valuable work"
 meta_og_title: "Money and Meaning: Rethinking Success in the AI Age"
@@ -206,6 +207,8 @@ The people who thrive will be the ones who:
 
 The future isn't about AI vs. humans — it's about humans figuring out what matters when AI handles so much of what used to.
 
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
+<bottomNote>
 
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Philosophical reflections and analysis are my own. Zoey helped with structure and formatting.
+1. AIL-3 (human-guided AI assistance with review and approval) — philosophical reflections and analysis are my own; Zoey helped with structure and formatting.
+
+</bottomNote>

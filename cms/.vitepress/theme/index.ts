@@ -1,4 +1,4 @@
-import DefaultTheme from 'vitepress/theme'
+import type { Theme } from 'vitepress'
 import './custom.css'
 import Layout from './Layout.vue'
 import Tutorial from './components/Tutorial.vue'
@@ -11,13 +11,13 @@ import Usage from './components/Usage.vue'
 import DefinitionCite from './components/DefinitionCite.vue'
 import BlogHome from './components/BlogHome.vue'
 import LandingPage from './components/LandingPage.vue'
-import ContentStats from './components/ContentStats.vue'
-import SupportSection from './components/SupportSection.vue'
+import Archives from './components/Archives.vue'
 
 export default {
-  ...DefaultTheme,
+  Layout,
   enhanceApp({ app }) {
-    // Register custom content components
+    // Content components authored directly in blog-post markdown - see
+    // AGENTS.md "Custom Components".
     app.component('tutorial', Tutorial)
     app.component('bottomNote', BottomNote)
     app.component('callout', Callout)
@@ -26,10 +26,9 @@ export default {
     app.component('description', DescriptionText)
     app.component('usage', Usage)
     app.component('definition-cite', DefinitionCite)
+    // Page-level components referenced from index.md files.
     app.component('BlogHome', BlogHome)
     app.component('LandingPage', LandingPage)
-    app.component('ContentStats', ContentStats)
-    app.component('SupportSection', SupportSection)
-  },
-  Layout: Layout
-}
+    app.component('Archives', Archives)
+  }
+} satisfies Theme

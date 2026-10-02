@@ -17,11 +17,15 @@ defineProps<{
 
 <style scoped>
 .definition {
+  position: relative;
   display: block;
-  background-color: var(--vp-c-bg-soft);
-  border: 1px solid var(--vp-c-brand-1);
-  border-radius: 8px;
-  padding: 1.5rem;
+  font-family: 'concourse-t3', -apple-system, sans-serif;
+  font-size: 95%;
+  padding: 1rem 1.5rem;
   margin: 1.5rem 0;
+  background-color: var(--bg-soft);
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  color: var(--text-1);
 }
 </style>

@@ -5,6 +5,7 @@ subtitle: "Three transformational shifts that will reshape everything from work 
 created_at: 2026-04-07T16:00:00
 updated_at: 2026-04-07T16:00:00
 tags: ai | future | technology | economics | philosophy | top | recommended
+ail: 3
 meta_default_title: "AI Predictions 2026-2030: The Convergence We're Not Ready For"
 meta_default_description: "Three transformational AI shifts coming in the next 4 years that will reshape work, intelligence, and society"
 meta_og_title: "AI Predictions 2026-2030: The Convergence We're Not Ready For"
@@ -211,13 +212,10 @@ The people who thrive will be the ones who understand that shift and position th
 **The future isn't about competing with AI — it's about becoming the person who knows what to ask it to do.**
 
 <bottomNote>
+
 1. All predictions are wrong — these are directional bets about trends already in motion.
 1. The timeline could accelerate or delay by 1-2 years in either direction.
 1. The best strategy is to build skills that remain valuable across multiple scenarios.
+1. AIL-3 (human-guided AI assistance with review and approval) — core concepts, predictions, and arguments are my own; Zoey helped with structure, formatting, and refinement.
+
 </bottomNote>
-
----
-
-**AIL Level**: AIL-3 - Human-guided AI assistance with review and approval
-
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Core concepts, predictions, and arguments are my own. Zoey helped with structure, formatting, and refinement.

@@ -6,11 +6,30 @@
 
 <style scoped>
 .callout {
-  border-left: 4px solid var(--vp-c-brand-1);
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  background-color: var(--vp-c-bg-soft);
-  border-radius: 4px;
-  font-weight: 500;
+  position: relative;
+  display: block;
+  font-size: 125%;
+  font-family: 'heliotrope-t3', -apple-system, sans-serif;
+  text-align: center;
+  margin: 2rem 2.3rem 2.3rem;
+  color: var(--text-2);
+}
+.callout::before {
+  content: '\201C';
+  display: block;
+  width: 100%;
+  text-align: center;
+  font-size: 150%;
+  margin-bottom: .6rem;
+  color: var(--text-2);
+}
+.callout :deep(cite) {
+  display: block;
+  font-family: 'advocate-c14', Georgia, serif;
+  text-transform: lowercase;
+  font-size: 100%;
+  margin-top: 1.2rem;
+  font-style: normal;
+  color: var(--text-1);
 }
 </style>

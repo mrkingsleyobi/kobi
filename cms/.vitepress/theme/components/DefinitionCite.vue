@@ -13,9 +13,11 @@ defineProps<{
 <style scoped>
 .definition-cite {
   display: block;
-  font-size: 0.875rem;
-  color: var(--vp-c-text-3);
-  text-align: right;
-  font-style: italic;
+  font-family: 'advocate-c14', Georgia, serif;
+  font-size: 90%;
+  font-style: normal;
+  text-transform: lowercase;
+  margin-top: 0.75rem;
+  color: var(--text-2);
 }
 </style>

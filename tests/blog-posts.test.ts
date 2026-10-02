@@ -43,9 +43,16 @@ describe('Blog Posts', () => {
           expect(firstImageMatch).toBeTruthy()
         })
 
-        it('should have AIL disclosure', () => {
-          expect(content).toContain('AIL Level')
-          expect(content).toContain('AI Disclosure')
+        it('should have an AIL level in frontmatter', () => {
+          expect(frontmatter.ail).toBeTruthy()
+        })
+
+        it('should disclose AIL inside the bottomNote, not as loose body text', () => {
+          expect(content).not.toMatch(/\*\*AIL Level\*\*/)
+          expect(content).not.toMatch(/\*\*AI Disclosure\*\*/)
+          const noteMatch = content.match(/<bottomNote>([\s\S]+?)<\/bottomNote>/)
+          expect(noteMatch).toBeTruthy()
+          expect(noteMatch![1]).toMatch(/AIL-\d/)
         })
       }
     })

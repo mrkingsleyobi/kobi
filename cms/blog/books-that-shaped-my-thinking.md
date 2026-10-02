@@ -5,6 +5,7 @@ subtitle: "The most impactful reads on AI, philosophy, and human flourishing"
 created_at: 2026-01-10T11:00:00
 updated_at: 2026-01-10T11:00:00
 tags: reading | books | philosophy | ai | recommended
+ail: 2
 meta_default_title: "Books That Shaped My Thinking in 2025"
 meta_default_description: "My top book recommendations from 2025 covering AI, philosophy, technology, and human flourishing"
 meta_og_title: "Books That Shaped My Thinking in 2025"
@@ -147,11 +148,10 @@ The goal isn't to read more — it's to read better and let what you read change
 - **The Psychology of AI** by various authors (human-AI interaction)
 
 <bottomNote>
+
 1. These aren't affiliate links — just books I genuinely found valuable.
 1. Your mileage may vary — what resonates depends on where you are in your journey.
 1. I'd love to hear what books changed your thinking this year.
+1. AIL-2 (human-guided AI assistance with light edits) — book selections and insights are my own; Zoey helped with structure and formatting.
+
 </bottomNote>
-
-**AIL Level**: AIL-2 - Human-guided AI assistance with light edits
-
-**AI Disclosure**: This post was created with AI assistance (Zoey) under my guidance and direction. Book selections and insights are my own. Zoey helped with structure and formatting.
