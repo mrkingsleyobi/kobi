@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useData, Content } from 'vitepress'
-import type { Frontmatter } from './types'
+import type { Frontmatter, BlogPostData } from './types'
 import Header from './components/Header.vue'
 import Footer from './components/Footer.vue'
 import PageTitle from './components/PageTitle.vue'
 import RelatedReading from './components/RelatedReading.vue'
 import PostFooterBlock from './components/PostFooterBlock.vue'
 import NotFound from './NotFound.vue'
+import { loadAllPosts } from './utils/posts'
+import { parseTags } from './utils/format'
 
 const { frontmatter, page } = useData<Frontmatter>()
 
@@ -26,6 +28,30 @@ const isMembers = computed(() => page.value.relativePath === 'members/index.md')
 // index renders its own copy (with live post-count/years/tags) directly
 // inside BlogHome.vue (see README "Share/Follow/Search footer block").
 const showPostFooterBlock = computed(() => isBlogPost.value)
+
+const posts = ref<BlogPostData[]>([])
+onMounted(async () => {
+  if (isBlogPost.value) {
+    posts.value = await loadAllPosts()
+  }
+})
+
+const postCount = computed(() => posts.value.length)
+const yearsActive = computed(() => {
+  if (!posts.value.length) return '1'
+  const dates = posts.value
+    .map((p) => new Date(p.created_at))
+    .filter((d) => !isNaN(d.getTime()))
+  if (!dates.length) return '1'
+  const oldest = new Date(Math.min(...dates.map((d) => d.getTime())))
+  const diff = (Date.now() - oldest.getTime()) / (1000 * 60 * 60 * 24 * 365.25)
+  return diff < 1 ? '1' : diff.toFixed(1)
+})
+const tagCount = computed(() => {
+  const set = new Set<string>()
+  posts.value.forEach((p) => parseTags(p.tags).forEach((t) => set.add(t)))
+  return set.size
+})
 </script>
 
 <template>
@@ -46,7 +72,13 @@ const showPostFooterBlock = computed(() => isBlogPost.value)
             <div class="blog-list-divider" style="margin-top:44px;" />
             <RelatedReading />
           </template>
-          <PostFooterBlock v-if="showPostFooterBlock" style="margin-top:28px;" />
+          <PostFooterBlock
+            v-if="showPostFooterBlock"
+            style="margin-top:28px;"
+            :post-count="postCount"
+            :years-active="yearsActive"
+            :tag-count="tagCount"
+          />
         </div>
       </div>
     </main>
