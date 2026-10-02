@@ -22,7 +22,7 @@
 .tutorial :deep(title) {
   display: block;
   text-transform: lowercase;
-  font-family: 'concourse-c4', -apple-system, sans-serif;
+  font-family: 'concourse-c3', -apple-system, sans-serif;
   font-size: 120%;
   margin-bottom: 1rem;
   color: var(--text-1);

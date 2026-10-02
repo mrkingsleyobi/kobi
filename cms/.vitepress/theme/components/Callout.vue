@@ -25,7 +25,7 @@
 }
 .callout :deep(cite) {
   display: block;
-  font-family: 'advocate-c41', Georgia, serif;
+  font-family: 'advocate-c14', Georgia, serif;
   text-transform: lowercase;
   font-size: 100%;
   margin-top: 1.2rem;

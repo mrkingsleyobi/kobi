@@ -13,7 +13,7 @@ defineProps<{
 <style scoped>
 .definition-cite {
   display: block;
-  font-family: 'advocate-c41', Georgia, serif;
+  font-family: 'advocate-c14', Georgia, serif;
   font-size: 90%;
   font-style: normal;
   text-transform: lowercase;
