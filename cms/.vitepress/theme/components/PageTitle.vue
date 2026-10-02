@@ -64,7 +64,7 @@ onMounted(async () => {
 
     <div v-if="isBlogPost || isProjects" class="bsl-fm-created">{{ createdDate }}</div>
 
-    <div v-if="isBlogPost || isProjects" class="fm-tags" style="justify-content:flex-end; margin-top:.75rem;">
+    <div v-if="isBlogPost || isProjects" class="fm-tags" style="justify-content:flex-end;">
       <span v-for="tag in tags" :key="tag" class="fm-tag">#{{ tag }}</span>
     </div>
 
