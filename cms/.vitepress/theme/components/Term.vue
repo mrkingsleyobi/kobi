@@ -13,9 +13,11 @@ defineProps<{
 <style scoped>
 .term {
   display: block;
-  font-weight: 700;
-  font-size: 1.25rem;
-  color: var(--vp-c-brand-1);
+  font-family: 'concourse-caps', -apple-system, sans-serif;
+  text-transform: lowercase;
+  font-size: 120%;
+  font-weight: 500;
   margin-bottom: 0.5rem;
+  color: var(--text-1);
 }
 </style>

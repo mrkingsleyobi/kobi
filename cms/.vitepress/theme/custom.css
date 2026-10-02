@@ -276,7 +276,8 @@ h1.page-title{ font-size:44px; line-height:1.12; margin-bottom:18px; letter-spac
 .prose p{ margin:0 0 24px; }
 .prose h2{ font-family:'century-supra-caps',Georgia,serif; font-weight:200; font-size:29px; margin: 44px 0 18px; }
 .prose h3{ font-size:22px; margin: 32px 0 14px; font-family:'equity-caps-b',Georgia,serif; }
-.prose blockquote{ margin:28px 0; padding: 4px 0 4px 22px; border-left:3px solid var(--accent-1); font-family:'concourse-t3',-apple-system,sans-serif; font-weight:300; font-size:20px; color:var(--text-2); }
+.prose blockquote{ position:relative; margin:20px 0; padding:0 16px; border-left:4px solid var(--accent-1); font-family:'concourse-t3',-apple-system,sans-serif; font-style:italic; font-weight:100; font-size:18px; color:var(--text-2); }
+.prose blockquote cite{ display:block; font-family:'concourse-caps',-apple-system,sans-serif; text-transform:lowercase; font-size:19px; font-weight:100; margin-top:1.2rem; margin-left:.2rem; font-style:normal; color:var(--text-2); }
 .prose strong{ font-weight:700; }
 .prose code{ background:var(--code-bg); padding:2px 6px; border-radius:4px; font-family: ui-monospace,monospace; font-size:.88em; }
 .post-footer{ margin-top:56px; padding-top:26px; border-top:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; gap:16px; flex-wrap:wrap; }
@@ -488,27 +489,13 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
 
 /* =========================================================================
    MARKDOWN BODY CONTENT — extra elements authored inside blog-post markdown
-   (Callout.vue, Tutorial.vue, Definition.vue, tables, code blocks, video
-   embeds) that don't appear as literal markup in the prototype screens but
-   must resolve to the same token system.
+   (tables, code blocks, video embeds, captions) that don't appear as literal
+   markup in the prototype screens but must resolve to the same token system.
+   Callout/Tutorial/Definition/Term/Usage/Cite styling lives in their own
+   Vue components (Callout.vue, Tutorial.vue, Definition.vue, Term.vue,
+   Usage.vue, DefinitionCite.vue) - matched 1:1 to danielmiessler.com's live
+   <callout>/<tutorial>/<definition> rules, not duplicated here.
    ========================================================================= */
-.prose .callout {
-  border-left: 4px solid var(--accent-1);
-  padding: 1rem 1.5rem;
-  margin: 1.5rem 0;
-  background: var(--accent-soft);
-  border-radius: 6px;
-  font-weight: 600;
-  font-family: 'equity-text-b', Georgia, serif;
-}
-.prose .tutorial {
-  background: var(--bg-soft);
-  border-left: 3px solid var(--accent-1);
-  padding: 1rem 1.25rem;
-  margin: 1.5rem 0;
-  border-radius: 6px;
-  font-style: italic;
-}
 .prose caption {
   display: block;
   text-align: center;
@@ -518,7 +505,6 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
   margin-top: 8px;
   font-style: italic;
 }
-.prose definition,
 .definition-box {
   display: block;
   background: var(--bg-soft);
@@ -527,10 +513,6 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
   padding: 22px 24px;
   margin: 1.75rem 0;
 }
-.prose definition term { display:block; font-family:'equity-caps-b',Georgia,serif; font-weight:700; font-size:20px; color:var(--accent-1); margin-bottom:8px; }
-.prose definition description { display:block; margin-bottom:12px; line-height:1.6; }
-.prose definition usage { display:block; font-style:italic; color:var(--text-2); margin-bottom:8px; }
-.prose definition cite { display:block; font-size:13px; color:var(--text-3); text-align:right; }
 .prose .bottom-note {
   display: block;
   margin-top: 32px;
@@ -549,9 +531,10 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
   left: -172px;
   width: 144px;
   text-align: right;
-  font-family: 'concourse-t3', -apple-system, sans-serif;
-  font-size: 12px;
-  line-height: 1.55;
+  font-family: 'heliotrope-t3', -apple-system, sans-serif;
+  font-size: 13px;
+  line-height: 1.4;
+  letter-spacing: .015em;
   color: var(--text-3);
   font-style: normal;
   background: none;
@@ -560,14 +543,17 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
   margin: 0;
   border-radius: 0;
 }
+.prose aside em { font-weight: bolder; font-style: normal; letter-spacing: 0; }
 @media (max-width: 780px) {
   .prose aside { position:static; float:none; left:auto; width:100%; text-align:left; margin:0 0 16px; }
 }
 .video-container { position:relative; padding-bottom:56.25%; height:0; overflow:hidden; margin:1.75rem 0; border-radius: 10px; }
 .video-container iframe { position:absolute; top:0; left:0; width:100%; height:100%; border:0; }
 .prose table { border-collapse: collapse; width: 100%; margin: 1.75rem 0; font-size: 16px; }
-.prose table th, .prose table td { border: 1px solid var(--border); padding: 10px 14px; text-align: left; }
-.prose table th { background: var(--bg-soft); font-family: 'concourse-caps', -apple-system, sans-serif; text-transform: uppercase; font-size: 12px; letter-spacing: .03em; }
+.prose table tr + tr { border-top: 1px solid var(--border); }
+.prose table td + td { border-left: 1px solid var(--border); }
+.prose table th, .prose table td { padding: 10px 14px; text-align: left; }
+.prose table th { font-family: 'concourse-caps', -apple-system, sans-serif; font-weight:400; text-transform: lowercase; font-size: 15px; line-height:1.05; }
 .prose table tr:hover { background: var(--bg-soft); }
 .prose div[class*='language-'] { border-radius: 8px; margin: 1.75rem 0; font-family: 'concourse-t3', monospace; }
 .prose mark { background: var(--tag-bg); color: var(--tag-text); padding: 0 3px; border-radius: 3px; }

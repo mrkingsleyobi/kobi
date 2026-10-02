@@ -13,7 +13,7 @@ defineProps<{
 <style scoped>
 .description-text {
   display: block;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
   line-height: 1.6;
 }
 </style>
