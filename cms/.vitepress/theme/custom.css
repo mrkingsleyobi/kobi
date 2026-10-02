@@ -178,7 +178,7 @@ h1,h2,h3,h4{ font-family:'equity-caps-b', Georgia, serif; font-weight:700; color
 
 /* ---- shared page shell ---- */
 .page{ max-width: var(--content-max); margin: 0 auto; padding: 2.5rem 0 3rem; }
-.page-narrow{ width:100%; padding:0 20px; }
+.page-narrow{ width:100%; }
 .kicker{
   font-family:'concourse-t3',-apple-system,sans-serif; font-size:12.5px;
   letter-spacing:.12em; text-transform:uppercase; color:var(--accent-1); font-weight:700;
