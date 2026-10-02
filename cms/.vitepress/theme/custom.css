@@ -546,9 +546,6 @@ html[data-theme="dusk"] .note-flag{ background: rgba(255,190,80,.16); color:#ffb
   border-radius: 0;
 }
 .prose aside em { font-weight: bolder; font-style: normal; letter-spacing: 0; }
-@media (min-width: 1200px) {
-  .prose aside { left: 0; width: 10rem; }
-}
 @media (max-width: 780px) {
   .prose aside { position:static; float:none; left:auto; width:100%; text-align:left; margin:0 0 16px; }
 }
