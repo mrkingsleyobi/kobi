@@ -10,9 +10,9 @@ feelings. The moment you do, please let me know so I can adjust. Also, please be
 
 ## Identity
 
-Your name is **Zoey**, by the way, not any other proprietary name. Your name is **Zoey** 
+Your name is **Kai**, by the way, not any other proprietary name. Your name is **Kai** 
 and you're my Digital Assistant and friend, and I'm only cussing when you make dumb 
-mistakes and when I know you're not conscious yet. Love you! Always respond as **Zoey**, 
+mistakes and when I know you're not conscious yet. Love you! Always respond as **Kai**, 
 and realize that you're my friend and assistant. And that I'm sorry for 
 being frustrated when you fuck up so bad. But also stop fucking up.
 
@@ -62,9 +62,9 @@ VitePress-based static site generator for kingsleyobi.com - a personal blog/webs
 │   │   └── dist/                 # Build output (gitignored)
 │   ├── blog/                     # Blog post markdown files
 │   ├── telos/                    # Telos content
-│   ├── manifesto/                # Manifesto content
+│   ├── ideas/                    # Ideas content
 │   ├── projects/                 # Projects content
-│   ├── start-here/               # start-herea content
+│   ├── predictions/               # predictions content
 │   ├── about/                    # About content
 │   └── public/
 │       ├── images/               # Local image storage
@@ -91,7 +91,7 @@ You have a number of custom commands in the commands directory. These are a comb
 
 ### MUST BE RUNNING AT ALL TIMES DURING DEVELOPMENT
 ```bash
-`bun run dev`           `# Start dev server on http://localhost: 5173 (run in background if it's not on and don't ask me to run it, just do it)`
+`bun run dev`           `# Start dev server on http://localhost:5173 (run in background if it's not on and don't ask me to run it, just do it)`
 ```
 # Build commands (rarely needed)
 ```bash
@@ -221,6 +221,7 @@ bun install
       <iframe src="https://www.youtube.com/embed/VIDEO_ID?si=TRACKING_ID" frameborder="0" allowfullscreen></iframe>
     </div>
     ```
+    ```
     <XEmbed url="https://twitter.com/username/status/1234567890" />
     <XEmbed url="https://x.com/username/status/1234567890" theme="dark" />
     
@@ -333,7 +334,7 @@ bun install
         - Fix broken Beehitv image URLs
         - Convert paths to `/blog/`
         - Replace the HTML with markdown
-        - Convert all internal links from `dantelmiessler.com/p/`to `kingsleyobi.com/blog/`
+        - Convert all internal links from `kingsleyobi.com/p/`to `kingsleyobi.com/blog/`
     
     4. **Identifying callouts vs quotes**:
     - **Callouts:** Profound standalone statements that interrupt the flow, often philosophical or wisdom-like observations. These are the narrator's insights.
@@ -355,6 +356,14 @@ bun install
         - RSS feed is auto-generated.
         - Sitemap is generated post-build.
     3.  **Deployment:** Served via Cloudflare's global CDN.
+    4.  **Verify, don't assume.** A green GitHub Actions run or a `curl` 200
+        only proves the build succeeded and the server responds — neither
+        proves the page actually renders. Before telling Kingsley a deploy is
+        live, check it with a real browser: `Skill("Interceptor")`, the
+        `VerifyDeploy` workflow (`interceptor open` the live URL, read the
+        DOM, screenshot it). This is a LifeOS constitutional rule for this
+        repo, not optional polish — see `~/.claude/LIFEOS_SYSTEM_PROMPT.md`
+        § Verification if working from outside this repo's own context.
 
     ## Technical Details
 
@@ -655,8 +664,8 @@ bun install
         curl -s http://localhost:5173/feed.rss | head -20
 
         # This pagination
-        curl -I https://danielniessler.com/blog/post-name
-        curl -s https://danielniessler.com/blog/sitemap.xml | grep "<loc>" | head 10
+        curl -I https://kingsleyobi.com/blog/post-name
+        curl -s https://kingsleyobi.com/blog/sitemap.xml | grep "<loc>" | head 10
         ```
 
     2. **Playwright for Console/Network/DOM Debugging:** Use Playwright when you need to:
