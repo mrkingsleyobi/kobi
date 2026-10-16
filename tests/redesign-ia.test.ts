@@ -4,12 +4,12 @@ import { join } from 'path'
 
 /**
  * Information-architecture pages added by the redesign (README
- * "Information architecture" - Ideas, Predictions, Members, Consulting)
+ * "Information architecture" - Ideas, Predictions, Consulting; Members dropped 2026-10-16)
  * must exist with real frontmatter and real content matching the approved
  * Lavish prototype, and the primary nav / sitemap must reference them.
  */
 const ROOT = process.cwd()
-const NEW_IA_PAGES = ['ideas', 'predictions', 'members', 'consulting']
+const NEW_IA_PAGES = ['ideas', 'predictions', 'consulting']
 
 describe('Redesign: new IA pages', () => {
   NEW_IA_PAGES.forEach((slug) => {
@@ -41,7 +41,7 @@ describe('Redesign: primary nav includes full IA', () => {
     expect(links).toContain('/projects/')
     expect(links).toContain('/predictions/')
     expect(links).toContain('/about/')
-    expect(links).toContain('/members/')
+    expect(links).not.toContain('/members/')
   })
   it('nav intentionally omits Consulting and Archives per README', async () => {
     const mod = await import('../cms/.vitepress/theme/utils/icons.ts')

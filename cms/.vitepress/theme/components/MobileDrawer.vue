@@ -40,12 +40,10 @@ watch(() => route.path, close)
         :href="item.nav"
         :class="{ on: route.path === item.nav }"
       >{{ item.label }}</a>
-      <a href="https://university.example.com" target="_blank" rel="noopener" data-ext="1">ul site <span v-html="extLinkIcon" /></a>
-      <a href="https://daemon.example.com" target="_blank" rel="noopener" data-ext="1">daemon <span v-html="extLinkIcon" /></a>
       <div class="mobile-drawer-foot">
         <button type="button" class="icon-btn" title="Search" aria-label="Search" v-html="searchIcon" @click="onSearchClick" />
         <div class="mobile-drawer-social">
-          <a v-for="s in footerSocial" :key="s.label" href="#" :title="s.label" :aria-label="s.label" v-html="s.i" />
+          <a v-for="s in footerSocial" :key="s.label" :href="s.href" :title="s.label" :aria-label="s.label" v-html="s.i" />
         </div>
       </div>
     </div>

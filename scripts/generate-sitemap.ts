@@ -27,7 +27,6 @@ const entries: SitemapEntry[] = [
   { url: '/ideas/', changefreq: 'weekly', priority: 0.6 },
   { url: '/predictions/', changefreq: 'weekly', priority: 0.6 },
   { url: '/archives/', changefreq: 'weekly', priority: 0.5 },
-  { url: '/members/', changefreq: 'monthly', priority: 0.4 },
   { url: '/consulting/', changefreq: 'monthly', priority: 0.5 }
 ]
 

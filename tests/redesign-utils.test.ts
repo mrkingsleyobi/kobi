@@ -38,19 +38,20 @@ describe('Official tags taxonomy', () => {
 })
 
 describe('Redesign: icons.ts data matches the Lavish prototype', () => {
-  it('primary nav has exactly the 8 items from README (no Consulting/Archives)', () => {
-    expect(primaryNav).toHaveLength(8)
+  it('primary nav has exactly the 7 items (no Members, Consulting or Archives)', () => {
+    expect(primaryNav).toHaveLength(7)
     expect(primaryNav.map((n) => n.label)).toEqual([
-      'home', 'blog', 'telos', 'ideas', 'projects', 'predictions', 'about', 'members'
+      'home', 'blog', 'telos', 'ideas', 'projects', 'predictions', 'about'
     ])
   })
-  it('home linktree has exactly 19 items per README', () => {
-    expect(linktree).toHaveLength(19)
+  it('home linktree has exactly 11 items (no unconfirmed or template-leftover links)', () => {
+    expect(linktree).toHaveLength(11)
+    expect(linktree.every((l) => l.nav || (l.href && l.href !== '#'))).toBe(true)
   })
-  it('footer/overflow/mobile-drawer share the same 7-item social row', () => {
-    expect(footerSocial).toHaveLength(7)
+  it('footer/overflow/mobile-drawer share the same 5-item social row', () => {
+    expect(footerSocial).toHaveLength(5)
     expect(footerSocial.map((s) => s.label)).toEqual([
-      'Email', 'YouTube', 'LinkedIn', 'Twitter / X', 'GitHub', 'Podcast', 'RSS'
+      'YouTube', 'LinkedIn', 'Twitter / X', 'GitHub', 'RSS'
     ])
   })
 })

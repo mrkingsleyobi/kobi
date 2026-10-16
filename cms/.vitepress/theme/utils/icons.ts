@@ -46,50 +46,41 @@ export const extLinkIcon =
 export interface LinktreeItem {
   label: string
   nav?: string
+  href?: string
   ext?: boolean
   i: string
 }
 
-// The 19-item home-page linktree, in the exact order specified by the
-// prototype. `nav` items route internally; `ext` items are external/social
-// placeholders (not yet wired to real destinations).
+// The home-page linktree. `nav` items route internally; `ext` items are external
+// links the principal supplied (2026-10-16). Items with no confirmed URL are omitted.
 export const linktree: LinktreeItem[] = [
-  { label: 'YouTube', ext: true, i: icon.yt },
+  { label: 'YouTube', ext: true, href: 'http://youtube.com/@praxis', i: icon.yt },
   { label: 'Blog', nav: '/blog/', i: icon.doc },
-  { label: 'Newsletter', ext: true, i: icon.mail },
-  { label: 'Podcast', ext: true, i: icon.mic },
-  { label: 'LinkedIn', ext: true, i: icon.li },
-  { label: 'Twitter', ext: true, i: icon.x },
-  { label: 'Book a Meeting', ext: true, i: icon.cal },
-  { label: 'GitHub', ext: true, i: icon.gh },
-  { label: 'UL Site', ext: true, i: icon.org },
-  { label: 'Books', ext: true, i: icon.book },
+  { label: 'LinkedIn', ext: true, href: 'http://linkedin.com/in/mrkingsleyobi', i: icon.li },
+  { label: 'Twitter', ext: true, href: 'http://x.com/mrkingsleyobi', i: icon.x },
+  { label: 'GitHub', ext: true, href: 'https://github.com/mrkingsleyobi', i: icon.gh },
   { label: 'Projects', nav: '/projects/', i: icon.folder },
-  { label: 'Vecta 3.0', ext: true, i: icon.cube },
-  { label: 'Organisation 3.0', ext: true, i: icon.org },
   { label: 'Telos', nav: '/telos/', i: icon.bulb },
   { label: 'Ideas', nav: '/ideas/', i: icon.bulb },
   { label: 'Predictions', nav: '/predictions/', i: icon.chart },
-  { label: 'Daemon', ext: true, i: icon.cube },
-  { label: 'RSS', ext: true, i: icon.rss },
+  { label: 'RSS', nav: '/feed.rss', i: icon.rss },
   { label: 'Archives', nav: '/archives/', i: icon.doc }
 ]
 
 export interface SocialItem {
   label: string
+  href: string
   i: string
 }
 
 // Shared social row rendered in the global footer, header overflow menu,
 // and mobile drawer footer.
 export const footerSocial: SocialItem[] = [
-  { label: 'Email', i: icon.email },
-  { label: 'YouTube', i: icon.yt },
-  { label: 'LinkedIn', i: icon.li },
-  { label: 'Twitter / X', i: icon.x },
-  { label: 'GitHub', i: icon.gh },
-  { label: 'Podcast', i: icon.podcast },
-  { label: 'RSS', i: icon.rss }
+  { label: 'YouTube', href: 'http://youtube.com/@praxis', i: icon.yt },
+  { label: 'LinkedIn', href: 'http://linkedin.com/in/mrkingsleyobi', i: icon.li },
+  { label: 'Twitter / X', href: 'http://x.com/mrkingsleyobi', i: icon.x },
+  { label: 'GitHub', href: 'https://github.com/mrkingsleyobi', i: icon.gh },
+  { label: 'RSS', href: '/feed.rss', i: icon.rss }
 ]
 
 export const primaryNav = [
@@ -99,6 +90,5 @@ export const primaryNav = [
   { label: 'ideas', nav: '/ideas/' },
   { label: 'projects', nav: '/projects/' },
   { label: 'predictions', nav: '/predictions/' },
-  { label: 'about', nav: '/about/' },
-  { label: 'members', nav: '/members/' }
+  { label: 'about', nav: '/about/' }
 ]

@@ -11,26 +11,19 @@ function linktreeHtml(item: (typeof linktree)[number]): string {
       <div class="home-copy">
         <p class="home-greet">Hi,</p>
         <p>
-          I'm <a class="inline-link" href="/about/">Kingsley Obi</a> — I design and ship agentic AI
-          systems: multi-agent orchestration, autonomous research and fraud-detection swarms, and the
-          infrastructure that lets a handful of agents do the work of a team.
+          I'm <a class="inline-link" href="/about/">Kingsley Obi</a>, based in Abuja. I work on one
+          question: how much more agency can a person, a company, or a whole continent gain when
+          intelligence becomes programmable?
         </p>
         <p>
-          Most "AI features" today are a single model bolted onto a workflow. I build systems of
-          agents with names, memory, and judgment — software that can be handed a genuinely
-          ambiguous problem and come back with a defensible answer, not just an autocomplete.
+          I build agentic AI systems, help organizations turn AI into measurable outcomes, and look
+          for problems worth solving in Africa, where infrastructure, payments, language and trust
+          call for different architectures than Silicon Valley assumes.
         </p>
         <p>
-          That's shown up as an ultra-low-latency trading platform processing 500K orders/sec, a
-          66-agent research assistant that reads 1,000 papers a minute, and a multi-agent
-          fraud-detection swarm catching bad actors in under two seconds. See the
-          <a class="inline-link" href="/projects/">full project list</a>.
-        </p>
-        <p>
-          Right now I split my time between <a class="inline-link" href="/projects/">building</a>,
-          <a class="inline-link" href="/blog/">writing</a> about where agentic systems are headed, and
-          a small number of <a class="inline-link" href="/consulting/">consulting engagements</a> with
-          teams trying to move past prototype-stage AI.
+          Right now I'm building my own AI operating system and taking on a small number of
+          <a class="inline-link" href="/consulting/">consulting engagements</a>. You can see what
+          I'm working on in <a class="inline-link" href="/projects/">projects</a>.
         </p>
       </div>
       <div class="linktree">
@@ -39,7 +32,7 @@ function linktreeHtml(item: (typeof linktree)[number]): string {
             v-for="item in linktree"
             :key="item.label"
             class="linktree-item"
-            :href="item.nav || '#'"
+            :href="item.nav || item.href"
             :target="item.ext ? '_blank' : undefined"
             :rel="item.ext ? 'noopener' : undefined"
             v-html="linktreeHtml(item)"
