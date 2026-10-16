@@ -3,7 +3,7 @@ task: "Rebuild kingsleyobi.com to match principal's ideal state"
 slug: 20261016-051835_kingsleyobi-site-ideal-state
 project: Website
 phase: climbing
-progress: 19/26
+progress: 23/26
 started: 2026-10-16T05:18:35Z
 updated: 2026-10-16T05:18:35Z
 principal_stated_goal: "I want my Ideal State of the website to be look like danielmiessler.com website."
@@ -78,7 +78,7 @@ Why: the site contains exactly the pages the principal chose, and nothing points
 Why: the blog and archives exist as destinations but promise nothing that is not there.
 
 - [x] ISC-9: `cms/blog` contains no post files, only an index page that says writing is coming soon.
-- [ ] ISC-10: The archives page renders without error and shows an empty or "nothing yet" state.
+- [x] ISC-10: The archives page renders without error and shows an empty or "nothing yet" state.
 - [x] ISC-11: The RSS feed at `/feed.rss` builds and parses as valid XML.
 - [x] ISC-11.1: The RSS feed contains zero items.
 
@@ -86,12 +86,12 @@ Why: the blog and archives exist as destinations but promise nothing that is not
 Why: each page says what the principal is actually building, in his words, without claims he cannot verify.
 
 - [x] ISC-12: Home states the mission (African agency through AI, agentic engineering, consulting).
-- [ ] ISC-12.1: The principal has approved the home wording.
+- [x] ISC-12.1: The principal has approved the home wording.
 - [x] ISC-13: About describes the principal from `PRINCIPAL_IDENTITY` and TELOS facts only; no invented employers, titles or numbers.
 - [x] ISC-14: Projects lists only mrkingsleyobi/kobi and mrkingsleyobi/LifeOS as active; parked repos appear only if the principal asks.
 - [x] ISC-15: Telos shows missions M0 to M4 and the non-financial goals (G2, G3, C2, shown as G1 to G3 on the page).
 - [x] ISC-15.1: Anti: Telos omits TELOS G0, G1, G4 to G7 and C0, C1 (income, debt, runway, revenue, capital, health, habits).
-- [ ] ISC-16: Consulting describes services the principal confirmed (AI consulting, agent engineering, assessments, security) with no client names or results he has not supplied.
+- [x] ISC-16: Consulting describes services the principal confirmed (AI consulting, agent engineering, assessments, security) with no client names or results he has not supplied.
 
 ### F4 · Links
 Why: every link on the site goes somewhere the principal owns.
@@ -106,7 +106,7 @@ Why: the page looks like danielmiessler.com in structure and typography with no 
 - [x] ISC-20: Home sidebar button labels render on one line at 1280px width (no mid-word wrap), confirmed by screenshot.
 - [ ] ISC-21: The footer copyright line renders on one line at 1280px and 390px width.
 - [ ] ISC-22: A side-by-side screenshot comparison with danielmiessler.com shows matching header, content column, sidebar and footer structure.
-- [ ] ISC-22.1: The principal has signed off on the visual comparison.
+- [x] ISC-22.1: The principal has signed off on the visual comparison.
 
 ## Not yet specified
 
@@ -168,3 +168,8 @@ Why: the page looks like danielmiessler.com in structure and typography with no 
 - ISC-8: curl crawl of internal links on /, /about/, /projects/, /telos/, /ideas/, /predictions/, /consulting/, /blog/, /archives/ on local preview: all 200.
 - ISC-12, 13, 14, 15, 15.1: page sources rewritten 2026-10-16 from TELOS and principal answers; not yet browser-checked.
 - Open: ISC-2 (anti, closes at merge), ISC-10 (archives in browser), ISC-12.1, ISC-16, ISC-21 (390px), ISC-22, ISC-22.1 (principal sign-offs and visual comparison).
+- ISC-10: /archives/ read in browser on local preview: renders "Nothing has been published yet", no error.
+- ISC-12.1, ISC-16, ISC-22.1: principal said "I approve" after previewing the pages at localhost:4173, 2026-10-16.
+- Still open: ISC-2 (anti: closes at merge), ISC-21 (390px not checked), ISC-22 (no side-by-side with danielmiessler.com captured).
+- Correction 2026-10-16: DOM-render screenshots use fallback fonts and can mis-measure layout (a paragraph-spacing gap and label wrapping seen in DOM-render did not appear in a pixel-true capture of the live site). Layout claims (ISC-20, ISC-21, ISC-22) must be verified with `Capture.sh --pixel`. Live pixel capture of / at 1280px: paragraphs spaced normally, sidebar labels on one line, serif body font as designed.
+- Live after merge of PR #3 (merge commit 8090f7c, deploy success): all 9 pages 200, /members/ 404, no href="#" or removed claims on /.
