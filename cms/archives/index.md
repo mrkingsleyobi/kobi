@@ -1,6 +1,7 @@
 ---
 title: "Archives"
-subtitle: "Explore all content since 2023."
-description: "Complete archive of all blog posts with thumbnails and filters"
+subtitle: "Nothing here yet."
+description: "Archive of published writing. Nothing published yet."
 ---
-<Archives />
+
+Nothing has been published yet. Posts will be listed here as they go live.

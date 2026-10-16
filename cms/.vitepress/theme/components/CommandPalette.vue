@@ -23,7 +23,6 @@ const staticPages = [
   { title: 'Projects', link: '/projects/' },
   { title: 'Predictions', link: '/predictions/' },
   { title: 'About', link: '/about/' },
-  { title: 'Members', link: '/members/' },
   { title: 'Archives', link: '/archives/' },
   { title: 'Consulting', link: '/consulting/' }
 ]

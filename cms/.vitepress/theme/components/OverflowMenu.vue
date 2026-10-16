@@ -39,7 +39,7 @@ onUnmounted(() => {
     />
     <div class="extra-nav-panel ui-face" :class="{ open: isOpen }">
       <div class="extra-nav-social">
-        <a v-for="s in footerSocial" :key="s.label" href="#" :title="s.label" :aria-label="s.label" v-html="s.i" />
+        <a v-for="s in footerSocial" :key="s.label" :href="s.href" :title="s.label" :aria-label="s.label" v-html="s.i" />
       </div>
     </div>
   </div>

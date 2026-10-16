@@ -9,7 +9,7 @@ import ThemeSwitcher from './ThemeSwitcher.vue'
       <a
         v-for="s in footerSocial"
         :key="s.label"
-        href="#"
+        :href="s.href"
         :title="s.label"
         :aria-label="s.label"
         v-html="s.i"
