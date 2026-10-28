@@ -1,6 +1,26 @@
 import { defineConfig } from 'vitepress'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath } from 'url'
+
+// Posts whose status isn't 'published' are left out of the build entirely, so
+// unpublishing (status: draft) takes the page down instead of only delisting it.
+// Same rule as theme/utils/posts.ts: a missing status counts as published.
+function unpublishedPosts(): string[] {
+  const blogDir = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'blog')
+  if (!fs.existsSync(blogDir)) return []
+  return fs.readdirSync(blogDir)
+    .filter(f => f.endsWith('.md') && f !== 'index.md')
+    .filter(f => {
+      const fm = fs.readFileSync(path.join(blogDir, f), 'utf-8').match(/^---\n([\s\S]+?)\n---/)
+      const status = fm?.[1].match(/^status:\s*["']?(\w+)/m)?.[1]
+      return status !== undefined && status !== 'published'
+    })
+    .map(f => `blog/${f}`)
+}
 
 export default defineConfig({
+  srcExclude: unpublishedPosts(),
   title: 'Kingsley Obi',
   description: 'Cybersecurity, AI, Technology, and Philosophy. Expert AI coaching and agentic engineering consultation. Personalized sessions on autonomous AI systems, neural networks, and multi-agent orchestration. Book your consultation today.',
   lang: 'en-US',
